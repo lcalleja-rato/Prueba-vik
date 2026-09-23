@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Vicky Coelho Academia</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=DM+Sans:opsz,wght@9..40,400;9..40,500&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  --ivory:#F8F1E8;
+  --ivory-glass:rgba(248,241,232,.74);
+  --espresso:#2B211D;
+  --espresso-soft:rgba(43,33,29,.62);
+  --nude:#C9AD96;
+  --nude-hover:#BFA088;
+  --champagne:#E8D4BE;
+  --gold:#B8945A;
+  --serif:'Cormorant Garamond', 'Garamond', 'Times New Roman', serif;
+  --sans:'DM Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --ease:cubic-bezier(.22,.61,.36,1);
+  --scroll-length:500vh;
+}
+*{box-sizing:border-box;}
+html,body{margin:0; background:var(--ivory); overflow-x:clip;}
+body{font-family:var(--sans); color:var(--espresso); -webkit-font-smoothing:antialiased;}
+body.menu-open{overflow:hidden;}
+a{color:inherit;}
+
+/* =========================================================
+   NAV
+   ========================================================= */
+.nav{
+  position:fixed; z-index:50;
+  top:0; left:0; right:0;
+  padding:calc(env(safe-area-inset-top,0px) + 22px) clamp(16px,3vw,40px) 0;
+  pointer-events:none;
+}
+.nav__bar{
+  pointer-events:auto;
+  max-width:1440px; margin:0 auto;
+  display:flex; align-items:center; justify-content:space-between; gap:32px;
+  padding:18px clamp(20px,2.6vw,40px);
+  border-radius:999px;
+  border:1px solid transparent;
+  background:transparent;
+  color:var(--ivory);
+  transition:
+    max-width .7s var(--ease), padding .7s var(--ease),
+    background .6s var(--ease), border-color .6s var(--ease),
+    box-shadow .6s var(--ease), color .5s var(--ease),
+    backdrop-filter .6s var(--ease);
+}
+.nav.is-scrolled .nav__bar{
+  max-width:1280px;
+  padding:11px clamp(16px,2vw,28px) 11px clamp(22px,2.4vw,34px);
+  background:var(--ivory-glass);
+  -webkit-backdrop-filter:blur(16px) saturate(1.15);
+  backdrop-filter:blur(16px) saturate(1.15);
+  border-color:rgba(184,148,90,.22);
+  box-shadow:0 10px 40px -18px rgba(43,33,29,.28);
+  color:var(--espresso);
+}
+
+/* Logo */
+.mono__img{
+  display:block; height:48px; width:auto;
+  /* sobre el vídeo el logo se ve en marfil; en la cápsula, con sus colores.
+     Si tu logo ya es claro o no quieres este efecto, pon --logo-on-video:none */
+  filter:var(--logo-on-video, brightness(0) invert(96%) sepia(8%) saturate(300%));
+  transition:height .6s var(--ease), filter .5s var(--ease);
+}
+.nav.is-scrolled .mono__img{height:40px; filter:none;}
+.mm__brand img{display:block; height:40px; width:auto;}
+.mono:focus-visible{outline:1px solid var(--gold); outline-offset:6px; border-radius:4px;}
+
+/* Monograma (texto, ya no se usa) */
+.mono{
+  display:flex; flex-direction:column; align-items:flex-start;
+  text-decoration:none; line-height:1; flex:none;
+}
+.mono__vc{
+  position:relative;
+  font-family:var(--serif); font-weight:400;
+  font-size:34px; letter-spacing:.02em;
+  padding:0 2px;
+}
+.mono__vc svg{
+  position:absolute; left:-9px; top:-6px;
+  width:30px; height:46px; overflow:visible;
+}
+.mono__vc svg path{
+  fill:none; stroke:var(--gold); stroke-width:.8;
+  vector-effect:non-scaling-stroke; opacity:.85;
+}
+.mono__sub{
+  margin-top:6px;
+  font-family:var(--sans); font-size:8.5px; font-weight:500;
+  letter-spacing:.62em; padding-left:.1em;
+  opacity:.85;
+}
+
+/* Links */
+.nav__links{
+  list-style:none; margin:0; padding:0;
+  display:flex; align-items:center; gap:clamp(22px,2.6vw,46px);
+}
+.nav__link{
+  position:relative; display:inline-block;
+  padding:10px 0;
+  font-size:11px; font-weight:500;
+  letter-spacing:.24em; text-transform:uppercase;
+  text-decoration:none; white-space:nowrap;
+  opacity:.9; transition:opacity .3s ease;
+}
+.nav__link:hover,.nav__link:focus-visible{opacity:1;}
+/* Curva C bajo cada apartado */
+.nav__link .curve{
+  position:absolute; left:-8%; bottom:-2px;
+  width:116%; height:9px; overflow:visible; pointer-events:none;
+}
+.curve path{
+  fill:none; stroke:var(--champagne); stroke-width:1;
+  vector-effect:non-scaling-stroke; stroke-linecap:round;
+  stroke-dasharray:1 2; stroke-dashoffset:1;
+  transition:stroke-dashoffset .75s var(--ease), stroke .4s ease;
+}
+.nav.is-scrolled .curve path{stroke:var(--gold);}
+.nav__link:hover .curve path,
+.nav__link:focus-visible .curve path,
+.nav__link[aria-current="page"] .curve path{stroke-dashoffset:0;}
+.nav__link:focus-visible{outline:none;}
+.nav__link:focus-visible::after{
+  content:""; position:absolute; inset:2px -6px; border-radius:4px;
+  outline:1px solid currentColor; outline-offset:2px;
+}
+
+/* CTA cápsula */
+.cta{
+  flex:none;
+  display:inline-flex; align-items:center; gap:.9em;
+  padding:15px 26px;
+  border-radius:999px;
+  background:var(--nude); color:var(--espresso);
+  font-size:11px; font-weight:500; letter-spacing:.2em; text-transform:uppercase;
+  text-decoration:none;
+  border:1px solid rgba(184,148,90,.35);
+  transition:background .35s ease, padding .5s var(--ease);
+}
+.cta .arrow{display:inline-block; transition:transform .45s var(--ease);}
+.cta:hover{background:var(--nude-hover);}
+.cta:hover .arrow{transform:translateX(5px);}
+.cta:focus-visible{outline:1px solid var(--gold); outline-offset:4px;}
+
+/* Botón móvil */
+.burger{
+  display:none;
+  width:46px; height:46px; margin-right:-10px;
+  background:none; border:0; cursor:pointer; color:inherit;
+  position:relative;
+}
+.burger span{
+  position:absolute; left:11px; right:11px; height:1px; background:currentColor;
+  transition:transform .4s var(--ease);
+}
+.burger span:nth-child(1){top:19px;}
+.burger span:nth-child(2){top:26px; left:19px;}
+.burger:focus-visible{outline:1px solid currentColor; outline-offset:2px; border-radius:50%;}
+
+@media (max-width:1180px){
+  .nav__links,.nav__bar > .cta{display:none;}
+  .burger{display:block;}
+  .nav__bar{padding:14px 22px;}
+  .nav.is-scrolled .nav__bar{padding:9px 18px 9px 24px;}
+  .mono__vc{font-size:30px;}
+}
+
+/* =========================================================
+   MENÚ MÓVIL FULLSCREEN
+   ========================================================= */
+.mm{
+  position:fixed; inset:0; z-index:60;
+  background:var(--ivory); color:var(--espresso);
+  display:flex; flex-direction:column;
+  padding:calc(env(safe-area-inset-top,0px) + 26px) 28px calc(env(safe-area-inset-bottom,0px) + 30px);
+  overflow:hidden;
+  visibility:hidden; opacity:0;
+  clip-path:inset(0 0 100% 0);
+  transition:clip-path .8s var(--ease), opacity .4s ease, visibility 0s linear .8s;
+}
+.mm.is-open{
+  visibility:visible; opacity:1; clip-path:inset(0 0 0 0);
+  transition:clip-path .8s var(--ease), opacity .3s ease, visibility 0s;
+}
+.mm__bigc{
+  position:absolute; right:-38vw; top:50%;
+  width:120vw; height:120vw; max-width:900px; max-height:900px;
+  transform:translateY(-50%);
+  pointer-events:none;
+}
+.mm__bigc path{fill:none; stroke:var(--champagne); stroke-width:1; vector-effect:non-scaling-stroke; opacity:.55;}
+.mm__top{position:relative; display:flex; justify-content:space-between; align-items:center;}
+.mm__brand{
+  font-family:var(--serif); font-size:24px; letter-spacing:.04em; text-decoration:none;
+}
+.mm__brand small{font-family:var(--sans); font-size:9px; letter-spacing:.5em; margin-left:10px; vertical-align:middle;}
+.mm__close{
+  width:46px; height:46px; margin-right:-10px; background:none; border:0; cursor:pointer; position:relative; color:inherit;
+}
+.mm__close span{position:absolute; left:12px; right:12px; top:22px; height:1px; background:currentColor;}
+.mm__close span:nth-child(1){transform:rotate(45deg);}
+.mm__close span:nth-child(2){transform:rotate(-45deg);}
+.mm__close:focus-visible{outline:1px solid currentColor; border-radius:50%;}
+
+.mm__list{position:relative; list-style:none; margin:auto 0; padding:0;}
+.mm__list li{border-bottom:.5px solid rgba(43,33,29,.16);}
+.mm__list li:first-child{border-top:.5px solid rgba(43,33,29,.16);}
+.mm__list a{
+  display:flex; align-items:baseline; gap:18px;
+  padding:19px 0;
+  text-decoration:none;
+  font-size:13px; font-weight:500; letter-spacing:.24em; text-transform:uppercase;
+  opacity:0; transform:translateY(14px);
+  transition:opacity .6s var(--ease), transform .6s var(--ease), color .3s ease;
+}
+.mm__list a em{
+  font-family:var(--serif); font-style:italic; font-size:17px; letter-spacing:0;
+  color:var(--gold); min-width:24px;
+}
+.mm__list a:hover{color:var(--gold);}
+.mm.is-open .mm__list a{opacity:1; transform:none;}
+.mm.is-open .mm__list li:nth-child(1) a{transition-delay:.28s;}
+.mm.is-open .mm__list li:nth-child(2) a{transition-delay:.34s;}
+.mm.is-open .mm__list li:nth-child(3) a{transition-delay:.40s;}
+.mm.is-open .mm__list li:nth-child(4) a{transition-delay:.46s;}
+.mm.is-open .mm__list li:nth-child(5) a{transition-delay:.52s;}
+.mm.is-open .mm__list li:nth-child(6) a{transition-delay:.58s;}
+
+.mm__foot{position:relative; display:flex; flex-direction:column; align-items:center; gap:22px;}
+.mm__foot .cta{width:100%; justify-content:center; padding:18px 26px;}
+.mm__social{font-size:12px; letter-spacing:.12em; color:var(--espresso-soft);}
+.mm__social a{text-decoration:none;}
+.mm__social a:hover{color:var(--espresso);}
+
+/* =========================================================
+   HERO con vídeo scrubbeado
+   ========================================================= */
+.hero{position:relative; height:var(--scroll-length); background:var(--ivory);}
+.hero__stage{
+  position:sticky; top:0;
+  height:100vh; height:100svh;
+  overflow:hidden;
+  background:var(--espresso);
+  will-change:opacity;
+}
+.hero__video{position:absolute; inset:0; width:100%; height:100%; object-fit:cover; display:block;}
+.hero__shade{
+  position:absolute; inset:0; pointer-events:none;
+  background:
+    linear-gradient(180deg, rgba(43,33,29,.5) 0%, rgba(43,33,29,0) 24%),
+    linear-gradient(0deg, rgba(43,33,29,.72) 0%, rgba(43,33,29,.2) 45%, rgba(43,33,29,0) 70%);
+}
+.hero__copy{
+  position:absolute;
+  left:clamp(24px,7vw,120px); right:24px;
+  bottom:clamp(90px,15vh,170px);
+  max-width:760px;
+  color:var(--ivory);
+  will-change:opacity, transform;
+}
+.hero__name{
+  margin:0 0 22px;
+  font-size:11px; font-weight:500; letter-spacing:.42em; text-transform:uppercase;
+  color:var(--champagne);
+}
+.hero__title{
+  margin:0;
+  font-family:var(--serif); font-weight:300;
+  font-size:clamp(3.2rem, 8.4vw, 7.6rem);
+  line-height:.92; letter-spacing:-.015em;
+}
+.hero__lead{
+  margin:28px 0 0; max-width:44ch;
+  font-size:clamp(.98rem,1.2vw,1.1rem); line-height:1.65;
+  color:rgba(248,241,232,.82);
+}
+.hero__hint{
+  position:absolute; left:50%; bottom:28px; transform:translateX(-50%);
+  display:flex; flex-direction:column; align-items:center; gap:10px;
+  font-size:9.5px; letter-spacing:.4em; text-transform:uppercase; color:rgba(248,241,232,.7);
+}
+.hero__hint i{display:block; width:1px; height:38px; background:linear-gradient(var(--champagne), transparent); animation:hint 2.4s var(--ease) infinite;}
+@keyframes hint{0%{transform:scaleY(0); transform-origin:top;}50%{transform:scaleY(1); transform-origin:top;}51%{transform-origin:bottom;}100%{transform:scaleY(0); transform-origin:bottom;}}
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+/* Tablet horizontal / portátil pequeño */
+@media (max-width:1320px) and (min-width:1181px){
+  .nav__links{gap:22px;}
+  .nav__link{font-size:10.5px; letter-spacing:.2em;}
+  .cta{padding:14px 20px;}
+}
+
+/* Tablet */
+@media (max-width:1180px){
+  .hero__copy{left:clamp(24px,6vw,64px); max-width:620px;}
+  .hero__title{font-size:clamp(3rem,9vw,5.6rem);}
+}
+
+/* Móvil */
+@media (max-width:767px){
+  :root{--scroll-length:420svh;}
+  .nav{padding:calc(env(safe-area-inset-top,0px) + 12px) 12px 0;}
+  .nav__bar{padding:12px 16px 12px 20px;}
+  .nav.is-scrolled .nav__bar{padding:8px 12px 8px 18px;}
+  .mono__img{height:38px;}
+  .nav.is-scrolled .mono__img{height:32px;}
+  .mm__brand img{height:34px;}
+  .mono__vc{font-size:27px;}
+  .mono__vc svg{left:-8px; top:-5px; width:26px; height:40px;}
+  .mono__sub{font-size:7.5px; letter-spacing:.55em; margin-top:5px;}
+
+  .hero__video{object-position:var(--video-pos-mobile, 50% 50%);}
+  .hero__shade{
+    background:
+      linear-gradient(180deg, rgba(43,33,29,.55) 0%, rgba(43,33,29,0) 22%),
+      linear-gradient(0deg, rgba(43,33,29,.82) 0%, rgba(43,33,29,.35) 45%, rgba(43,33,29,0) 72%);
+  }
+  .hero__copy{left:22px; right:22px; bottom:calc(env(safe-area-inset-bottom,0px) + 96px);}
+  .hero__name{font-size:10px; letter-spacing:.36em; margin-bottom:16px;}
+  .hero__title{font-size:clamp(2.8rem,14vw,4.2rem); line-height:.94;}
+  .hero__lead{margin-top:18px; font-size:.95rem; line-height:1.6; max-width:34ch;}
+  .hero__hint{bottom:calc(env(safe-area-inset-bottom,0px) + 22px);}
+
+  .mm{padding-left:22px; padding-right:22px;}
+  .mm__bigc{right:-55vw; width:150vw; height:150vw;}
+  .mm__list a{padding:17px 0; font-size:12px;}
+}
+
+/* Móvil muy pequeño */
+@media (max-width:360px){
+  .hero__title{font-size:2.5rem;}
+  .hero__lead{font-size:.9rem;}
+  .mm__list a{padding:14px 0; letter-spacing:.2em;}
+}
+
+/* Móvil en horizontal o pantallas bajas */
+@media (max-height:560px) and (orientation:landscape){
+  .hero__copy{bottom:28px; max-width:60%;}
+  .hero__title{font-size:clamp(2.2rem,7vw,3.4rem);}
+  .hero__lead{display:none;}
+  .hero__hint{display:none;}
+  .mm{overflow-y:auto; clip-path:none;}
+  .mm__list{margin:28px 0;}
+  .mm__list a{padding:11px 0;}
+  .mm__bigc{top:0; transform:none; width:90vh; height:90vh; right:-10vw;}
+}
+
+/* Dispositivos táctiles: sin efectos hover pegados */
+@media (hover:none){
+  .cta:hover{background:var(--nude);}
+  .cta:hover .arrow{transform:none;}
+  .nav__link:hover .curve path{stroke-dashoffset:1;}
+  .mm__list a:active{color:var(--gold);}
+}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{transition-duration:.01ms !important; animation:none !important;}
+}
+
+/* Sección siguiente (demo) */
+.next{min-height:80vh; padding:18vh 7vw; background:var(--ivory);}
+.next h2{font-family:var(--serif); font-weight:300; font-size:clamp(2.4rem,5vw,4rem); margin:0;}
+</style>
+</head>
+<body>
+
+<!-- ================= NAV ================= -->
+<nav class="nav" id="nav" aria-label="Principal">
+  <div class="nav__bar">
+    <a class="mono" href="/" aria-label="Vicky Coelho Academia, inicio">
+      <img class="mono__img" src="https://depajaybarro.com/logoVC.png" alt="Vicky Coelho Academia" width="160" height="60">
+    </a>
+
+    <ul class="nav__links">
+      <li><a class="nav__link" href="#sobre">Sobre Vicky<svg class="curve" viewBox="0 0 100 9" preserveAspectRatio="none" aria-hidden="true"><path pathLength="1" d="M1 8 C 22 1, 78 1, 99 8"/></svg></a></li>
+      <li><a class="nav__link" href="#formacion">Formación<svg class="curve" viewBox="0 0 100 9" preserveAspectRatio="none" aria-hidden="true"><path pathLength="1" d="M1 8 C 22 1, 78 1, 99 8"/></svg></a></li>
+      <li><a class="nav__link" href="#productos">Productos<svg class="curve" viewBox="0 0 100 9" preserveAspectRatio="none" aria-hidden="true"><path pathLength="1" d="M1 8 C 22 1, 78 1, 99 8"/></svg></a></li>
+      <li><a class="nav__link" href="#profesionales">Profesionales<svg class="curve" viewBox="0 0 100 9" preserveAspectRatio="none" aria-hidden="true"><path pathLength="1" d="M1 8 C 22 1, 78 1, 99 8"/></svg></a></li>
+      <li><a class="nav__link" href="#comunidad">Comunidad<svg class="curve" viewBox="0 0 100 9" preserveAspectRatio="none" aria-hidden="true"><path pathLength="1" d="M1 8 C 22 1, 78 1, 99 8"/></svg></a></li>
+      <li><a class="nav__link" href="#contacto">Contacto<svg class="curve" viewBox="0 0 100 9" preserveAspectRatio="none" aria-hidden="true"><path pathLength="1" d="M1 8 C 22 1, 78 1, 99 8"/></svg></a></li>
+    </ul>
+
+    <a class="cta" href="#reserva">Reserva tu plaza <span class="arrow" aria-hidden="true">→</span></a>
+
+    <button class="burger" id="burger" aria-label="Abrir menú" aria-expanded="false" aria-controls="mm">
+      <span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<!-- ================= MENÚ MÓVIL ================= -->
+<div class="mm" id="mm" role="dialog" aria-modal="true" aria-label="Menú" aria-hidden="true">
+  <svg class="mm__bigc" viewBox="0 0 100 100" aria-hidden="true"><path d="M86 8 C 30 8, 6 34, 6 50 C 6 66, 30 92, 86 92"/></svg>
+
+  <div class="mm__top">
+    <a class="mm__brand" href="/"><img src="https://depajaybarro.com/logoVC.png" alt="Vicky Coelho Academia"></a>
+    <button class="mm__close" id="mmClose" aria-label="Cerrar menú"><span></span><span></span></button>
+  </div>
+
+  <ul class="mm__list">
+    <li><a href="#sobre"><em>01</em>Sobre Vicky</a></li>
+    <li><a href="#formacion"><em>02</em>Formación</a></li>
+    <li><a href="#productos"><em>03</em>Productos</a></li>
+    <li><a href="#profesionales"><em>04</em>Profesionales</a></li>
+    <li><a href="#comunidad"><em>05</em>Comunidad</a></li>
+    <li><a href="#contacto"><em>06</em>Contacto</a></li>
+  </ul>
+
+  <div class="mm__foot">
+    <a class="cta" href="#reserva">Reserva tu plaza <span class="arrow" aria-hidden="true">→</span></a>
+    <p class="mm__social">
+      <a href="https://instagram.com/viky_coelho_academia" target="_blank" rel="noopener">Instagram</a> ·
+      <a href="#" target="_blank" rel="noopener">TikTok</a> ·
+      <a href="#" target="_blank" rel="noopener">YouTube</a>
+    </p>
+  </div>
+</div>
+
+<!-- ================= HERO ================= -->
+<section class="hero" id="hero" aria-label="Vicky Coelho">
+  <div class="hero__stage" id="stage">
+    <video class="hero__video" id="heroVideo" muted playsinline preload="auto"
+           data-src="https://depajaybarro.com/prueba.mp4"
+           data-src-mobile="https://depajaybarro.com/prueba.mp4"></video>
+    <div class="hero__shade" aria-hidden="true"></div>
+
+    <div class="hero__copy" id="heroCopy">
+      <p class="hero__name">Vicky Coelho</p>
+      <h1 class="hero__title">Más que uñas,<br>sueños.</h1>
+      <p class="hero__lead">Formo a profesionales que quieren vivir de su talento: técnica precisa, criterio propio y la seguridad de saber hacerlo bien.</p>
+    </div>
+
+    <div class="hero__hint" id="hint" aria-hidden="true">Desliza<i></i></div>
+  </div>
+</section>
+
+<section class="next" id="sobre">
+  <h2>Sobre Vicky</h2>
+</section>
+
+<script>
+(function(){
+  /* ---------- NAV: transparente → cápsula ---------- */
+  var nav = document.getElementById('nav');
+  function navState(){ nav.classList.toggle('is-scrolled', window.scrollY > 40); }
+
+  /* ---------- MENÚ MÓVIL ---------- */
+  var mm = document.getElementById('mm');
+  var burger = document.getElementById('burger');
+  var closeBtn = document.getElementById('mmClose');
+  function openMenu(){
+    mm.classList.add('is-open'); mm.setAttribute('aria-hidden','false');
+    burger.setAttribute('aria-expanded','true'); document.body.classList.add('menu-open');
+    setTimeout(function(){ closeBtn.focus(); }, 300);
+  }
+  function closeMenu(){
+    mm.classList.remove('is-open'); mm.setAttribute('aria-hidden','true');
+    burger.setAttribute('aria-expanded','false'); document.body.classList.remove('menu-open');
+    burger.focus();
+  }
+  burger.addEventListener('click', openMenu);
+  closeBtn.addEventListener('click', closeMenu);
+  mm.querySelectorAll('a').forEach(function(a){ a.addEventListener('click', closeMenu); });
+  document.addEventListener('keydown', function(e){ if(e.key === 'Escape' && mm.classList.contains('is-open')) closeMenu(); });
+
+  /* ---------- HERO: scrub adelante/atrás + desvanecer al final ---------- */
+  var hero  = document.getElementById('hero');
+  var stage = document.getElementById('stage');
+  var video = document.getElementById('heroVideo');
+  var copy  = document.getElementById('heroCopy');
+  var hint  = document.getElementById('hint');
+  var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  var duration = 0, target = 0, current = 0, running = false, lastT = 0;
+
+  // 1) Descarga el vídeo entero a memoria: los seeks dejan de depender de la red.
+  // En móvil usa la versión ligera/vertical si existe (data-src-mobile)
+  var isSmall = window.matchMedia('(max-width: 767px)').matches;
+  var src = (isSmall && video.dataset.srcMobile) ? video.dataset.srcMobile : video.dataset.src;
+  function useDirect(){ video.src = src; video.load(); }
+  if(window.fetch && window.URL && URL.createObjectURL){
+    fetch(src).then(function(r){
+      if(!r.ok) throw new Error(r.status);
+      return r.blob();
+    }).then(function(b){
+      video.src = URL.createObjectURL(b);
+      video.load();
+    }).catch(useDirect);
+  } else { useDirect(); }
+
+  video.addEventListener('loadedmetadata', function(){
+    duration = video.duration || 0;
+    // desbloqueo (iOS/Safari): pinta el primer frame y pausa
+    var p = video.play();
+    if(p && p.then) p.then(function(){ video.pause(); }).catch(function(){});
+    update();
+  });
+
+  // 2) Cola de seeks: nunca se pide un frame nuevo hasta que el anterior está pintado.
+  var seeking = false, pending = null;
+  function seekTo(t){
+    if(seeking){ pending = t; return; }
+    if(Math.abs(video.currentTime - t) < 1/60) return;
+    seeking = true;
+    video.currentTime = t;
+  }
+  video.addEventListener('seeked', function(){
+    seeking = false;
+    if(pending !== null){ var t = pending; pending = null; seekTo(t); }
+  });
+
+  function clamp(v){ return Math.min(1, Math.max(0, v)); }
+  function smooth(a, b, v){ var t = clamp((v - a) / (b - a)); return t * t * (3 - 2 * t); }
+
+  var heroTop = 0, heroScroll = 1;
+  function measure(){
+    heroTop = hero.getBoundingClientRect().top + window.scrollY;
+    heroScroll = Math.max(1, hero.offsetHeight - window.innerHeight);
+  }
+  function progress(){ return clamp((window.scrollY - heroTop) / heroScroll); }
+
+  function update(){
+    var p = progress();
+    target = p * duration;
+
+    var t = 1 - smooth(.12, .32, p);
+    copy.style.opacity = t;
+    copy.style.transform = 'translate3d(0,' + ((1 - t) * -30) + 'px,0)';
+    hint.style.opacity = 1 - smooth(0, .05, p);
+    stage.style.opacity = 1 - smooth(.85, 1, p);
+
+    if(!running){ running = true; lastT = performance.now(); requestAnimationFrame(tick); }
+  }
+
+  // 3) Suavizado independiente de los fps (igual en pantallas de 60 y 120 Hz).
+  function tick(now){
+    var dt = Math.min(64, now - lastT); lastT = now;
+    if(duration){
+      var k = reduced ? 1 : 1 - Math.exp(-dt / 110);   // 110 ms ≈ inercia; sube para más suave
+      current += (target - current) * k;
+      if(Math.abs(target - current) < 0.002) current = target;
+      seekTo(current);
+    }
+    if(current !== target || !duration){ requestAnimationFrame(tick); }
+    else { running = false; }
+  }
+
+  var lastW = window.innerWidth;
+  window.addEventListener('resize', function(){
+    measure(); update();
+    // cerrar menú móvil si se pasa a escritorio
+    if(window.innerWidth > 1180 && mm.classList.contains('is-open')) closeMenu();
+    lastW = window.innerWidth;
+  });
+  window.addEventListener('orientationchange', function(){ setTimeout(function(){ measure(); update(); }, 250); });
+  window.addEventListener('load', function(){ measure(); update(); });
+  measure();
+
+  window.addEventListener('scroll', function(){ navState(); update(); }, {passive:true});
+  navState(); update();
+})();
+</script>
+</body>
+</html>
