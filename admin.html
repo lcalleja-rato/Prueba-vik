@@ -1,0 +1,1378 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<title>Panel · Viky Coelho Academia</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ivory:#F8F1E8; --champagne:#E8D4BE; --nude:#C9AD96; --rose:#D9B8AE; --espresso:#2B211D; --gold:#B8945A; --white:#fff;
+  --bg:#F4ECE2; --card:#FFFDF9; --ink:#2B211D; --soft:rgba(43,33,29,.62); --line:rgba(43,33,29,.12);
+  --ok:#5E8B6A; --warn:#B8945A; --bad:#B4584A; --info:#6E7FA0;
+  --serif:'Cormorant Garamond',Georgia,serif; --sans:'DM Sans',system-ui,-apple-system,sans-serif;
+  --r:12px;
+}
+*{box-sizing:border-box; margin:0;}
+html,body{height:100%;}
+body{font-family:var(--sans); font-size:14px; color:var(--ink); background:var(--bg); -webkit-font-smoothing:antialiased;}
+button,input,select,textarea{font:inherit; color:inherit;}
+button{cursor:pointer;}
+a{color:inherit;}
+[hidden]{display:none !important;}
+h1,h2,h3{font-family:var(--serif); font-weight:400; line-height:1.05;}
+
+/* Login */
+.login{min-height:100%; display:grid; place-items:center; padding:24px;
+  background:radial-gradient(120% 80% at 10% 0%, #EFDCCB 0%, transparent 60%), var(--ivory);}
+.login__box{width:min(420px,100%); background:var(--card); border-radius:20px; padding:40px 34px; box-shadow:0 40px 80px -40px rgba(43,33,29,.35); border:1px solid var(--line);}
+.login__box h1{font-size:2.6rem;}
+.login__box h1 em{color:var(--gold);}
+.login__box p{color:var(--soft); margin:10px 0 24px; line-height:1.55;}
+.login__demo{margin-top:16px; font-size:12.5px; color:var(--soft); background:rgba(232,212,190,.45); padding:12px 14px; border-radius:10px; line-height:1.5;}
+
+/* Inputs y botones */
+.in,.sel,.ta{width:100%; background:var(--white); border:1px solid var(--line); border-radius:9px; padding:10px 12px; outline:none; transition:border-color .2s;}
+.in:focus,.sel:focus,.ta:focus{border-color:var(--gold);}
+.in--s{padding:7px 9px; width:92px;}
+.ta{resize:vertical; min-height:70px;}
+.lbl{display:block; font-size:12px; font-weight:500; color:var(--soft); margin:0 0 6px;}
+.f{margin-bottom:14px;}
+.grid2{display:grid; grid-template-columns:1fr 1fr; gap:0 14px;}
+.btn{display:inline-flex; align-items:center; justify-content:center; gap:8px; border:1px solid var(--espresso); background:var(--espresso); color:var(--ivory);
+  border-radius:40px; padding:10px 18px; font-size:13px; font-weight:500; transition:transform .15s, background .2s, opacity .2s; white-space:nowrap; text-decoration:none;}
+.btn:hover{transform:translateY(-1px);}
+.btn:disabled{opacity:.4; pointer-events:none;}
+.btn--line{background:transparent; color:var(--ink); border-color:var(--line);}
+.btn--line:hover{border-color:var(--ink);}
+.btn--gold{background:var(--gold); border-color:var(--gold);}
+.btn--wa{background:#1F8F55; border-color:#1F8F55;}
+.btn--bad{background:transparent; color:var(--bad); border-color:rgba(180,88,74,.35);}
+.btn--s{padding:7px 13px; font-size:12px;}
+.btn--w{width:100%;}
+.lnk{background:none; border:0; padding:0; color:var(--gold); font-weight:500; text-decoration:underline; text-underline-offset:3px;}
+
+/* Layout */
+.app{display:grid; grid-template-columns:236px minmax(0,1fr); min-height:100%;}
+.side{background:var(--espresso); color:var(--ivory); padding:26px 16px; display:flex; flex-direction:column; gap:4px; position:sticky; top:0; height:100vh;}
+.brand{font-family:var(--serif); font-size:1.55rem; line-height:1; padding:0 10px 22px;}
+.brand small{display:block; font-family:var(--sans); font-size:11px; color:rgba(248,241,232,.55); margin-top:6px;}
+.nav{display:flex; align-items:center; gap:12px; width:100%; background:none; border:0; color:rgba(248,241,232,.72); padding:11px 12px; border-radius:10px; text-align:left; font-size:14px; transition:background .2s,color .2s;}
+.nav svg{width:18px; height:18px; flex:none; stroke:currentColor; fill:none; stroke-width:1.6;}
+.nav:hover{background:rgba(248,241,232,.07); color:var(--ivory);}
+.nav.is-on{background:rgba(248,241,232,.12); color:var(--ivory);}
+.nav b{margin-left:auto; min-width:20px; height:20px; padding:0 6px; border-radius:10px; background:var(--gold); color:var(--espresso); font-size:11px; display:grid; place-items:center;}
+.nav b:empty{display:none;}
+.side__foot{margin-top:auto; font-size:12px; color:rgba(248,241,232,.55); padding:10px 12px; line-height:1.5;}
+.side__foot .lnk{color:var(--champagne);}
+.main{padding:30px clamp(18px,3vw,44px) 60px; min-width:0;}
+.head{display:flex; justify-content:space-between; align-items:flex-end; gap:16px; flex-wrap:wrap; margin-bottom:24px;}
+.head h2{font-size:clamp(2.1rem,3.4vw,2.9rem);}
+.head p{color:var(--soft); margin-top:6px;}
+.head__act{display:flex; gap:8px; flex-wrap:wrap;}
+.demo-bar{background:var(--champagne); color:var(--espresso); font-size:12.5px; padding:9px 16px; border-radius:10px; margin-bottom:20px; display:flex; gap:10px; align-items:center; flex-wrap:wrap;}
+
+/* Tarjetas */
+.card{background:var(--card); border:1px solid var(--line); border-radius:var(--r); padding:20px;}
+.card h3{font-size:1.45rem; margin-bottom:12px;}
+.kpis{display:grid; grid-template-columns:repeat(auto-fit,minmax(170px,1fr)); gap:12px; margin-bottom:16px;}
+.kpi{background:var(--card); border:1px solid var(--line); border-radius:var(--r); padding:16px 18px; text-align:left; transition:border-color .2s;}
+button.kpi:hover{border-color:var(--gold);}
+.kpi small{display:block; font-size:12px; color:var(--soft);}
+.kpi strong{display:block; font-family:var(--serif); font-weight:400; font-size:2.2rem; line-height:1.1; margin-top:4px;}
+.kpi span{font-size:12px; color:var(--soft);}
+.kpi--alert strong{color:var(--bad);}
+.cols{display:grid; grid-template-columns:minmax(0,1.3fr) minmax(0,1fr); gap:16px; align-items:start;}
+.stack{display:grid; gap:16px;}
+
+/* Tareas */
+.task{display:flex; gap:12px; align-items:center; padding:11px 0; border-top:1px solid var(--line);}
+.task:first-of-type{border-top:0;}
+.task i{width:8px; height:8px; border-radius:50%; flex:none; background:var(--gold);}
+.task i.bad{background:var(--bad);} .task i.ok{background:var(--ok);} .task i.info{background:var(--info);}
+.task div{flex:1; min-width:0;}
+.task p{font-size:13.5px;}
+.task small{color:var(--soft); font-size:12px;}
+.empty{color:var(--soft); font-size:13.5px; padding:14px 0;}
+
+/* Gráfico */
+.bars{display:flex; align-items:flex-end; gap:10px; height:150px; padding-top:10px;}
+.bar{flex:1; display:flex; flex-direction:column; align-items:center; gap:6px; height:100%; justify-content:flex-end;}
+.bar span{width:100%; max-width:46px; background:linear-gradient(var(--nude),var(--champagne)); border-radius:6px 6px 2px 2px; min-height:3px; transition:height .6s;}
+.bar.is-now span{background:linear-gradient(var(--gold),var(--nude));}
+.bar small{font-size:11px; color:var(--soft);}
+.bar em{font-style:normal; font-size:11px; color:var(--ink);}
+
+/* Filtros */
+.tools{display:flex; gap:8px; flex-wrap:wrap; align-items:center; margin-bottom:14px;}
+.chip{border:1px solid var(--line); background:var(--card); border-radius:30px; padding:7px 13px; font-size:12.5px; color:var(--soft);}
+.chip b{font-weight:600; margin-left:4px; color:var(--ink);}
+.chip.is-on{background:var(--espresso); border-color:var(--espresso); color:var(--ivory);}
+.chip.is-on b{color:var(--champagne);}
+.tools .in{max-width:260px;}
+.tools .sel{width:auto;}
+
+/* Tablas */
+.tbl{width:100%; border-collapse:collapse; background:var(--card); border:1px solid var(--line); border-radius:var(--r); overflow:hidden;}
+.tbl th{font-size:11.5px; font-weight:500; color:var(--soft); text-align:left; padding:11px 14px; background:rgba(232,212,190,.28); border-bottom:1px solid var(--line); white-space:nowrap;}
+.tbl td{padding:11px 14px; border-bottom:1px solid var(--line); vertical-align:middle;}
+.tbl tr:last-child td{border-bottom:0;}
+.tbl tr.click{cursor:pointer;}
+.tbl tr.click:hover td{background:rgba(232,212,190,.18);}
+.tbl tr.off td{opacity:.5;}
+.t-name{font-weight:500;}
+.t-sub{font-size:12px; color:var(--soft);}
+.num{text-align:right; white-space:nowrap;}
+.pill{display:inline-block; font-size:11.5px; font-weight:500; padding:4px 10px; border-radius:20px; white-space:nowrap; background:rgba(43,33,29,.07);}
+.p-nuevo{background:rgba(217,184,174,.45);} .p-datos_enviados{background:rgba(184,148,90,.2); color:#7d6232;}
+.p-pagado{background:rgba(94,139,106,.16); color:#3f6b4c;} .p-enviado{background:rgba(110,127,160,.16); color:#465878;}
+.p-entregado{background:rgba(43,33,29,.08);} .p-cancelado{background:rgba(180,88,74,.12); color:var(--bad);}
+.p-low{background:rgba(184,148,90,.2); color:#7d6232;} .p-out{background:rgba(180,88,74,.12); color:var(--bad);} .p-okst{background:rgba(94,139,106,.14); color:#3f6b4c;}
+.due{font-size:11.5px; color:var(--soft); display:block; margin-top:3px;}
+.due.late{color:var(--bad); font-weight:500;}
+.dot{display:inline-block; width:12px; height:12px; border-radius:50%; vertical-align:-1px; margin-right:8px; border:1px solid rgba(0,0,0,.08);}
+.sw{position:relative; width:38px; height:22px; display:inline-block;}
+.sw input{opacity:0; width:0; height:0;}
+.sw span{position:absolute; inset:0; background:rgba(43,33,29,.18); border-radius:20px; transition:.2s; cursor:pointer;}
+.sw span::after{content:""; position:absolute; top:3px; left:3px; width:16px; height:16px; border-radius:50%; background:#fff; transition:.2s;}
+.sw input:checked + span{background:var(--ok);}
+.sw--out input:checked + span{background:var(--bad);}
+.sw input:checked + span::after{transform:translateX(16px);}
+
+/* Panel lateral */
+.scrim{position:fixed; inset:0; background:rgba(24,16,13,.45); z-index:40; opacity:0; pointer-events:none; transition:opacity .3s;}
+.scrim.on{opacity:1; pointer-events:auto;}
+.panel{position:fixed; top:0; right:0; bottom:0; width:min(560px,100%); background:var(--ivory); z-index:41; transform:translateX(100%); transition:transform .4s cubic-bezier(.2,.8,.2,1);
+  display:flex; flex-direction:column; box-shadow:-30px 0 60px -30px rgba(0,0,0,.3);}
+.panel.on{transform:none;}
+.panel__head{padding:20px 24px; border-bottom:1px solid var(--line); display:flex; justify-content:space-between; gap:12px; align-items:flex-start;}
+.panel__head h3{font-size:1.8rem;}
+.panel__body{padding:20px 24px 30px; overflow-y:auto; flex:1; overscroll-behavior:contain;}
+.panel__foot{padding:14px 24px calc(14px + env(safe-area-inset-bottom)); border-top:1px solid var(--line); display:flex; gap:8px; flex-wrap:wrap; background:var(--card);}
+.x{width:36px; height:36px; border-radius:50%; border:1px solid var(--line); background:var(--card); font-size:16px; flex:none;}
+.sec{margin-top:20px;}
+.sec > p.lbl{margin-bottom:8px;}
+.box{background:var(--card); border:1px solid var(--line); border-radius:10px; padding:14px;}
+.line{display:grid; grid-template-columns:minmax(0,1fr) 52px 96px 80px; gap:8px; align-items:center; padding:8px 0; border-bottom:1px solid var(--line); font-size:13px;}
+.line:last-child{border-bottom:0;}
+.line .in{padding:6px 8px;}
+.row{display:flex; justify-content:space-between; padding:5px 0; font-size:13.5px;}
+.row--t{font-family:var(--serif); font-size:1.5rem; border-top:1px solid var(--line); margin-top:6px; padding-top:10px;}
+.hist{list-style:none; padding:0; font-size:12.5px; color:var(--soft);}
+.hist li{padding:5px 0 5px 16px; position:relative;}
+.hist li::before{content:""; position:absolute; left:2px; top:11px; width:6px; height:6px; border-radius:50%; background:var(--nude);}
+.hint{font-size:12px; color:var(--soft); line-height:1.5; margin-top:8px;}
+.warnbox{font-size:12.5px; background:rgba(184,148,90,.14); border-radius:9px; padding:10px 12px; line-height:1.5; margin-top:10px;}
+
+
+/* Pipeline */
+.kb{display:grid; grid-auto-flow:column; grid-auto-columns:minmax(172px,1fr); gap:12px; overflow-x:auto; padding-bottom:12px; scroll-snap-type:x proximity; align-items:start;}
+.col{background:rgba(232,212,190,.32); border:1px solid var(--line); border-radius:14px; padding:12px; min-height:200px; scroll-snap-align:start; transition:background .2s, border-color .2s;}
+.col.over{background:rgba(184,148,90,.18); border-color:var(--gold);}
+.col__h{display:flex; justify-content:space-between; align-items:baseline; gap:8px; padding:2px 4px 10px;}
+.col__h b{font-family:var(--serif); font-weight:500; font-size:1.2rem; line-height:1.1;}
+.col__h span{font-size:11.5px; color:var(--soft); white-space:nowrap;}
+.col__hint{font-size:11.5px; color:var(--soft); padding:0 4px 10px; line-height:1.4;}
+.col__n{display:inline-grid; place-items:center; min-width:20px; height:20px; padding:0 6px; border-radius:10px; background:var(--card); font-size:11px; font-weight:600; margin-left:6px; font-family:var(--sans);}
+.kc{background:var(--card); border:1px solid var(--line); border-radius:11px; padding:12px; margin-bottom:8px; cursor:grab; transition:box-shadow .2s, transform .2s; position:relative;}
+.kc:hover{box-shadow:0 10px 24px -14px rgba(43,33,29,.4);}
+.kc.drag{opacity:.4;}
+.kc__top{display:flex; justify-content:space-between; gap:8px; align-items:baseline;}
+.kc__name{font-weight:500; font-size:13.5px;}
+.kc__tot{font-family:var(--serif); font-size:1.15rem; white-space:nowrap;}
+.kc__sub{font-size:11.5px; color:var(--soft); margin-top:2px;}
+.kc__info{font-size:11.5px; margin-top:8px; display:flex; align-items:center; gap:6px; color:var(--soft);}
+.kc__info.late{color:var(--bad); font-weight:500;}
+.kc__info.go{color:var(--ok); font-weight:500;}
+.kc__info i{width:6px; height:6px; border-radius:50%; background:currentColor; flex:none;}
+.kc .btn{margin-top:10px; width:100%;}
+.stars{color:var(--gold); letter-spacing:2px; font-size:13px;}
+.rate{display:flex; gap:4px;}
+.rate button{background:none; border:0; font-size:24px; color:rgba(43,33,29,.2); padding:0 2px; line-height:1;}
+.rate button.on{color:var(--gold);}
+.seg{display:inline-flex; border:1px solid var(--line); border-radius:30px; padding:3px; background:var(--card);}
+.seg button{border:0; background:none; border-radius:30px; padding:6px 14px; font-size:12.5px; color:var(--soft);}
+.seg button.is-on{background:var(--espresso); color:var(--ivory);}
+.kb-foot{font-size:12px; color:var(--soft); margin-top:4px;}
+@media (max-width:820px){ .kb{grid-auto-columns:82vw; margin:0 -14px; padding:0 14px 12px;} }
+
+.cf{position:fixed; inset:0; z-index:80; display:grid; place-items:center; padding:20px; background:rgba(24,16,13,.55); -webkit-backdrop-filter:blur(3px); backdrop-filter:blur(3px);}
+.cf__box{width:min(440px,100%); background:var(--ivory); border-radius:18px; padding:26px 26px 22px; box-shadow:0 40px 80px -30px rgba(0,0,0,.5);}
+.cf__box h3{font-size:1.7rem; margin-bottom:10px;}
+.cf__box p{color:var(--soft); line-height:1.55; font-size:13.5px;}
+.cf__box p b{color:var(--ink); font-weight:500;}
+.cf__act{display:flex; gap:10px; justify-content:flex-end; margin-top:22px; flex-wrap:wrap;}
+.btn--danger{background:var(--bad); border-color:var(--bad); color:#fff;}
+/* Formación */
+.course-card{display:grid; gap:10px;}
+.mini{display:flex; gap:10px; flex-wrap:wrap; font-size:12.5px; color:var(--soft);}
+.interest{display:flex; justify-content:space-between; align-items:center; gap:10px; padding:10px 0; border-top:1px solid var(--line);}
+.interest:first-of-type{border-top:0;}
+.interest b{font-family:var(--serif); font-size:1.6rem; font-weight:400; margin-right:8px;}
+
+.toast{position:fixed; left:50%; bottom:24px; transform:translate(-50%,20px); background:var(--espresso); color:var(--ivory); padding:11px 18px; border-radius:30px; font-size:13px; opacity:0; transition:.3s; z-index:60; pointer-events:none;}
+.toast.on{opacity:1; transform:translate(-50%,0);}
+
+@media (max-width:980px){
+  .cols{grid-template-columns:1fr;}
+}
+@media (max-width:820px){
+  .app{grid-template-columns:1fr;}
+  .side{position:fixed; top:auto; bottom:0; left:0; right:0; height:auto; flex-direction:row; padding:6px 6px calc(6px + env(safe-area-inset-bottom)); z-index:30; gap:0; justify-content:space-around;}
+  .brand,.side__foot{display:none;}
+  .nav{flex-direction:column; gap:3px; font-size:10.5px; padding:7px 4px; width:auto; flex:1; position:relative;}
+  .nav b{position:absolute; top:2px; right:calc(50% - 22px); margin:0; min-width:16px; height:16px; font-size:9.5px;}
+  .main{padding:20px 14px 100px;}
+  .toast{bottom:calc(84px + env(safe-area-inset-bottom));}
+  .tbl, .tbl tbody, .tbl tr, .tbl td{display:block; width:100%;}
+  .tbl thead{display:none;}
+  .tbl{border:0; background:none;}
+  .tbl tr{background:var(--card); border:1px solid var(--line); border-radius:12px; margin-bottom:10px; padding:8px 12px;}
+  .tbl td{border:0; padding:5px 0; display:flex; justify-content:space-between; align-items:center; gap:12px;}
+  .tbl td[data-l]::before{content:attr(data-l); font-size:12px; color:var(--soft);}
+  .tbl td.num{text-align:right;}
+  .grid2{grid-template-columns:1fr;}
+  .line{grid-template-columns:minmax(0,1fr) 46px 84px; }
+  .line > :last-child{grid-column:1/-1; text-align:right;}
+}
+</style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div class="login" id="login">
+  <form class="login__box" id="loginForm">
+    <h1>Panel <em>Viky</em></h1>
+    <p>Gestiona pedidos, productos, stock, formaciones y solicitudes.</p>
+    <div id="loginApi" hidden>
+      <p class="login__demo" id="setupTxt" hidden style="margin:0 0 16px">Primera vez: <b>crea tu usuario y contraseña</b> para proteger el panel. Hazlo nada más subir los archivos.</p>
+      <div class="f"><label class="lbl" for="usr">Usuario</label><input class="in" id="usr" autocomplete="username" required></div>
+      <div class="f"><label class="lbl" for="pw">Contraseña</label><input class="in" id="pw" type="password" autocomplete="current-password" required></div>
+      <div class="f" id="pw2Wrap" hidden><label class="lbl" for="pw2">Repite la contraseña</label><input class="in" id="pw2" type="password" autocomplete="new-password"></div>
+      <button class="btn btn--w" type="submit" id="loginBtn">Entrar</button>
+      <p class="hint" id="loginMsg" style="color:var(--bad)"></p>
+    </div>
+    <div id="loginDemo" hidden>
+      <div class="login__demo">No se ha encontrado <b>api.php</b> en este servidor. Puedes probar el panel en <b>modo demostración</b>: los datos son de ejemplo y se guardan solo en este navegador.</div>
+      <button class="btn btn--w" type="button" id="demoBtn" style="margin-top:14px">Entrar en modo demostración</button>
+    </div>
+    <p class="hint" id="loginChecking">Comprobando conexión…</p>
+  </form>
+</div>
+
+<!-- APP -->
+<div class="app" id="app" hidden>
+  <aside class="side">
+    <div class="brand">Viky Coelho<small>Panel de gestión</small></div>
+    <button class="nav is-on" data-view="dash"><svg viewBox="0 0 24 24"><path d="M4 13h6V4H4zM14 20h6v-9h-6zM4 20h6v-3H4zM14 4v3h6V4z"/></svg>Resumen<b></b></button>
+    <button class="nav" data-view="orders"><svg viewBox="0 0 24 24"><path d="M6 7h12l-1 13H7L6 7Z"/><path d="M9 7a3 3 0 0 1 6 0"/></svg>Pedidos<b id="bOrders"></b></button>
+    <button class="nav" data-view="products"><svg viewBox="0 0 24 24"><path d="M9 3h6v4H9zM8 7h8v13a1 1 0 0 1-1 1H9a1 1 0 0 1-1-1V7Z"/></svg>Productos<b id="bProducts"></b></button>
+    <button class="nav" data-view="courses"><svg viewBox="0 0 24 24"><rect x="4" y="5" width="16" height="15" rx="2"/><path d="M4 10h16M9 3v4M15 3v4"/></svg>Formación<b></b></button>
+    <button class="nav" data-view="leads"><svg viewBox="0 0 24 24"><path d="M4 5h16v11H8l-4 4V5Z"/></svg>Solicitudes<b id="bLeads"></b></button>
+    <button class="nav" data-view="reviews"><svg viewBox="0 0 24 24"><path d="M12 3.5l2.6 5.4 5.9.8-4.3 4.1 1 5.9L12 16.9 6.8 19.7l1-5.9L3.5 9.7l5.9-.8L12 3.5Z"/></svg>Opiniones<b></b></button>
+    <button class="nav" data-view="settings"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M5.6 18.4l2.1-2.1M16.3 7.7l2.1-2.1"/></svg>Ajustes<b></b></button>
+    <div class="side__foot"><span id="modeTxt"></span><br><button class="lnk" id="logoutBtn">Cerrar sesión</button></div>
+  </aside>
+  <main class="main" id="main"></main>
+</div>
+
+<div class="scrim" id="scrim"></div>
+<aside class="panel" id="panel" aria-hidden="true">
+  <div class="panel__head"><div id="pHead"></div><button class="x" id="pClose" aria-label="Cerrar">✕</button></div>
+  <div class="panel__body" id="pBody"></div>
+  <div class="panel__foot" id="pFoot"></div>
+</aside>
+<div class="cf" id="cf" hidden><div class="cf__box" role="alertdialog" aria-modal="true" aria-labelledby="cfT" aria-describedby="cfP">
+  <h3 id="cfT"></h3><p id="cfP"></p>
+  <div class="cf__act"><button class="btn btn--line" id="cfNo" type="button">Cancelar</button><button class="btn" id="cfYes" type="button">Confirmar</button></div>
+</div></div>
+<div class="toast" id="toast"></div>
+
+<script>
+/* ================================================================
+   CONFIGURACIÓN
+   ================================================================ */
+var API_URL = 'api.php';                // ruta a api.php (misma carpeta)
+var DEFAULTS = {"products": [{"id": "bases-rubber-transparentes", "cat": "Bases Rubber", "name": "Bases Rubber Transparentes", "desc": "Base flexible profesional para una preparación limpia y resistente.", "price": null, "stock": null, "minStock": 2, "active": true, "color": "#EFE7E0"}, {"id": "bases-rubber-con-color", "cat": "Bases Rubber", "name": "Bases Rubber con Color", "desc": "Base rubber con cobertura de color para trabajar rápido y con precisión.", "price": null, "stock": null, "minStock": 2, "active": true, "color": "#E2BFB3"}, {"id": "rubber-milky", "cat": "Bases Rubber", "name": "Rubber Milky", "desc": "Acabado milky elegante y natural para manicuras limpias.", "price": null, "stock": null, "minStock": 2, "active": true, "color": "#F6EFEA"}, {"id": "geles-de-modelado", "cat": "Geles", "name": "Geles de Modelado", "desc": "Gel profesional para construcción y modelado.", "price": null, "stock": null, "minStock": 2, "active": true, "color": "#EAD9CB"}, {"id": "geles-con-efectos", "cat": "Geles", "name": "Geles con Efectos", "desc": "Texturas y efectos para crear acabados especiales.", "price": null, "stock": null, "minStock": 2, "active": true, "color": "#D8C3B4"}, {"id": "geles-con-color", "cat": "Geles", "name": "Geles con Color", "desc": "Geles pigmentados para trabajos precisos.", "price": null, "stock": null, "minStock": 2, "active": true, "color": "#C98A8F"}, {"id": "imen", "cat": "MultiGel / Acry-PolyGel", "name": "IMÉN", "desc": "Sistema profesional para construcción y refuerzo.", "price": null, "stock": null, "minStock": 2, "active": true, "color": "#D9B8AE"}, {"id": "delaro", "cat": "MultiGel / Acry-PolyGel", "name": "DELARO", "desc": "Sistema Acry-PolyGel para trabajos de alta precisión.", "price": null, "stock": null, "minStock": 2, "active": true, "color": "#C9AD96"}, {"id": "black-white", "cat": "Colores", "name": "Black & White", "desc": "Clásicos imprescindibles para cualquier mesa de trabajo.", "price": null, "stock": null, "minStock": 2, "active": true, "color": "#2B2B2B"}, {"id": "town-red", "cat": "Colores", "name": "Town Red", "desc": "Rojo intenso de acabado elegante.", "price": null, "stock": null, "minStock": 2, "active": true, "color": "#A3212C"}, {"id": "my-land", "cat": "Colores", "name": "My Land", "desc": "Tono sofisticado para manicuras naturales.", "price": null, "stock": null, "minStock": 2, "active": true, "color": "#8A6B5A"}, {"id": "romantic-autumn", "cat": "Colores", "name": "Romantic Autumn", "desc": "Tono cálido inspirado en el otoño.", "price": null, "stock": null, "minStock": 2, "active": true, "color": "#9C5A3C"}, {"id": "moko", "cat": "Colores", "name": "Moko", "desc": "Color versátil y elegante.", "price": null, "stock": null, "minStock": 2, "active": true, "color": "#7A5B4E"}, {"id": "rosy-mode", "cat": "Colores", "name": "Rosy Mode", "desc": "Rosa sofisticado para un acabado femenino.", "price": null, "stock": null, "minStock": 2, "active": true, "color": "#C98A8F"}, {"id": "crazy-love", "cat": "Colores", "name": "Crazy Love", "desc": "Color intenso para diseños protagonistas.", "price": null, "stock": null, "minStock": 2, "active": true, "color": "#B0263F"}, {"id": "marshmallow", "cat": "Colores", "name": "Marshmallow", "desc": "Tono suave y limpio.", "price": null, "stock": null, "minStock": 2, "active": true, "color": "#F3E7E0"}, {"id": "cherry-blossoms", "cat": "Colores", "name": "Cherry Blossoms", "desc": "Rosa floral delicado.", "price": null, "stock": null, "minStock": 2, "active": true, "color": "#E8B4BC"}, {"id": "misty-forest", "cat": "Colores", "name": "Misty Forest", "desc": "Verde profundo y sofisticado.", "price": null, "stock": null, "minStock": 2, "active": true, "color": "#3F5A4A"}, {"id": "brillance", "cat": "Colores", "name": "Brillance", "desc": "Acabado luminoso para destacar.", "price": null, "stock": null, "minStock": 2, "active": true, "color": "#D8C49A"}, {"id": "ojos-de-gato", "cat": "Colores", "name": "Ojos de Gato", "desc": "Efecto magnético y multidimensional.", "price": null, "stock": null, "minStock": 2, "active": true, "color": "#5A4A6E"}, {"id": "pop-neon", "cat": "Colores", "name": "Pop Neón", "desc": "Color vibrante para diseños atrevidos.", "price": null, "stock": null, "minStock": 2, "active": true, "color": "#F06A8C"}, {"id": "rubin", "cat": "Colores", "name": "Rubin", "desc": "Tono joya intenso.", "price": null, "stock": null, "minStock": 2, "active": true, "color": "#8E1B3A"}, {"id": "burgundy", "cat": "Colores", "name": "Burgundy", "desc": "Burdeos profundo y elegante.", "price": null, "stock": null, "minStock": 2, "active": true, "color": "#6B1F2A"}, {"id": "apple-pie", "cat": "Colores", "name": "Apple Pie", "desc": "Tono cálido y dulce.", "price": null, "stock": null, "minStock": 2, "active": true, "color": "#C28A52"}, {"id": "caramel", "cat": "Liquid Gel", "name": "Caramel", "desc": "Tono cálido y cremoso.", "price": null, "stock": null, "minStock": 2, "active": true, "color": "#B98458"}, {"id": "coffee-rose", "cat": "Liquid Gel", "name": "Coffee Rose", "desc": "Rosa café sofisticado.", "price": null, "stock": null, "minStock": 2, "active": true, "color": "#A57A70"}, {"id": "miracle", "cat": "Liquid Gel", "name": "Miracle", "desc": "Liquid gel de acabado profesional.", "price": null, "stock": null, "minStock": 2, "active": true, "color": "#D9B8AE"}, {"id": "bubblegum", "cat": "Liquid Gel", "name": "BubbleGum", "desc": "Rosa dulce y brillante.", "price": null, "stock": null, "minStock": 2, "active": true, "color": "#F2A5C0"}, {"id": "neones", "cat": "Liquid Gel", "name": "Neones", "desc": "Colección de tonos neón.", "price": null, "stock": null, "minStock": 2, "active": true, "color": "#E9DA5E"}, {"id": "disco-yuki", "cat": "Liquid Gel", "name": "Disco Yuki", "desc": "Efecto brillante para diseños especiales.", "price": null, "stock": null, "minStock": 2, "active": true, "color": "#CFD3E0"}, {"id": "tops-transparentes", "cat": "Tops", "name": "Tops Transparentes", "desc": "Acabado transparente y brillante.", "price": null, "stock": null, "minStock": 2, "active": true, "color": "#F3ECE6"}, {"id": "tops-con-acabado", "cat": "Tops", "name": "Tops con Acabado", "desc": "Tops para diferentes efectos finales.", "price": null, "stock": null, "minStock": 2, "active": true, "color": "#E0D2C6"}, {"id": "brocas", "cat": "Brocas y Fresas", "name": "Brocas", "desc": "Herramientas profesionales de precisión.", "price": null, "stock": null, "minStock": 2, "active": true, "color": null}, {"id": "fresas", "cat": "Brocas y Fresas", "name": "Fresas", "desc": "Fresas para diferentes trabajos de manicura.", "price": null, "stock": null, "minStock": 2, "active": true, "color": null}, {"id": "fresas-para-pedicura", "cat": "Brocas y Fresas", "name": "Fresas para Pedicura", "desc": "Herramientas específicas para pedicura.", "price": null, "stock": null, "minStock": 2, "active": true, "color": null}, {"id": "cleanser-zero", "cat": "Cleanser", "name": "Cleanser ZERO", "desc": "Limpieza profesional antes y durante el servicio.", "price": null, "stock": null, "minStock": 2, "active": true, "color": "#E7EEF0"}, {"id": "green-oasis", "cat": "Aceites de Cutículas", "name": "Green Oasis", "desc": "Aceite nutritivo para el cuidado de cutículas.", "price": null, "stock": null, "minStock": 2, "active": true, "color": "#B7C49A"}, {"id": "french-bouquet", "cat": "Aceites de Cutículas", "name": "French Bouquet", "desc": "Aroma delicado y cuidado profesional.", "price": null, "stock": null, "minStock": 2, "active": true, "color": "#E6C9C4"}, {"id": "tropical-spa", "cat": "Aceites de Cutículas", "name": "Tropical Spa", "desc": "Sensación fresca y envolvente.", "price": null, "stock": null, "minStock": 2, "active": true, "color": "#E9C98F"}, {"id": "burberry-blush", "cat": "Aceites de Cutículas", "name": "Burberry Blush", "desc": "Aroma elegante para el ritual final.", "price": null, "stock": null, "minStock": 2, "active": true, "color": "#D8A99E"}, {"id": "aroma-provance", "cat": "Aceites de Cutículas", "name": "Aroma Provance", "desc": "Aroma inspirado en la Provenza.", "price": null, "stock": null, "minStock": 2, "active": true, "color": "#BFB2D3"}, {"id": "acuarelas", "cat": "Decoración", "name": "Acuarelas", "desc": "Pigmentos para decoración y nail art.", "price": null, "stock": null, "minStock": 2, "active": true, "color": "#9FB7C9"}, {"id": "gel-painting", "cat": "Decoración", "name": "Gel Painting", "desc": "Gel de alta precisión para pintura y detalles.", "price": null, "stock": null, "minStock": 2, "active": true, "color": "#2B211D"}, {"id": "quitanet-ultra", "cat": "Desinfectante", "name": "Quitanet Ultra", "desc": "Desinfectante para mantener protocolos profesionales.", "price": null, "stock": null, "minStock": 2, "active": true, "color": "#DDE7E6"}], "courses": [{"id": "manicura-rusa", "name": "Manicura rusa", "hours": 12, "duration": "12 horas", "price": null, "deposit": 50, "privatePrice": null, "maxSeats": 6, "modality": "Presencial", "place": "Murcia", "schedule": "Horario aprox. 9:30 – 20:00", "desc": "Este curso no solo es sobre embellecer uñas, es sobre entenderlas: trabajar con seguridad, precisión y lograr resultados de nivel profesional. Presencial e intensivo, en un solo día.", "learn": ["Bioseguridad: protocolos esenciales para trabajar con higiene y responsabilidad.", "Retirado del material anterior: sin dañar la uña natural.", "Preparación de la uña natural: correctamente para un trabajo duradero.", "Cutícula perfecta: técnicas para un acabado limpio y estético.", "Bases y cómo elegir: sin usar preparadores, para no perder tiempo ni dinero.", "Esmaltado perfecto: para lograr un acabado liso, profesional y sin burbujas.", "Herramientas esenciales: cómo elegirlas, usarlas y cuidarlas.", "Bloque de onicodistrofias: las más comunes en salones y cómo afrontarlas.", "Construcción de un arco longitudinal perfecto: base de unas uñas fuertes y equilibradas.", "Formas cuadrada y almendra perfectas: con acabados profesionales.", "Aplicación rápida y eficiente: para reducir tiempos de trabajo sin perder calidad.", "La técnica personalizada de Viky: ahorrarás mucho tiempo y generarás más ingresos, con una técnica segura, rápida y sin limado posterior."], "practices": "Tendrás dos prácticas. Una sobre ti misma, imprescindible para conocer la presión adecuada y saber cómo actuar ante diferentes casos (se viene con las uñas esmaltadas de más de dos semanas, porque es vital aprender a realizar correctamente una retirada). Y otra sobre modelo real, para que interiorices todo lo aprendido.", "more": ["Mentalidad y confianza personal: aprenderás a valorarte como profesional.", "Sube tus precios sin miedo: cómo y cuándo subir tus tarifas.", "Rentabilidad de tu negocio: trabaja de forma inteligente.", "Resolución de casos reales: sabrás identificar, priorizando la salud de tu clienta.", "Aprende a leer a tu clienta: desarrollarás habilidades de comprensión.", "Comunicación y liderazgo: aprenderás a comunicarte con seguridad.", "Crecimiento personal: herramientas para diferenciarte de la competencia."], "extra": "Además tendrás a Viky siempre en contacto contigo. Aunque el curso es de un día, entrarás en un club privado solo para alumnas, donde no se enseña solo manicura: aprenderás diseños, habrá resolución de dudas y Viky estará ahí siempre que la necesites.", "closing": "Elige hoy aprender a tener un negocio que te sostenga, no que te consuma.", "highlights": ["Técnica personalizada: más rápida y sin limado posterior", "Dos prácticas con todo el material necesario incluido", "Sube tus precios sin miedo y mejora tu rentabilidad", "Club privado de alumnas y acompañamiento de Viky"], "includes": ["Material necesario para realizar la formación", "2 prácticas: sobre ti y sobre modelo real", "Club privado de alumnas", "Acompañamiento personal de Viky"]}, {"id": "acrygel", "name": "Extensión Acrygel", "hours": 12, "duration": "10 a 12 horas", "price": null, "deposit": 50, "privatePrice": null, "maxSeats": 6, "modality": "Presencial", "place": "Cáceres", "schedule": "Horario aprox. 9:30 – 20:30", "desc": "Este curso no solo es sobre embellecer uñas, es sobre entenderlas: trabajar con seguridad, precisión y lograr resultados de nivel profesional. Presencial e intensivo, de 10 a 12 horas en un solo día.", "learn": ["Bioseguridad: protocolos esenciales para trabajar con higiene y responsabilidad.", "Retirado del material anterior: sin dañar la uña natural.", "Preparación de la uña natural: correctamente para un trabajo duradero.", "Cutícula perfecta: técnicas para un acabado limpio y estético.", "Diferencias entre acrílico, Acrygel y Polygel: para que sepas elegir el producto ideal en cada servicio.", "Esmaltado perfecto: para lograr un acabado liso, profesional y sin burbujas.", "Herramientas esenciales: cómo elegirlas, usarlas y cuidarlas.", "Colocación correcta del molde: logrando una arquitectura perfecta.", "Construcción de un arco longitudinal perfecto: base de unas uñas fuertes y equilibradas.", "Formas cuadrada y almendra perfectas: con acabados profesionales.", "Aplicación rápida y eficiente: para reducir tiempos de trabajo sin perder calidad."], "practices": "Tendrás dos prácticas: una sobre ti misma y otra sobre modelo real, para que aprendas e interiorices al máximo todo lo aprendido.", "more": [], "extra": "Viky no será una profesora más: estará contigo a partir de ahora en todo lo que necesites, en tus dudas, en tus miedos y en tus avances. Te dirá exactamente dónde comprar y qué comprar, para ahorrarte errores, tiempo y frustración.", "closing": "Las plazas son limitadas.", "highlights": ["Acrílico, Acrygel y Polygel: elige el producto ideal", "Colocación del molde y arquitectura perfecta", "Dos prácticas con todo el material necesario incluido", "Dónde y qué comprar, sin errores"], "includes": ["Material necesario para realizar la formación", "2 prácticas: sobre ti y sobre modelo real", "Acompañamiento personal de Viky", "Dónde y qué comprar, sin errores"]}, {"id": "pedicura-rusa", "name": "Pedicura rusa", "infoOnly": true, "hours": null, "price": null, "deposit": 50, "privatePrice": null, "maxSeats": 6, "desc": "", "includes": []}, {"id": "decoracion", "name": "Decoración a mano alzada", "infoOnly": true, "hours": null, "price": null, "deposit": 50, "privatePrice": null, "maxSeats": 6, "desc": "", "includes": []}], "reviews": [{"id": "g1", "name": "Elisa Valenti Parra", "rating": 5, "when": "hace 5 meses", "courseId": "", "active": true, "source": "Google", "text": "Quiero recomendar a mi profesora de manicura tras haber realizado dos cursos con ella. La experiencia ha sido excelente desde el primer día: explica con mucha claridad, tiene una gran paciencia y se nota que domina perfectamente su trabajo. Gracias a su forma de enseñar, he aprendido muchísimo y me siento mucho más segura aplicando las técnicas. Sin duda, la recomiendo a cualquiera que quiera formarse en este sector con una profesional comprometida y cercana."}, {"id": "g2", "name": "Carmen Rodriguez", "rating": 5, "when": "hace 2 meses", "courseId": "", "active": true, "source": "Google", "text": "Hice dos cursos con ella y es lo mejor que he podido hacer para dedicarme al mundo de la estética, es la mejor ya no solo haciendo uñas, si no en enseñanza, es cercana, amable, no se deja nada para ella y siempre que la necesitas ahí está para ayudar. Si quieres hacer un curso de manicura rusa o extension no dudes en ponerte en su manos porque es la mejor. Mil gracias Viky 💕"}, {"id": "g3", "name": "Andrea Trevejo Cava", "rating": 5, "when": "hace 4 meses", "courseId": "", "active": true, "source": "Google", "text": "Que decir de Viky… una profesional de la cabeza a los pies, que te aconseja, te explica todo con detalle y hace verdaderas obras de arte, siempre la recomiendo a quien se fija y me alaga por la uñas que llevo y lo seguiré haciendo siempre, para mí ha sido un descubrimiento la manicura rusa!!!"}]};            // catálogo y formaciones iniciales de la web
+
+/* ================================================================ */
+var $ = function(s, c){ return (c || document).querySelector(s); };
+var $$ = function(s, c){ return Array.prototype.slice.call((c || document).querySelectorAll(s)); };
+var cfRes = null;
+function askConfirm(o){
+  return new Promise(function(res){
+    if(cfRes) cfRes(false);
+    cfRes = res; $('#cfT').textContent = o.title; $('#cfP').innerHTML = o.text || '';
+    var y = $('#cfYes'); y.textContent = o.ok || 'Confirmar'; y.className = 'btn' + (o.danger ? ' btn--danger' : '');
+    $('#cf').hidden = false; $('#cfNo').focus();
+  });
+}
+function cfClose(v){ $('#cf').hidden = true; var r = cfRes; cfRes = null; if(r) r(v); }
+function esc(v){ return String(v == null ? '' : v).replace(/[&<>"']/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]; }); }
+function eur(v){ return v == null || v === '' || isNaN(v) ? '—' : (+v).toLocaleString('es-ES', {minimumFractionDigits:2, maximumFractionDigits:2}) + ' €'; }
+function numOrNull(v){ return v === '' || v == null || isNaN(+v) ? null : Math.round(+v * 100) / 100; }
+function intOrNull(v){ return v === '' || v == null || isNaN(+v) ? null : Math.round(+v); }
+var MONTHS = ['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
+function fdate(iso, withTime){ if(!iso) return '—'; var d = new Date(iso); return d.getDate() + ' ' + MONTHS[d.getMonth()].slice(0,3) + (d.getFullYear() !== new Date().getFullYear() ? ' ' + d.getFullYear() : '') + (withTime ? ' · ' + d.toLocaleTimeString('es-ES', {hour:'2-digit', minute:'2-digit'}) : ''); }
+function day(d){ var p = String(d).split('-'); return new Date(+p[0], +p[1] - 1, +p[2]); }
+function today0(){ var t = new Date(); t.setHours(0,0,0,0); return t; }
+function uid(p){ return p + Date.now().toString(36) + Math.random().toString(36).slice(2, 5); }
+function slug(t){ return String(t).normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,''); }
+var toastT; function toast(m){ var t = $('#toast'); t.textContent = m; t.classList.add('on'); clearTimeout(toastT); toastT = setTimeout(function(){ t.classList.remove('on'); }, 2400); }
+function waPhone(t){ var d = String(t).replace(/\D/g, '').replace(/^00/, ''); return /^[6789]\d{8}$/.test(d) ? '34' + d : d; }
+
+var setupMode = false, db = null, mode = 'api', token = '', view = 'dash', filt = {rc:'', hm:'', orders:'activos', q:'', cat:'', low:false, leads:'todas', ordersView:'pipeline'};
+var ST = {nuevo:'Nuevo', datos_enviados:'Esperando pago', pagado:'Pagado', enviado:'Enviado', entregado:'Finalizado', cancelado:'Cancelado'};
+var PAID = ['pagado','enviado','entregado'];
+var LEAD_T = {reserva:'Pre-reserva', interes:'Interesada', privada:'Clase privada', aviso:'Aviso de stock'};
+var LEAD_S = {nuevo:'Nueva', contactado:'Contactada', reservada:'Plaza ofrecida', pagada:'Pagada', descartada:'Descartada'};
+
+/* ================================================================
+   CAPA DE DATOS: api.php o modo demostración (localStorage)
+   ================================================================ */
+function call(a, body){
+  if(mode === 'demo') return Promise.resolve(demo(a, body || {}));
+  return fetch(API_URL + '?a=' + a, {method:body ? 'POST' : 'GET', headers:{'Content-Type':'application/json', 'Authorization':'Bearer ' + token}, body:body ? JSON.stringify(body) : undefined})
+    .then(function(r){ return r.json().catch(function(){ return {ok:false, error:'server'}; }).then(function(j){ if(r.status === 401 && a !== 'login'){ logout(true); } return j; }); })
+    .then(function(j){ if(!j.ok) throw new Error(j.error || 'error'); return j; });
+}
+function demoLoad(){ try { return JSON.parse(localStorage.getItem('vc-admin-demo')); } catch(e){ return null; } }
+function demoSave(s){ try { localStorage.setItem('vc-admin-demo', JSON.stringify(s)); } catch(e){} }
+function demoSeed(){
+  var products = JSON.parse(JSON.stringify(DEFAULTS.products));
+  var pr = [12.9, 14.9, 13.9, 16.5, 15.9, 15.9, 24.9, 22.9];
+  products.forEach(function(p, i){ p.price = i < 8 ? pr[i] : (i < 30 ? 9.9 : 12.5); p.stock = [8, 12, 6, 10, 9, 15, 7, 11, 14, 9, 6][i % 11]; if(i === 2) p.stock = 0; if(i === 1 || i === 6) p.stock = 2; p.minStock = 2; });
+  var now = Date.now(), H = 3600e3, D = 24 * H;
+  function it(i, q){ var p = products[i]; return {id:p.id, name:p.name, cat:p.cat, qty:q, price:p.price}; }
+  function ord(code, ago, status, items, cust, pickup, extra){
+    var sub = items.reduce(function(s, x){ return s + x.price * x.qty; }, 0), ship = pickup || sub >= 50 ? 0 : 5;
+    var o = {code:code, date:new Date(now - ago).toISOString(), status:status, customer:cust, pickup:!!pickup, items:items, subtotal:+sub.toFixed(2), shipping:ship, total:+(sub + ship).toFixed(2),
+      sentAt:null, paidAt:null, stockApplied:PAID.indexOf(status) >= 0, notes:'', history:[{t:new Date(now - ago).toISOString(), e:'Pedido recibido desde la web'}]};
+    for(var k in extra) o[k] = extra[k]; return o;
+  }
+  var c1 = {name:'Laura Martín Pérez', phone:'600111222', email:'laura@email.com', addr:'C/ Pintores 12, 2ºB', city:'Cáceres', zip:'10003', notes:''};
+  var c2 = {name:'Marta Sánchez', phone:'611222333', email:'marta@email.com', addr:'Av. de España 4', city:'Badajoz', zip:'06001', notes:'Entregar por la tarde'};
+  var c3 = {name:'Paula Gómez', phone:'622333444', email:'paula@email.com', addr:'', city:'', zip:'', notes:''};
+  var c4 = {name:'Elena Ruiz', phone:'633444555', email:'elena@email.com', addr:'C/ Mayor 8', city:'Plasencia', zip:'10600', notes:''};
+  var orders = [
+    ord('VC-' + ymd(0) + '-K7QA', 2 * H, 'nuevo', [it(0, 2), it(3, 1)], c1),
+    ord('VC-' + ymd(1) + '-M2PX', 20 * H, 'datos_enviados', [it(6, 1), it(9, 2)], c2, false, {sentAt:new Date(now - 18 * H).toISOString()}),
+    ord('VC-' + ymd(3) + '-R8TN', 3 * D, 'pagado', [it(1, 1), it(4, 1), it(12, 3)], c3, true, {paidAt:new Date(now - 2 * D).toISOString()}),
+    ord('VC-' + ymd(5) + '-T3LS', 5 * D, 'enviado', [it(8, 2)], c4, false, {paidAt:new Date(now - 4 * D).toISOString(), shippedAt:new Date(now - 2 * D).toISOString()}),
+    ord('VC-' + ymd(9) + '-H4WD', 9 * D, 'entregado', [it(5, 2), it(20, 1)], c4, false, {paidAt:new Date(now - 8 * D).toISOString(), deliveredAt:new Date(now - 5 * D).toISOString(), followUp:'pendiente'}),
+    ord('VC-' + ymd(40) + '-B6ZE', 40 * D, 'entregado', [it(7, 1), it(2, 2)], c1, false, {paidAt:new Date(now - 39 * D).toISOString(), deliveredAt:new Date(now - 36 * D).toISOString(), followUp:'respondido', rating:5, feedback:'Me encantó el color, repetiré seguro', archived:true, archivedAt:new Date(now - 30 * D).toISOString()}),
+    ord('VC-' + ymd(12) + '-P5KM', 12 * D, 'entregado', [it(10, 2)], c3, true, {paidAt:new Date(now - 11 * D).toISOString(), deliveredAt:new Date(now - 10 * D).toISOString(), followUp:'respondido', rating:5, feedback:'Todo perfecto, gracias Viky'}),
+    ord('VC-' + ymd(70) + '-C9YU', 70 * D, 'entregado', [it(0, 3), it(15, 2)], c2, false, {paidAt:new Date(now - 69 * D).toISOString()})
+  ];
+  var d1 = new Date(now + 24 * D), d2 = new Date(now + 45 * D);
+  function iso(d){ return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0'); }
+  var sessions = [{id:'S1', courseId:'manicura-rusa', date:iso(d1), endDate:iso(new Date(d1.getTime() + 864e5)), days:'Dos días seguidos', time:'10:00–14:00', seats:6, booked:4, status:'abierta'},
+                  {id:'S2', courseId:'acrygel', date:iso(d2), time:'16:00–20:00', seats:6, booked:1, status:'abierta'}];
+  var leads = [
+    {id:'L1', date:new Date(now - 5 * H).toISOString(), type:'interes', status:'nuevo', courseId:'pedicura-rusa', course:'Pedicura rusa', name:'Sara Díaz', phone:'644555666', email:'sara@email.com', availability:'Tardes, Fines de semana', month:'Noviembre', msg:'Tengo algo de experiencia con torno', notes:''},
+    {id:'L2', date:new Date(now - 26 * H).toISOString(), type:'reserva', status:'nuevo', courseId:'manicura-rusa', course:'Manicura rusa', sessionId:'S1', session:'', name:'Lucía Moreno', phone:'655666777', email:'lucia@email.com', availability:'', month:'', msg:'', notes:''},
+    {id:'L3', date:new Date(now - 3 * D).toISOString(), type:'privada', status:'contactado', courseId:'decoracion', course:'Decoración a mano alzada', name:'Carmen Vega', phone:'666777888', email:'carmen@email.com', availability:'Mañanas', month:'Lo antes posible', msg:'', notes:'Le propuse el 20'},
+    {id:'L4', date:new Date(now - 6 * D).toISOString(), type:'interes', status:'nuevo', courseId:'pedicura-rusa', course:'Pedicura rusa', name:'Irene Castro', phone:'677888999', email:'irene@email.com', availability:'Mañanas', month:'Diciembre', msg:'', notes:''},
+    {id:'L6', date:new Date(now - 30 * H).toISOString(), type:'aviso', status:'nuevo', courseId:products[2].id, course:products[2].name, name:'Rocío Gil', phone:'699000111', email:'rocio@email.com', availability:'', month:'', msg:'', notes:''},
+    {id:'L5', date:new Date(now - 8 * D).toISOString(), type:'interes', status:'nuevo', courseId:'pedicura-rusa', course:'Pedicura rusa', name:'Nuria León', phone:'688999000', email:'nuria@email.com', availability:'Fines de semana', month:'Me da igual', msg:'', notes:''}
+  ];
+  var reviews = JSON.parse(JSON.stringify(DEFAULTS.reviews || []));
+  return {products:products, courses:JSON.parse(JSON.stringify(DEFAULTS.courses)), sessions:sessions, orders:orders, leads:leads, reviews:reviews,
+    settings:{shippingCost:5, freeShippingFrom:50, shipZone:'Península y Baleares', noShipZips:'35,38', noShipTxt:'Canarias', payHours:24, deposit:50, holder:'Viky Coelho', iban:'', whatsapp:'34614404353', shippingTime:'24–72 h laborables tras el pago', pickup:'Academia Viky Coelho · Cáceres', lowStockAlerts:true, followUpDays:3, reviewUrl:'', googleUrl:'https://share.google/zRtM4JBV8rFnpnxxW', googleRating:'', googleCount:''}};
+}
+function ymd(ago){ var d = new Date(Date.now() - ago * 864e5); return String(d.getFullYear()).slice(2) + String(d.getMonth() + 1).padStart(2, '0') + String(d.getDate()).padStart(2, '0'); }
+var KEY = {products:'id', courses:'id', sessions:'id', orders:'code', leads:'id', reviews:'id'};
+function demo(a, b){
+  var s = demoLoad() || demoSeed();
+  var res = {ok:true};
+  if(a === 'all') res.data = s;
+  else if(a === 'upsert'){
+    var k = KEY[b.col], list = s[b.col], i = list.findIndex(function(x){ return x[k] === b.item[k]; });
+    var item = JSON.parse(JSON.stringify(b.item));
+    if(b.col === 'orders'){ var lg = item.logEvent; delete item.status; delete item.stockApplied; delete item.paidAt; delete item.history; delete item.logEvent; if(lg && i >= 0){ list[i].history = list[i].history || []; list[i].history.push({t:new Date().toISOString(), e:lg}); } }
+    if(b.col === 'leads' && i >= 0) leadSeats(s, list[i], item);
+    if(b.col === 'leads' && i < 0) leadSeats(s, {type:'', status:'', sessionId:''}, item);
+    if(i >= 0){ list[i] = Object.assign(list[i], item); res.item = list[i]; }
+    else if(['products','courses','sessions'].indexOf(b.col) >= 0){ list.push(item); res.item = item; }
+    else { list.unshift(item); res.item = item; }
+  }
+  else if(a === 'delete'){ s[b.col] = s[b.col].filter(function(x){ return x[KEY[b.col]] !== b.id; }); }
+  else if(a === 'settings'){ s.settings = Object.assign(s.settings, b.settings); res.settings = s.settings; }
+  else if(a === 'order_create'){
+    var back = b.date && b.date < new Date().toISOString().slice(0, 10), dIso = back ? new Date(b.date + 'T12:00:00').toISOString() : new Date().toISOString();
+    var its = (b.items || []).filter(function(x){ return x.name; }).map(function(x){ return {id:x.id || '', name:x.name, cat:x.cat || '', qty:Math.max(1, +x.qty || 1), price:x.price == null || x.price === '' ? null : +x.price}; });
+    var unk = its.some(function(x){ return x.price == null; }), sub2 = its.reduce(function(a2, x){ return a2 + (x.price || 0) * x.qty; }, 0);
+    var ship2 = b.pickup ? 0 : (b.shipping == null || b.shipping === '' ? null : +b.shipping);
+    var code2, abc = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+    do { code2 = 'VC-' + dIso.slice(2, 4) + dIso.slice(5, 7) + dIso.slice(8, 10) + '-' + [0, 1, 2, 3].map(function(){ return abc[Math.floor(Math.random() * abc.length)]; }).join(''); } while(s.orders.some(function(o){ return o.code === code2; }));
+    var ord2 = {code:code2, date:dIso, status:'nuevo', customer:b.customer, pickup:!!b.pickup, items:its, subtotal:unk ? null : +sub2.toFixed(2), shipping:ship2, total:(unk || ship2 == null) ? null : +(sub2 + ship2).toFixed(2),
+      sentAt:null, paidAt:null, stockApplied:false, noStock:!!b.noStock, manual:true, notes:b.notes || '', rk:Math.random().toString(16).slice(2, 14), history:[{t:dIso, e:'Pedido creado a mano desde el panel'}]};
+    s.orders.unshift(ord2); res.low = [];
+    if(b.status && b.status !== 'nuevo'){ res.low = applyStatus(s, 0, b.status); if(back) ['sentAt','paidAt','shippedAt','deliveredAt'].forEach(function(k){ if(s.orders[0][k]) s.orders[0][k] = dIso; }); }
+    res.order = s.orders[0];
+  }
+  else if(a === 'order_status'){ var j = s.orders.findIndex(function(o){ return o.code === b.code; }); res.low = applyStatus(s, j, b.status); res.order = s.orders[j]; }
+  else if(a === 'restore'){ ['products','courses','sessions','orders','leads','reviews'].forEach(function(c){ if(b.data[c]) s[c] = b.data[c]; }); if(b.data.settings) s.settings = Object.assign(s.settings, b.data.settings); res.data = s; }
+  else if(a === 'import-reviews'){ call('import', {reviews:DEFAULTS.reviews}).then(function(j){ db = j.data; db.reviews = db.reviews || []; render(); toast('Reseñas cargadas'); }); }
+  else if(a === 'import'){ res.data = s; }
+  demoSave(s);
+  return JSON.parse(JSON.stringify(res));
+}
+function applyStatus(s, i, status){
+  var o = s.orders[i], low = [], now = new Date().toISOString();
+  function prod(id){ return s.products.find(function(p){ return p.id === id; }); }
+  if(PAID.indexOf(status) >= 0 && !o.stockApplied){
+    o.items.forEach(function(it){ var p = o.noStock ? null : prod(it.id); if(p && p.stock != null){ var b4 = +p.stock; p.stock = b4 - it.qty; if(p.stock <= (+p.minStock || 2)) low.push(p); } });
+    o.stockApplied = true; if(!o.paidAt) o.paidAt = now;
+  }
+  if(PAID.indexOf(status) < 0 && o.stockApplied){
+    o.items.forEach(function(it){ var p = o.noStock ? null : prod(it.id); if(p && p.stock != null) p.stock = +p.stock + it.qty; });
+    o.stockApplied = false; if(status !== 'cancelado') o.paidAt = null;
+  }
+  if(status === 'datos_enviados') o.sentAt = now;
+  if(status === 'enviado') o.shippedAt = now;
+  if(status === 'entregado'){ o.deliveredAt = now; if(!o.followUp) o.followUp = 'pendiente'; }
+  o.status = status; o.history = o.history || []; o.history.push({t:now, e:{nuevo:'Nuevo', datos_enviados:'Resumen enviado a la clienta', pagado:'Pago recibido', enviado:'Pedido enviado', entregado:'Venta finalizada', cancelado:'Pedido cancelado'}[status]});
+  return low;
+}
+function leadSeats(s, old, nw){
+  var sid = nw.sessionId != null ? nw.sessionId : old.sessionId; if(!sid && !old.sessionId) return;
+  if(old.type !== 'reserva' && nw.type !== 'reserva') return;
+  var was = old.status === 'pagada', is = (nw.status || old.status) === 'pagada', oldSid = old.sessionId || '';
+  function ses(id){ return s.sessions.find(function(x){ return x.id === id; }); }
+  if(was && (!is || oldSid !== sid)){ var a = ses(oldSid); if(a) a.booked = Math.max(0, (+a.booked || 0) - 1); }
+  if(is && (!was || oldSid !== sid)){ var b = ses(sid); if(b) b.booked = (+b.booked || 0) + 1; }
+}
+
+/* ================================================================
+   ARRANQUE Y SESIÓN
+   ================================================================ */
+function boot(){
+  var done = false;
+  var t = setTimeout(function(){ if(!done){ done = true; noApi(); } }, 3500);
+  fetch(API_URL + '?a=ping', {cache:'no-store'}).then(function(r){ return r.json(); }).then(function(j){
+    if(done) return; done = true; clearTimeout(t);
+    if(!j || !j.ok) return noApi();
+    $('#loginChecking').hidden = true; $('#loginApi').hidden = false;
+    if(j.setup){ setupMode = true; $('#setupTxt').hidden = false; $('#pw2Wrap').hidden = false; $('#loginBtn').textContent = 'Crear acceso y entrar'; $('#pw').setAttribute('autocomplete', 'new-password'); return; }
+    token = localStorage.getItem('vc-admin-token') || '';
+    if(token) loadAll().then(enter).catch(function(){ token = ''; });
+  }).catch(function(){ if(!done){ done = true; clearTimeout(t); noApi(); } });
+}
+function noApi(){ $('#loginChecking').hidden = true; $('#loginApi').hidden = true; $('#loginDemo').hidden = false; }
+$('#loginForm').addEventListener('submit', function(e){
+  e.preventDefault(); $('#loginMsg').textContent = '';
+  if(setupMode){
+    if($('#pw').value.length < 8){ $('#loginMsg').textContent = 'La contraseña debe tener al menos 8 caracteres.'; return; }
+    if($('#pw').value !== $('#pw2').value){ $('#loginMsg').textContent = 'Las contraseñas no coinciden.'; return; }
+    if($('#usr').value.trim().length < 3){ $('#loginMsg').textContent = 'El usuario debe tener al menos 3 caracteres.'; return; }
+  }
+  call(setupMode ? 'setup' : 'login', {user:$('#usr').value.trim(), password:$('#pw').value}).then(function(j){
+    token = j.token; try { localStorage.setItem('vc-admin-token', token); } catch(err){}
+    return loadAll();
+  }).then(enter).catch(function(err){
+    $('#loginMsg').textContent = err.message === 'already' ? 'El acceso ya estaba creado. Recarga la página.' : err.message === 'rate' ? 'Demasiados intentos. Espera unos minutos.' : 'Usuario o contraseña incorrectos.';
+  });
+});
+$('#demoBtn').addEventListener('click', function(){ mode = 'demo'; loadAll().then(enter); });
+function loadAll(){ return call('all').then(function(j){ db = j.data; db.reviews = db.reviews || []; }); }
+function enter(){
+  $('#login').hidden = true; $('#app').hidden = false;
+  $('#modeTxt').textContent = mode === 'demo' ? 'Modo demostración' : 'Conectado al servidor';
+  render();
+  openFromHash();
+}
+/* Enlace directo desde el aviso de WhatsApp: admin.html#VC-261005-ABCD */
+function openFromHash(){
+  var code = decodeURIComponent((location.hash || '').slice(1));
+  if(!db || !/^VC-\d{6}-[A-Z0-9]{4}$/.test(code)) return;
+  var o = db.orders.find(function(x){ return x.code === code; }); if(!o) return toast('No encuentro el pedido ' + code);
+  view = 'orders'; render(); openOrder(code);
+  history.replaceState(null, '', location.pathname + location.search);
+}
+window.addEventListener('hashchange', openFromHash);
+function logout(silent){
+  if(mode === 'api' && token && !silent) call('logout', {}).catch(function(){});
+  token = ''; try { localStorage.removeItem('vc-admin-token'); } catch(e){}
+  location.reload();
+}
+$('#logoutBtn').addEventListener('click', function(){ logout(); });
+
+/* ================================================================
+   CÁLCULOS
+   ================================================================ */
+function deleteInfo(col, id){
+  var tail = '<br><br>Esta acción no se puede deshacer.';
+  if(col === 'products'){
+    var p = db.products.find(function(x){ return x.id === id; }) || {name:'este producto'};
+    var w = awaitingCount(id), pend = db.orders.filter(function(o){ return ['nuevo','datos_enviados','pagado'].indexOf(o.status) >= 0 && o.items.some(function(i){ return i.id === id; }); }).length;
+    return {title:'¿Eliminar este producto?', text:'Se quitará <b>' + esc(p.name) + '</b> de la tienda y del panel. Los pedidos anteriores no cambian.' +
+      (w ? '<br><br>⚠️ ' + w + (w === 1 ? ' persona espera' : ' personas esperan') + ' aviso de este producto.' : '') + (pend ? '<br>⚠️ Está en ' + pend + (pend === 1 ? ' pedido en curso.' : ' pedidos en curso.') : '') +
+      '<br><br>Si solo quieres que no se venda ahora, es mejor <b>ocultarlo</b> o marcarlo como <b>agotado</b>.' + tail};
+  }
+  if(col === 'courses'){
+    var c = db.courses.find(function(x){ return x.id === id; }) || {name:'esta formación'};
+    var ns = db.sessions.filter(function(x){ return x.courseId === id; }).length, nl = db.leads.filter(function(l){ return l.courseId === id && l.status !== 'descartada'; }).length;
+    return {title:'¿Eliminar esta formación?', text:'Se quitará <b>' + esc(c.name) + '</b> de la web.' + (ns ? '<br><br>⚠️ Tiene ' + ns + (ns === 1 ? ' convocatoria' : ' convocatorias') + ' asociadas.' : '') + (nl ? '<br>⚠️ Hay ' + nl + (nl === 1 ? ' solicitud abierta.' : ' solicitudes abiertas.') : '') + '<br><br>Para que no se vea sin perderla, puedes desmarcar «Visible en la web».' + tail};
+  }
+  if(col === 'sessions'){
+    var x = db.sessions.find(function(q){ return q.id === id; }), n = db.leads.filter(function(l){ return l.sessionId === id && l.type === 'reserva' && l.status !== 'descartada'; }).length;
+    return {title:'¿Eliminar esta convocatoria?', text:'Se quitará la fecha de <b>' + esc(courseName(x && x.courseId)) + '</b> del calendario de la web.' + (n ? '<br><br>⚠️ Tiene ' + n + (n === 1 ? ' pre-reserva' : ' pre-reservas') + ': avísalas antes.' : '') + '<br><br>Si solo quieres que no se vea, puedes <b>cerrarla</b>.' + tail};
+  }
+  if(col === 'reviews') return {title:'¿Eliminar esta opinión?', text:'Se borrará del panel y dejará de verse en la web. La reseña original de Google no se toca.' + tail};
+  return {title:'¿Eliminar esta solicitud?', text:'Se borrará de la bandeja de Solicitudes.' + tail};
+}
+function awaitingCount(pid){ return db.leads.filter(function(l){ return l.type === 'aviso' && l.courseId === pid && l.status === 'nuevo'; }).length; }
+function leadItem(l){ return l.type === 'aviso' ? (l.course || l.courseId) : courseName(l.courseId); }
+function sesRange(x){
+  if(!x.endDate || x.endDate === x.date) return fdate(x.date);
+  var a = day(x.date), b = day(x.endDate);
+  return (a.getMonth() === b.getMonth() && a.getFullYear() === b.getFullYear()) ? a.getDate() + '–' + b.getDate() + ' ' + MONTHS[a.getMonth()].slice(0, 3) : fdate(x.date) + ' – ' + fdate(x.endDate);
+}
+function courseName(id){ var c = db.courses.find(function(x){ return x.id === id; }); return c ? c.name : (id || 'Sin decidir'); }
+function stockState(p){ if(p.soldOut) return 'out'; if(p.stock == null || p.stock === '') return 'none'; if(+p.stock <= 0) return 'out'; if(+p.stock <= (+p.minStock || 2)) return 'low'; return 'ok'; }
+function lowProducts(){ return db.products.filter(function(p){ return p.active !== false && (stockState(p) === 'low' || stockState(p) === 'out'); }); }
+function deadline(o){
+  if(o.status !== 'datos_enviados' || !o.sentAt) return null;
+  var left = new Date(o.sentAt).getTime() + (+db.settings.payHours || 24) * 3600e3 - Date.now();
+  return left;
+}
+function dueTxt(o){
+  var l = deadline(o); if(l == null) return '';
+  if(l <= 0) return '<span class="due late">Plazo vencido</span>';
+  var h = Math.floor(l / 3600e3), m = Math.floor(l % 3600e3 / 60000);
+  return '<span class="due">Quedan ' + (h ? h + ' h ' : '') + m + ' min</span>';
+}
+function orderTotals(o){
+  var unknown = o.items.some(function(i){ return i.price == null || i.price === ''; });
+  var sub = o.items.reduce(function(s, i){ return s + (+i.price || 0) * i.qty; }, 0);
+  var ship = o.pickup ? 0 : (o.shipping == null || o.shipping === '' ? null : +o.shipping);
+  return {sub:unknown ? null : +sub.toFixed(2), ship:ship, total:unknown || ship == null ? null : +(sub + ship).toFixed(2)};
+}
+function paidIn(y, m){ return db.orders.filter(function(o){ if(PAID.indexOf(o.status) < 0 || !o.paidAt) return false; var d = new Date(o.paidAt); return d.getFullYear() === y && d.getMonth() === m; }); }
+function sum(list){ return list.reduce(function(s, o){ return s + (+o.total || 0); }, 0); }
+function upcoming(){ var t = today0(); return db.sessions.filter(function(x){ return day(x.date) >= t; }).sort(function(a, b){ return day(a.date) - day(b.date); }); }
+
+function badges(){
+  var nOrd = db.orders.filter(function(o){ return o.status === 'nuevo' || (o.status === 'datos_enviados' && deadline(o) <= 0) || o.status === 'pagado' || followReady(o); }).length;
+  $('#bOrders').textContent = nOrd || '';
+  $('#bProducts').textContent = lowProducts().length || '';
+  $('#bLeads').textContent = db.leads.filter(function(l){ return l.status === 'nuevo'; }).length || '';
+}
+
+/* ================================================================
+   VISTAS
+   ================================================================ */
+function render(){
+  badges();
+  $$('.nav').forEach(function(n){ n.classList.toggle('is-on', n.getAttribute('data-view') === view); });
+  var html = {dash:vDash, orders:vOrders, products:vProducts, courses:vCourses, leads:vLeads, reviews:vReviews, settings:vSettings}[view]();
+  $('#main').innerHTML = (mode === 'demo' ? '<div class="demo-bar"><b>Modo demostración</b> Datos de ejemplo guardados en este navegador. <button class="lnk" data-act="demo-reset">Reiniciar datos</button></div>' : '') +
+    (mode === 'api' && !db.products.length ? '<div class="demo-bar">Tu catálogo está vacío. <button class="lnk" data-act="import">Importar los ' + DEFAULTS.products.length + ' productos y ' + DEFAULTS.courses.length + ' formaciones de la web</button></div>' : '') + html;
+}
+$$('.nav').forEach(function(n){ n.addEventListener('click', function(){ view = n.getAttribute('data-view'); closePanel(); render(); window.scrollTo(0, 0); }); });
+
+/* ---------- Resumen ---------- */
+function vDash(){
+  var now = new Date(), y = now.getFullYear(), m = now.getMonth();
+  var month = paidIn(y, m), prev = paidIn(m ? y : y - 1, m ? m - 1 : 11);
+  var waiting = db.orders.filter(function(o){ return o.status === 'datos_enviados'; });
+  var nuevos = db.orders.filter(function(o){ return o.status === 'nuevo'; });
+  var toShip = db.orders.filter(function(o){ return o.status === 'pagado'; });
+  var low = lowProducts(), out = low.filter(function(p){ return stockState(p) === 'out'; });
+  var newLeads = db.leads.filter(function(l){ return l.status === 'nuevo'; });
+  var next = upcoming()[0];
+  var diff = sum(prev) ? Math.round((sum(month) - sum(prev)) / sum(prev) * 100) : null;
+
+  var tasks = [];
+  nuevos.forEach(function(o){ var t = orderTotals(o); tasks.push(['', o.total == null && t.total == null ? 'Pon precio y envía el resumen a ' + esc(o.customer.name) : 'Envía el resumen a ' + esc(o.customer.name), o.code + ' · ' + fdate(o.date, true), 'order:' + o.code]); });
+  waiting.forEach(function(o){ var l = deadline(o); if(l != null && l <= 0) tasks.push(['bad', 'Plazo de pago vencido · ' + esc(o.customer.name), o.code + ' · ' + eur(o.total), 'order:' + o.code]); });
+  db.orders.filter(followReady).forEach(function(o){ tasks.push(['info', 'Pregunta qué tal a ' + esc(o.customer.name), o.code + ' · entregado ' + ago(o.deliveredAt), 'order:' + o.code]); });
+  toShip.forEach(function(o){ tasks.push(['ok', (o.pickup ? 'Preparar para recoger · ' : 'Enviar pedido pagado · ') + esc(o.customer.name), o.code, 'order:' + o.code]); });
+  out.forEach(function(p){ tasks.push(['bad', 'Agotado: ' + esc(p.name), 'Repón stock o desactívalo en la tienda', 'view:products']); });
+  low.filter(function(p){ return stockState(p) === 'low'; }).forEach(function(p){ tasks.push(['', 'Stock bajo: ' + esc(p.name), 'Quedan ' + p.stock + ' · mínimo ' + (p.minStock || 2), 'view:products']); });
+  db.products.filter(function(p){ return awaitingCount(p.id) && stockState(p) !== 'out' && p.active !== false; }).forEach(function(p){ tasks.push(['ok', '¡Ha vuelto ' + esc(p.name) + '! Avisa a ' + awaitingCount(p.id) + (awaitingCount(p.id) === 1 ? ' clienta' : ' clientas'), 'Desde Solicitudes · Avisos de stock', 'view:leads']); });
+  newLeads.filter(function(l){ return l.type !== 'aviso'; }).forEach(function(l){ tasks.push(['info', LEAD_T[l.type] + ': ' + esc(l.name), esc(courseName(l.courseId)) + ' · ' + fdate(l.date), 'view:leads']); });
+  upcoming().forEach(function(x){ var left = (+x.seats || 0) - (+x.booked || 0); if(left <= 1) tasks.push(['', (left <= 0 ? 'Completa: ' : 'Última plaza: ') + esc(courseName(x.courseId)), fdate(x.date), 'view:courses']); });
+
+  var bars = [], max = 0;
+  for(var i = 5; i >= 0; i--){ var dd = new Date(y, m - i, 1), v = sum(paidIn(dd.getFullYear(), dd.getMonth())); max = Math.max(max, v); bars.push([MONTHS[dd.getMonth()].slice(0, 3), v, i === 0]); }
+  var top = {};
+  db.orders.filter(function(o){ return PAID.indexOf(o.status) >= 0; }).forEach(function(o){ o.items.forEach(function(it){ top[it.name] = (top[it.name] || 0) + it.qty; }); });
+  var topL = Object.keys(top).sort(function(a, b){ return top[b] - top[a]; }).slice(0, 5);
+  var interest = {};
+  db.leads.filter(function(l){ return l.type === 'interes' && l.status !== 'descartada' && l.status !== 'pagada'; }).forEach(function(l){ interest[l.courseId] = (interest[l.courseId] || 0) + 1; });
+
+  return '<div class="head"><div><h2>Hola, Viky</h2><p>' + now.toLocaleDateString('es-ES', {weekday:'long', day:'numeric', month:'long'}) + '</p></div></div>' +
+    '<div class="kpis">' +
+      '<div class="kpi"><small>Ventas de ' + MONTHS[m] + '</small><strong>' + eur(sum(month)) + '</strong><span>' + month.length + ' pedidos' + (diff != null ? ' · ' + (diff >= 0 ? '+' : '') + diff + '% vs mes anterior' : '') + '</span></div>' +
+      '<button class="kpi" data-act="go-orders" data-f="datos_enviados"><small>Por cobrar</small><strong>' + eur(sum(waiting)) + '</strong><span>' + waiting.length + ' esperando transferencia</span></button>' +
+      '<button class="kpi" data-act="go-orders" data-f="nuevo"><small>Pedidos nuevos</small><strong>' + nuevos.length + '</strong><span>' + toShip.length + ' pagados por enviar</span></button>' +
+      '<button class="kpi' + (out.length ? ' kpi--alert' : '') + '" data-act="go" data-v="products"><small>Stock bajo</small><strong>' + low.length + '</strong><span>' + out.length + ' agotados</span></button>' +
+      (function(){ var r = db.orders.filter(function(o){ return o.rating; }); return r.length ? '<div class="kpi"><small>Satisfacción</small><strong>' + (r.reduce(function(a, o){ return a + o.rating; }, 0) / r.length).toFixed(1).replace('.', ',') + ' ★</strong><span>' + r.length + ' opiniones</span></div>' : ''; })() +
+      '<button class="kpi" data-act="go" data-v="leads"><small>Solicitudes nuevas</small><strong>' + newLeads.length + '</strong><span>reservas, interesadas y privadas</span></button>' +
+      '<button class="kpi" data-act="go" data-v="courses"><small>Próxima formación</small><strong style="font-size:1.6rem">' + (next ? fdate(next.date) : 'Sin fecha') + '</strong><span>' + (next ? esc(courseName(next.courseId)) + ' · ' + ((+next.seats || 0) - (+next.booked || 0)) + ' plazas libres' : 'Crea una convocatoria') + '</span></button>' +
+    '</div>' +
+    '<div class="cols"><div class="card"><h3>Pendiente</h3>' + (tasks.length ? tasks.slice(0, 10).map(function(t){ return '<div class="task"><i class="' + t[0] + '"></i><div><p>' + t[1] + '</p><small>' + t[2] + '</small></div><button class="btn btn--line btn--s" data-act="task" data-t="' + esc(t[3]) + '">Ver</button></div>'; }).join('') + (tasks.length > 10 ? '<p class="hint">Y ' + (tasks.length - 10) + ' avisos más en Pedidos, Productos y Solicitudes.</p>' : '') : '<p class="empty">Todo al día ✨</p>') + '</div>' +
+    '<div class="stack"><div class="card"><h3>Ventas · últimos 6 meses</h3><div class="bars">' + bars.map(function(b){ return '<div class="bar' + (b[2] ? ' is-now' : '') + '"><em>' + (b[1] ? Math.round(b[1]) + '€' : '') + '</em><span style="height:' + (max ? Math.max(2, b[1] / max * 100) : 2) + '%"></span><small>' + b[0] + '</small></div>'; }).join('') + '</div></div>' +
+    '<div class="card"><h3>Más vendidos</h3>' + (topL.length ? topL.map(function(n){ return '<div class="row"><span>' + esc(n) + '</span><b>' + top[n] + ' uds</b></div>'; }).join('') : '<p class="empty">Aún no hay ventas pagadas.</p>') + '</div>' +
+    '<div class="card"><h3>Interés por formación</h3>' + (Object.keys(interest).length ? Object.keys(interest).sort(function(a, b){ return interest[b] - interest[a]; }).map(function(k){ return '<div class="interest"><span><b>' + interest[k] + '</b>' + esc(courseName(k)) + '</span><button class="btn btn--line btn--s" data-act="new-session" data-c="' + esc(k) + '">Abrir fecha</button></div>'; }).join('') : '<p class="empty">Sin interesadas pendientes.</p>') + '</div></div></div>';
+}
+
+/* ---------- Pedidos ---------- */
+var STAGES = [
+  {k:'nuevo', t:'Nuevo pedido', hint:'Pon precio si hace falta y envía el resumen.', m:function(o){ return o.status === 'nuevo'; }},
+  {k:'datos_enviados', t:'Esperando pago', hint:'Resumen enviado. Tiene el plazo para transferir.', m:function(o){ return o.status === 'datos_enviados'; }},
+  {k:'pagado', t:'Pagado · preparar', hint:'Pago recibido. Prepara el pedido.', m:function(o){ return o.status === 'pagado'; }},
+  {k:'enviado', t:'Enviado', hint:'En camino. Márcalo cuando le llegue.', m:function(o){ return o.status === 'enviado'; }},
+  {k:'seguimiento', t:'¿Qué tal todo?', hint:'Pregúntale cómo le ha ido unos días después.', m:function(o){ return o.status === 'entregado' && o.followUp !== 'respondido' && !o.archived; }},
+  {k:'completado', t:'Completado', hint:'Pulsa «Ganado» para pasarla al histórico.', m:function(o){ return o.status === 'entregado' && o.followUp === 'respondido' && !o.archived; }}
+];
+function ago(iso){ if(!iso) return ''; var h = (Date.now() - new Date(iso).getTime()) / 3600e3; return h < 1 ? 'hace unos minutos' : h < 24 ? 'hace ' + Math.floor(h) + ' h' : 'hace ' + Math.floor(h / 24) + (Math.floor(h / 24) === 1 ? ' día' : ' días'); }
+function followDue(o){ var b = o.deliveredAt || o.paidAt || o.date; return new Date(b).getTime() + (+db.settings.followUpDays || 3) * 864e5; }
+function followReady(o){ return !o.archived && o.status === 'entregado' && (o.followUp || 'pendiente') === 'pendiente' && Date.now() >= followDue(o); }
+function followText(o){
+  var first = o.customer.name.split(' ')[0], s = db.settings;
+  var L = ['Hola ' + first + ' 💅 Soy Viky. ¿Qué tal ' + (o.pickup ? 'todo con' : 'te ha llegado') + ' tu pedido *' + o.code + '*?', '',
+    '¿Has podido probar ' + (o.items.length > 1 ? 'los productos' : '*' + o.items[0].name + '*') + '? Me encantaría saber qué te han parecido 😊', '',
+    'Y si tienes cualquier duda de uso o quieres un consejo, aquí estoy.'];
+  if(s.reviewUrl) L.push('', 'Si te ha gustado, me ayudarías muchísimo dejando tu opinión aquí 🙏', s.reviewUrl);
+  return L.join('\n');
+}
+function sendFollow(code){
+  var o = db.orders.find(function(x){ return x.code === code; }); if(!o) return;
+  window.open('https://wa.me/' + waPhone(o.customer.phone) + '?text=' + encodeURIComponent(followText(o)), '_blank');
+  call('upsert', {col:'orders', item:{code:code, followUp:'enviado', followUpAt:new Date().toISOString(), logEvent:'Pregunta de seguimiento enviada'}})
+    .then(loadAll).then(function(){ render(); toast('Seguimiento enviado'); });
+}
+function kCard(o, st){
+  var t = o.total != null ? o.total : orderTotals(o).total, n = o.items.reduce(function(a, i){ return a + i.qty; }, 0), info = '', cls = '', btn = '';
+  if(st === 'nuevo'){ info = 'Recibido ' + ago(o.date) + (t == null ? ' · falta precio' : ''); cls = t == null ? 'late' : '';
+    btn = t == null ? '<button class="btn btn--line btn--s" data-act="order" data-code="' + o.code + '">Poner precio</button>' : '<button class="btn btn--wa btn--s" data-act="send-summary" data-code="' + o.code + '">Enviar resumen</button>'; }
+  else if(st === 'datos_enviados'){ var l = deadline(o); if(l != null && l <= 0){ info = 'Plazo vencido'; cls = 'late'; } else if(l != null){ info = 'Quedan ' + Math.floor(l / 3600e3) + ' h ' + Math.floor(l % 3600e3 / 60000) + ' min'; }
+    btn = '<button class="btn btn--s" data-act="st" data-s="pagado" data-code="' + o.code + '">Pago recibido</button>'; }
+  else if(st === 'pagado'){ info = 'Pagado ' + ago(o.paidAt) + (o.pickup ? ' · recogida' : ''); cls = 'go';
+    btn = '<button class="btn btn--s" data-act="st" data-s="' + (o.pickup ? 'entregado' : 'enviado') + '" data-code="' + o.code + '">' + (o.pickup ? 'Entregado' : 'Marcar enviado') + '</button>'; }
+  else if(st === 'enviado'){ info = 'Enviado ' + ago(o.shippedAt);
+    btn = '<button class="btn btn--s" data-act="st" data-s="entregado" data-code="' + o.code + '">Le ha llegado</button>'; }
+  else if(st === 'seguimiento'){
+    if(o.followUp === 'enviado'){ info = 'Pregunta enviada ' + ago(o.followUpAt) + ' · esperando respuesta';
+      btn = '<button class="btn btn--line btn--s" data-act="order" data-code="' + o.code + '" data-feedback="1">Anotar su respuesta</button>'; }
+    else if(followReady(o)){ info = 'Lista para preguntar'; cls = 'go';
+      btn = '<button class="btn btn--wa btn--s" data-act="follow" data-code="' + o.code + '">Preguntar qué tal</button>'; }
+    else { info = 'Preguntar a partir del ' + fdate(new Date(followDue(o)).toISOString());
+      btn = '<button class="btn btn--line btn--s" data-act="follow" data-code="' + o.code + '">Preguntar ya</button>'; } }
+  else if(st === 'completado'){ info = (o.rating ? '<span class="stars">' + '★★★★★'.slice(0, o.rating) + '</span> ' : '') + (o.feedback ? '“' + esc(o.feedback.slice(0, 60)) + (o.feedback.length > 60 ? '…' : '') + '”' : 'Sin comentario');
+    btn = '<button class="btn btn--gold btn--s" data-act="won" data-code="' + o.code + '">Ganado 🎉</button>'; }
+  return '<div class="kc" draggable="true" data-kc="' + esc(o.code) + '" data-act="order" data-code="' + esc(o.code) + '">' +
+    '<div class="kc__top"><span class="kc__name">' + esc(o.customer.name) + '</span><span class="kc__tot">' + (t == null ? '—' : eur(t)) + '</span></div>' +
+    '<div class="kc__sub">' + esc(o.code) + ' · ' + n + ' uds</div>' +
+    (info ? '<div class="kc__info ' + cls + '">' + (st !== 'completado' ? '<i></i>' : '') + info + '</div>' : '') + btn + '</div>';
+}
+function vPipeline(){
+  var html = STAGES.map(function(sg){
+    var list = db.orders.filter(sg.m);
+    var total = list.reduce(function(a, o){ return a + (+o.total || 0); }, 0);
+    return '<div class="col" data-col="' + sg.k + '"><div class="col__h"><b>' + sg.t + '<span class="col__n">' + db.orders.filter(sg.m).length + '</span></b><span>' + (total ? eur(total) : '') + '</span></div>' +
+      '<p class="col__hint">' + sg.hint + '</p>' + list.map(function(o){ return kCard(o, sg.k); }).join('') + '</div>';
+  }).join('');
+  var canc = db.orders.filter(function(o){ return o.status === 'cancelado'; }).length;
+  return '<div class="kb" id="kb">' + html + '</div><p class="kb-foot">Arrastra las tarjetas para cambiar de etapa o usa el botón de cada una.' + (canc ? ' Hay ' + canc + ' pedidos cancelados en la vista de lista.' : '') + '</p>';
+}
+function vOrders(){
+  var nWon = db.orders.filter(function(o){ return o.archived; }).length;
+  var seg = '<div class="seg"><button class="' + (filt.ordersView === 'pipeline' ? 'is-on' : '') + '" data-act="ov" data-f="pipeline">Pipeline</button><button class="' + (filt.ordersView === 'lista' ? 'is-on' : '') + '" data-act="ov" data-f="lista">Lista</button><button class="' + (filt.ordersView === 'historico' ? 'is-on' : '') + '" data-act="ov" data-f="historico">Histórico' + (nWon ? ' · ' + nWon : '') + '</button></div>';
+  if(filt.ordersView === 'historico') return vHistory(seg);
+  if(filt.ordersView === 'pipeline')
+    return '<div class="head"><div><h2>Pedidos</h2><p>Del pedido a la venta, el envío y su opinión.</p></div><div class="head__act">' + seg + '<button class="btn" data-act="new-order">+ Pedido manual</button><button class="btn btn--line" data-act="csv">Exportar CSV</button></div></div>' + vPipeline();
+  return vOrdersList(seg);
+}
+function vHistory(seg){
+  var all = db.orders.filter(function(o){ return o.archived; }).sort(function(a, b){ return new Date(b.archivedAt || b.date) - new Date(a.archivedAt || a.date); });
+  var months = []; all.forEach(function(o){ var d = new Date(o.archivedAt || o.date), k = d.getFullYear() + '-' + d.getMonth(); if(months.indexOf(k) < 0) months.push(k); });
+  var list = all.filter(function(o){ if(!filt.hm) return true; var d = new Date(o.archivedAt || o.date); return d.getFullYear() + '-' + d.getMonth() === filt.hm; });
+  var q = filt.q.toLowerCase(); if(q) list = list.filter(function(o){ return (o.code + ' ' + o.customer.name).toLowerCase().indexOf(q) >= 0; });
+  var tot = sum(list), rated = list.filter(function(o){ return o.rating; });
+  return '<div class="head"><div><h2>Pedidos</h2><p>Histórico de ventas ganadas.</p></div><div class="head__act">' + seg + '<button class="btn" data-act="new-order">+ Pedido manual</button><button class="btn btn--line" data-act="csv">Exportar CSV</button></div></div>' +
+    '<div class="kpis"><div class="kpi"><small>Ventas ganadas</small><strong>' + list.length + '</strong><span>' + (filt.hm ? 'en el mes elegido' : 'en total') + '</span></div>' +
+    '<div class="kpi"><small>Facturado</small><strong>' + eur(tot) + '</strong><span>pedidos cerrados</span></div>' +
+    '<div class="kpi"><small>Ticket medio</small><strong>' + eur(list.length ? tot / list.length : 0) + '</strong><span>por pedido</span></div>' +
+    '<div class="kpi"><small>Valoración media</small><strong>' + (rated.length ? (rated.reduce(function(a, o){ return a + o.rating; }, 0) / rated.length).toFixed(1).replace('.', ',') + ' ★' : '—') + '</strong><span>' + rated.length + ' opiniones</span></div></div>' +
+    '<div class="tools"><input class="in" data-act="q" placeholder="Buscar código o clienta" value="' + esc(filt.q) + '"><select class="sel" data-act="hm"><option value="">Todos los meses</option>' +
+      months.map(function(k){ var p = k.split('-'); return '<option value="' + k + '"' + (filt.hm === k ? ' selected' : '') + '>' + MONTHS[+p[1]].charAt(0).toUpperCase() + MONTHS[+p[1]].slice(1) + ' ' + p[0] + '</option>'; }).join('') + '</select></div>' +
+    (list.length ? '<table class="tbl"><thead><tr><th>Ganada</th><th>Pedido</th><th>Clienta</th><th>Artículos</th><th class="num">Total</th><th>Opinión</th><th></th></tr></thead><tbody>' +
+      list.map(function(o){ var n = o.items.reduce(function(a, i){ return a + i.qty; }, 0);
+        return '<tr class="click" data-act="order" data-code="' + esc(o.code) + '"><td data-l="Ganada">' + fdate(o.archivedAt || o.date) + '</td><td data-l="Pedido"><span class="t-name">' + esc(o.code) + '</span></td>' +
+          '<td data-l="Clienta">' + esc(o.customer.name) + '</td><td data-l="Artículos">' + n + ' uds</td><td data-l="Total" class="num">' + eur(o.total) + '</td>' +
+          '<td data-l="Opinión">' + (o.rating ? '<span class="stars">' + '★★★★★'.slice(0, o.rating) + '</span>' : '—') + (o.feedback ? '<div class="t-sub">“' + esc(o.feedback.slice(0, 50)) + (o.feedback.length > 50 ? '…' : '') + '”</div>' : '') + '</td>' +
+          '<td data-l=""><button class="btn btn--line btn--s" data-act="unwon" data-code="' + esc(o.code) + '">Volver al pipeline</button></td></tr>'; }).join('') + '</tbody></table>'
+      : '<div class="card"><p class="empty">Aún no hay ventas en el histórico. Pulsa «Ganado 🎉» en la columna Completado del pipeline.</p></div>');
+}
+function markWon(code, btn){
+  var card = btn && btn.closest('.kc');
+  if(card){ var r = card.getBoundingClientRect(); confetti(r.left + r.width / 2, r.top + r.height / 2); card.style.transition = 'transform .5s cubic-bezier(.5,0,.75,0), opacity .5s'; card.style.transform = 'translateY(-14px) scale(.92)'; card.style.opacity = '0'; }
+  else confetti();
+  call('upsert', {col:'orders', item:{code:code, archived:true, archivedAt:new Date().toISOString(), logEvent:'Venta ganada · pasada al histórico'}})
+    .then(loadAll).then(function(){ setTimeout(function(){ closePanel(); render(); toast('¡Venta ganada! 🎉 Guardada en el histórico'); }, card ? 450 : 0); })
+    .catch(function(){ toast('No se pudo guardar'); render(); });
+}
+function unWon(code){
+  call('upsert', {col:'orders', item:{code:code, archived:false, archivedAt:null, logEvent:'Devuelta al pipeline'}}).then(loadAll).then(function(){ render(); toast('Devuelta al pipeline'); });
+}
+/* Confeti con los colores de la marca */
+function confetti(x, y){
+  if(window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  var cv = document.createElement('canvas'), ctx = cv.getContext('2d'), dpr = Math.min(2, window.devicePixelRatio || 1);
+  cv.style.cssText = 'position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:70';
+  cv.width = innerWidth * dpr; cv.height = innerHeight * dpr; ctx.scale(dpr, dpr); document.body.appendChild(cv);
+  var cols = ['#B8945A', '#D9B8AE', '#E8D4BE', '#C9AD96', '#2B211D', '#F3E3C8'];
+  var ox = x == null ? innerWidth / 2 : x, oy = y == null ? innerHeight / 2 : y, P = [];
+  for(var i = 0; i < 160; i++){
+    var a = -Math.PI / 2 + (Math.random() - .5) * Math.PI * 1.3, v = 7 + Math.random() * 9;
+    P.push({x:ox, y:oy, vx:Math.cos(a) * v, vy:Math.sin(a) * v - 2, w:5 + Math.random() * 6, h:8 + Math.random() * 8, r:Math.random() * 6.28, vr:(Math.random() - .5) * .35,
+      c:cols[i % cols.length], shape:Math.random() < .25 ? 'c' : 'r', life:0});
+  }
+  for(var j = 0; j < 70; j++) P.push({x:Math.random() * innerWidth, y:-20 - Math.random() * 200, vx:(Math.random() - .5) * 2, vy:2 + Math.random() * 3, w:5 + Math.random() * 5, h:8 + Math.random() * 7,
+    r:Math.random() * 6.28, vr:(Math.random() - .5) * .3, c:cols[j % cols.length], shape:'r', life:0});
+  var t0 = performance.now();
+  (function tick(t){
+    var el = t - t0; ctx.clearRect(0, 0, innerWidth, innerHeight);
+    P.forEach(function(p){
+      p.vy += .22; p.vx *= .99; p.vy *= .99; p.x += p.vx; p.y += p.vy; p.r += p.vr;
+      ctx.save(); ctx.globalAlpha = Math.max(0, 1 - Math.max(0, el - 1800) / 900); ctx.translate(p.x, p.y); ctx.rotate(p.r); ctx.fillStyle = p.c;
+      if(p.shape === 'c'){ ctx.beginPath(); ctx.arc(0, 0, p.w / 2, 0, 6.28); ctx.fill(); } else { ctx.scale(1, Math.cos(p.r * 2)); ctx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h); }
+      ctx.restore();
+    });
+    if(el < 2700) requestAnimationFrame(tick); else cv.remove();
+  })(t0);
+}
+function vOrdersList(seg){
+  var groups = {activos:function(o){ return ['nuevo','datos_enviados','pagado','enviado'].indexOf(o.status) >= 0; }, nuevo:function(o){ return o.status === 'nuevo'; },
+    datos_enviados:function(o){ return o.status === 'datos_enviados'; }, pagado:function(o){ return o.status === 'pagado'; }, enviado:function(o){ return o.status === 'enviado'; },
+    entregado:function(o){ return o.status === 'entregado'; }, cancelado:function(o){ return o.status === 'cancelado'; }, todos:function(){ return true; }};
+  var names = {activos:'En curso', nuevo:'Nuevos', datos_enviados:'Esperando pago', pagado:'Pagados', enviado:'Enviados', entregado:'Finalizados', cancelado:'Cancelados', todos:'Todos'};
+  var q = filt.q.toLowerCase();
+  var list = db.orders.filter(groups[filt.orders]).filter(function(o){ return !q || (o.code + ' ' + o.customer.name + ' ' + o.customer.phone + ' ' + o.customer.email).toLowerCase().indexOf(q) >= 0; });
+  return '<div class="head"><div><h2>Pedidos</h2><p>Presupuestos, cobros y ventas finalizadas.</p></div><div class="head__act">' + seg + '<button class="btn" data-act="new-order">+ Pedido manual</button><button class="btn btn--line" data-act="csv">Exportar CSV</button></div></div>' +
+    '<div class="tools">' + Object.keys(groups).map(function(k){ return '<button class="chip' + (filt.orders === k ? ' is-on' : '') + '" data-act="fo" data-f="' + k + '">' + names[k] + '<b>' + db.orders.filter(groups[k]).length + '</b></button>'; }).join('') +
+    '<input class="in" data-act="q" placeholder="Buscar código o clienta" value="' + esc(filt.q) + '"></div>' +
+    (list.length ? '<table class="tbl"><thead><tr><th>Pedido</th><th>Clienta</th><th>Artículos</th><th class="num">Total</th><th>Estado</th></tr></thead><tbody>' +
+      list.map(function(o){ var n = o.items.reduce(function(s, i){ return s + i.qty; }, 0), t = o.total != null ? o.total : orderTotals(o).total;
+        return '<tr class="click" data-act="order" data-code="' + esc(o.code) + '"><td data-l="Pedido"><span class="t-name">' + esc(o.code) + '</span><div class="t-sub">' + fdate(o.date, true) + '</div></td>' +
+          '<td data-l="Clienta">' + esc(o.customer.name) + '<div class="t-sub">' + (o.pickup ? 'Recogida' : esc(o.customer.city)) + '</div></td><td data-l="Artículos">' + n + ' uds</td>' +
+          '<td data-l="Total" class="num">' + (t == null ? '<span class="pill p-low">Presupuesto</span>' : eur(t)) + '</td><td data-l="Estado"><span class="pill p-' + o.status + '">' + ST[o.status] + '</span>' + dueTxt(o) + '</td></tr>'; }).join('') + '</tbody></table>'
+      : '<div class="card"><p class="empty">No hay pedidos en esta vista.</p></div>');
+}
+function buyerText(o){
+  var s = db.settings, t = orderTotals(o), first = o.customer.name.split(' ')[0];
+  var L = ['Hola ' + first + ' 💅 Soy Viky. ¡Gracias por tu pedido! Aquí tienes el resumen:', '', '*Pedido ' + o.code + '*', ''];
+  o.items.forEach(function(i){ L.push('• ' + i.qty + ' × ' + i.name + (i.price != null && i.price !== '' ? ' — ' + eur(i.price * i.qty) : '')); });
+  L.push('');
+  if(t.sub != null) L.push('Subtotal: ' + eur(t.sub));
+  L.push(o.pickup ? 'Entrega: recogida en ' + s.pickup : 'Envío: ' + (t.ship == null ? 'a confirmar' : t.ship === 0 ? 'gratis' : eur(t.ship)));
+  L.push('*Total: ' + eur(t.total) + '*', '');
+  if(!o.pickup && o.customer.addr) L.push('📦 Envío a: ' + o.customer.addr + ', ' + o.customer.zip + ' ' + o.customer.city, '');
+  L.push('*Para confirmar tu compra*', 'Haz la transferencia en las próximas *' + s.payHours + ' h* desde este mensaje, con el concepto *' + o.code + '*, y envíame el justificante por aquí. Si tu banco lo permite, mejor transferencia inmediata.',
+    'Si no se recibe el pago en ese plazo, el pedido se anula.', '');
+  if(s.iban) L.push('*Datos para la transferencia*', 'Titular: ' + s.holder, 'IBAN: ' + s.iban, 'Concepto: ' + o.code);
+  else L.push('Te paso los datos bancarios 👇');
+  return L.join('\n');
+}
+function openOrder(code){
+  var o = db.orders.find(function(x){ return x.code === code; }); if(!o) return;
+  var t = orderTotals(o), edit = ['nuevo','datos_enviados'].indexOf(o.status) >= 0, c = o.customer;
+  $('#pHead').innerHTML = '<p class="t-sub">' + fdate(o.date, true) + '</p><h3>' + esc(o.code) + '</h3><span class="pill p-' + o.status + '">' + (o.archived ? 'Ganada · histórico' : ST[o.status]) + '</span>' + dueTxt(o);
+  $('#pBody').innerHTML =
+    '<div class="sec"><p class="lbl">Clienta</p><div class="box"><b>' + esc(c.name) + '</b><div class="t-sub" style="margin-top:4px">' +
+      '<a href="tel:' + esc(c.phone) + '">' + esc(c.phone) + '</a> · <a href="mailto:' + esc(c.email) + '">' + esc(c.email) + '</a><br>' +
+      (o.pickup ? 'Recogida en ' + esc(db.settings.pickup) : esc(c.addr) + ', ' + esc(c.zip) + ' ' + esc(c.city)) + (c.notes ? '<br>📝 ' + esc(c.notes) : '') + '</div>' +
+      '<a class="btn btn--line btn--s" style="margin-top:10px" target="_blank" rel="noopener" href="https://wa.me/' + waPhone(c.phone) + '">Abrir chat de WhatsApp</a></div></div>' +
+    '<div class="sec"><p class="lbl">Artículos' + (edit ? ' · edita precios para crear el presupuesto' : '') + '</p><div class="box">' +
+      o.items.map(function(i, k){ return '<div class="line"><span>' + esc(i.name) + '<div class="t-sub">' + esc(i.cat || '') + '</div></span>' +
+        (edit ? '<input class="in" type="number" min="1" data-oi="' + k + '" data-f="qty" value="' + i.qty + '"><input class="in" type="number" step="0.01" min="0" placeholder="€/ud" data-oi="' + k + '" data-f="price" value="' + (i.price == null ? '' : i.price) + '">'
+              : '<span>' + i.qty + ' uds</span><span>' + eur(i.price) + '</span>') +
+        '<span class="num">' + (i.price == null || i.price === '' ? '—' : eur(i.price * i.qty)) + '</span></div>'; }).join('') +
+      '<div class="row" style="margin-top:8px"><span>Subtotal</span><b>' + eur(t.sub) + '</b></div>' +
+      '<div class="row"><span>' + (o.pickup ? 'Recogida' : 'Envío') + '</span>' + (edit && !o.pickup ? '<input class="in in--s" type="number" step="0.01" min="0" data-of="shipping" value="' + (o.shipping == null ? '' : o.shipping) + '">' : '<b>' + (o.pickup ? 'Gratis' : eur(t.ship)) + '</b>') + '</div>' +
+      '<div class="row row--t"><span>Total</span><span>' + eur(t.total) + '</span></div>' +
+      (t.total == null && edit ? '<p class="warnbox">Completa los precios' + (o.pickup ? '' : ' y el envío') + ' para poder enviar el resumen con el importe.</p>' : '') + '</div></div>' +
+    (o.status === 'entregado' ? '<div class="sec" id="fbSec"><p class="lbl">Seguimiento · ¿qué tal todo?</p><div class="box">' +
+      '<p class="t-sub" style="margin-bottom:8px">' + (o.followUp === 'respondido' ? 'Opinión registrada' : o.followUp === 'enviado' ? 'Pregunta enviada ' + ago(o.followUpAt) : followReady(o) ? 'Ya puedes preguntarle cómo le ha ido' : 'Pregúntale a partir del ' + fdate(new Date(followDue(o)).toISOString())) + '</p>' +
+      '<div class="rate" id="fbRate" data-v="' + (o.rating || 0) + '">' + [1,2,3,4,5].map(function(n){ return '<button type="button" data-r="' + n + '" class="' + ((o.rating || 0) >= n ? 'on' : '') + '" aria-label="' + n + ' estrellas">★</button>'; }).join('') + '</div>' +
+      '<textarea class="ta" id="fbText" style="margin-top:10px" placeholder="¿Qué te ha dicho? (su opinión, si quiere repetir, dudas…)">' + esc(o.feedback || '') + '</textarea>' +
+      '<div class="head__act" style="margin-top:10px">' + (o.followUp !== 'respondido' ? '<button class="btn btn--wa btn--s" data-act="follow" data-code="' + o.code + '">' + (o.followUp === 'enviado' ? 'Volver a preguntar' : 'Preguntar qué tal') + '</button>' : '') +
+      '<button class="btn btn--s" data-act="save-feedback" data-code="' + o.code + '">' + (o.followUp === 'respondido' ? 'Actualizar opinión' : 'Guardar su respuesta') + '</button></div></div></div>' : '') +
+    '<div class="sec"><p class="lbl">Notas internas</p><textarea class="ta" data-of="notes" placeholder="Solo las ves tú">' + esc(o.notes || '') + '</textarea></div>' +
+    '<div class="sec"><p class="lbl">Historial</p><ul class="hist">' + (o.history || []).map(function(h){ return '<li>' + fdate(h.t, true) + ' — ' + esc(h.e) + '</li>'; }).join('') + '</ul></div>';
+  var f = [];
+  if(edit) f.push('<button class="btn btn--wa" data-act="send-summary" data-code="' + o.code + '"' + (t.total == null ? ' disabled' : '') + '>' + (o.status === 'nuevo' ? 'Enviar resumen por WhatsApp' : 'Reenviar resumen') + '</button>');
+  if(edit) f.push('<button class="btn" data-act="st" data-s="pagado" data-code="' + o.code + '">Pago recibido</button>');
+  if(o.status === 'pagado') f.push('<button class="btn" data-act="st" data-s="' + (o.pickup ? 'entregado' : 'enviado') + '" data-code="' + o.code + '">' + (o.pickup ? 'Entregado · finalizar' : 'Marcar enviado') + '</button>');
+  if(o.status === 'enviado') f.push('<button class="btn" data-act="st" data-s="entregado" data-code="' + o.code + '">Finalizar venta</button>');
+  if(o.status !== 'cancelado' && o.status !== 'entregado') f.push('<button class="btn btn--bad" data-act="st" data-s="cancelado" data-code="' + o.code + '">Cancelar' + (o.stockApplied ? ' y reponer stock' : '') + '</button>');
+  if(o.status === 'cancelado') f.push('<button class="btn btn--line" data-act="st" data-s="nuevo" data-code="' + o.code + '">Reactivar pedido</button>');
+  if(o.status === 'entregado' && o.followUp === 'respondido' && !o.archived) f.unshift('<button class="btn btn--gold" data-act="won" data-code="' + o.code + '">Ganado 🎉 · pasar al histórico</button>');
+  if(o.archived) f.unshift('<button class="btn btn--line" data-act="unwon" data-code="' + o.code + '">Volver al pipeline</button>');
+  $('#pFoot').innerHTML = f.join('');
+  openPanel();
+  var timer;
+  $('#pBody').onclick = function(e){
+    var r = e.target.closest('#fbRate [data-r]'); if(!r) return;
+    var v = +r.getAttribute('data-r'); $('#fbRate').setAttribute('data-v', v);
+    $$('#fbRate button').forEach(function(b){ b.classList.toggle('on', +b.getAttribute('data-r') <= v); });
+  };
+  $('#pBody').oninput = function(e){
+    var el = e.target; if(el.id === 'fbText') return;
+    if(el.hasAttribute('data-oi')){ var it = o.items[+el.getAttribute('data-oi')]; if(el.getAttribute('data-f') === 'qty') it.qty = Math.max(1, intOrNull(el.value) || 1); else it.price = numOrNull(el.value); }
+    else if(el.getAttribute('data-of') === 'shipping') o.shipping = numOrNull(el.value);
+    else if(el.getAttribute('data-of') === 'notes') o.notes = el.value;
+    clearTimeout(timer);
+    timer = setTimeout(function(){
+      var tt = orderTotals(o); o.subtotal = tt.sub; o.total = tt.total;
+      call('upsert', {col:'orders', item:{code:o.code, items:o.items, shipping:o.shipping, subtotal:o.subtotal, total:o.total, notes:o.notes}}).then(function(){
+        if(el.getAttribute('data-of') !== 'notes'){ var pos = $('#pBody').scrollTop; openOrder(o.code); $('#pBody').scrollTop = pos; }
+        badges();
+      }).catch(function(){ toast('No se pudo guardar'); });
+    }, el.tagName === 'TEXTAREA' ? 700 : 500);
+  };
+}
+function saveFeedback(code){
+  var v = +($('#fbRate').getAttribute('data-v') || 0), txt = $('#fbText').value.trim();
+  call('upsert', {col:'orders', item:{code:code, followUp:'respondido', rating:v || null, feedback:txt, logEvent:'Opinión registrada' + (v ? ' · ' + v + '★' : '')}})
+    .then(loadAll).then(function(){ render(); openOrder(code); toast('Opinión guardada'); }).catch(function(){ toast('No se pudo guardar'); });
+}
+function setStatus(code, s, ok){
+  var ord = db.orders.find(function(x){ return x.code === code; });
+  if(!ok && ord && s === 'cancelado') return askConfirm({title:'¿Cancelar este pedido?', danger:true, ok:'Sí, cancelar',
+    text:'Se cancelará el pedido <b>' + esc(code) + '</b> de ' + esc(ord.customer.name) + '.' + (ord.stockApplied ? ' Se repondrá el stock de sus productos.' : '')}).then(function(y){ if(y) setStatus(code, s, true); });
+  if(!ok && ord && s === 'pagado' && ord.status !== 'pagado') return askConfirm({title:'¿Has recibido el pago?', ok:'Sí, pago recibido',
+    text:'Se marcará <b>' + esc(code) + '</b> como pagado (' + eur(ord.total) + ') y se descontará el stock de sus productos.'}).then(function(y){ if(y) setStatus(code, s, true); });
+  call('order_status', {code:code, status:s}).then(function(j){
+    var i = db.orders.findIndex(function(o){ return o.code === code; }); db.orders[i] = j.order;
+    return loadAll().then(function(){
+      if(j.low && j.low.length) toast('⚠️ Stock bajo: ' + j.low.map(function(p){ return p.name; }).join(', '));
+      else toast(ST[s]);
+      var wasOpen = $('#panel').classList.contains('on'); render(); if(wasOpen) openOrder(code);
+    });
+  }).catch(function(){ toast('No se pudo actualizar'); });
+}
+
+/* ---------- Pedido manual ---------- */
+var mo = null;
+function moSub(){ var unk = mo.items.some(function(i){ return i.price == null; }); return unk ? null : +mo.items.reduce(function(a, i){ return a + i.price * i.qty; }, 0).toFixed(2); }
+function moShipDefault(){
+  var t = moSub(), st = db.settings;
+  if(mo.pickup) return 0;
+  if(t != null && st.freeShippingFrom != null && st.freeShippingFrom !== '' && t >= +st.freeShippingFrom) return 0;
+  return st.shippingCost == null || st.shippingCost === '' ? '' : +st.shippingCost;
+}
+function moTotals(){
+  if(!mo.shipTouched || mo.pickup) $('#moShip').value = mo.pickup ? 0 : moShipDefault();
+  $('#moShip').disabled = mo.pickup;
+  var sub = moSub(), ship = mo.pickup ? 0 : numOrNull($('#moShip').value);
+  $('#moTot').innerHTML = '<div class="row"><span>Subtotal</span><b>' + eur(sub) + '</b></div><div class="row row--t"><span>Total</span><span>' + (sub == null || ship == null ? '<span class="t-sub">Presupuesto: faltan precios</span>' : eur(sub + ship)) + '</span></div>';
+}
+function moLines(){
+  $('#moLines').innerHTML = mo.items.length ? mo.items.map(function(i, k){
+    return '<div class="line"><span>' + (i.id ? esc(i.name) + '<div class="t-sub">' + esc(i.cat || '') + '</div>' : '<input class="in" data-mi="' + k + '" data-f="name" value="' + esc(i.name) + '" placeholder="Descripción (ej. Kit de formación)">') + '</span>' +
+      '<input class="in" type="number" min="1" data-mi="' + k + '" data-f="qty" value="' + i.qty + '"><input class="in" type="number" step="0.01" min="0" placeholder="€/ud" data-mi="' + k + '" data-f="price" value="' + (i.price == null ? '' : i.price) + '">' +
+      '<span class="num"><button type="button" class="lnk" data-act="mo-rm" data-i="' + k + '">Quitar</button></span></div>'; }).join('') : '<p class="empty">Añade productos del catálogo o una línea libre.</p>';
+  moTotals();
+}
+function editNewOrder(){
+  var today = new Date().toISOString().slice(0, 10), cats = [];
+  db.products.forEach(function(p){ if(p.active !== false && cats.indexOf(p.cat) < 0) cats.push(p.cat); });
+  mo = {items:[], pickup:false, shipTouched:false};
+  $('#pHead').innerHTML = '<h3>Pedido manual</h3><p class="t-sub">Para pedidos que llegan por WhatsApp, en persona o ventas pasadas.</p>';
+  $('#pBody').innerHTML = '<div class="grid2"><div class="f"><label class="lbl">Fecha del pedido</label><input class="in" id="moDate" type="date" value="' + today + '" max="' + today + '"></div>' +
+    '<div class="f"><label class="lbl">Estado</label><select class="sel" id="moStatus"><option value="nuevo">Nuevo pedido</option><option value="datos_enviados">Esperando pago</option><option value="pagado">Pagado</option><option value="enviado">Enviado</option><option value="entregado">Entregado · finalizado</option></select></div></div>' +
+    '<div class="f"><label class="lbl">Nombre y apellidos</label><input class="in" id="moName" autocomplete="off"></div>' +
+    '<div class="grid2"><div class="f"><label class="lbl">Teléfono</label><input class="in" id="moPhone" type="tel"></div><div class="f"><label class="lbl">Email (opcional)</label><input class="in" id="moEmail" type="email"></div></div>' +
+    '<div class="f"><label class="lbl">Entrega</label><div class="seg"><button type="button" class="is-on" data-act="mo-ship" data-v="envio">Envío a domicilio</button><button type="button" data-act="mo-ship" data-v="recogida">Recogida</button></div></div>' +
+    '<div id="moAddr"><div class="f"><label class="lbl">Dirección</label><input class="in" id="moStreet"></div><div class="grid2"><div class="f"><label class="lbl">Ciudad</label><input class="in" id="moCity"></div><div class="f"><label class="lbl">Código postal</label><input class="in" id="moZip" inputmode="numeric" maxlength="5"></div></div></div>' +
+    '<div class="sec"><p class="lbl">Productos</p><div class="box" id="moLines"></div>' +
+    '<div class="head__act" style="margin-top:10px"><select class="sel" id="moPick" style="flex:1;min-width:200px"><option value="">+ Añadir del catálogo…</option>' + cats.map(function(c){ return '<optgroup label="' + esc(c) + '">' + db.products.filter(function(p){ return p.active !== false && p.cat === c; }).map(function(p){ return '<option value="' + esc(p.id) + '">' + esc(p.name) + (p.price != null ? ' · ' + eur(p.price) : '') + '</option>'; }).join('') + '</optgroup>'; }).join('') + '</select>' +
+    '<button type="button" class="btn btn--line btn--s" data-act="mo-free">+ Línea libre</button></div></div>' +
+    '<div class="f sec"><label class="lbl">Envío (€)</label><input class="in" id="moShip" type="number" step="0.01" min="0" style="max-width:140px"><p class="hint">Se calcula con tus reglas de envío; puedes cambiarlo.</p></div>' +
+    '<div class="box" id="moTot"></div>' +
+    '<label class="f sec" style="display:flex;gap:10px;align-items:flex-start"><input type="checkbox" id="moNoStock" style="margin-top:3px"><span>No descontar del stock <span class="t-sub">(para ventas antiguas que ya están reflejadas en tu inventario)</span></span></label>' +
+    '<div class="f"><label class="lbl">Notas internas</label><textarea class="ta" id="moNotes"></textarea></div>';
+  $('#pFoot').innerHTML = '<button class="btn" data-act="save-order">Crear pedido</button>';
+  $('#pBody').oninput = function(e){
+    var el = e.target;
+    if(el.hasAttribute('data-mi')){ var it = mo.items[+el.getAttribute('data-mi')], f = el.getAttribute('data-f'); if(f === 'qty') it.qty = Math.max(1, intOrNull(el.value) || 1); else if(f === 'price') it.price = numOrNull(el.value); else it.name = el.value; moTotals(); }
+    else if(el.id === 'moShip'){ mo.shipTouched = true; moTotals(); }
+  };
+  $('#pBody').onchange = function(e){
+    if(e.target.id !== 'moPick' || !e.target.value) return;
+    var pr = db.products.find(function(x){ return x.id === e.target.value; }), ex = mo.items.find(function(i){ return i.id === pr.id; });
+    if(ex) ex.qty++; else mo.items.push({id:pr.id, name:pr.name, cat:pr.cat, qty:1, price:pr.price == null ? null : pr.price});
+    e.target.value = ''; moLines();
+  };
+  moLines(); openPanel();
+}
+function saveNewOrder(){
+  var name = $('#moName').value.trim(), phone = $('#moPhone').value.trim();
+  if(!name){ toast('Pon el nombre de la clienta'); return; }
+  if(!mo.items.length || mo.items.some(function(i){ return !i.name.trim(); })){ toast('Añade al menos un producto con descripción'); return; }
+  if(!mo.pickup && (!$('#moStreet').value.trim() || !$('#moCity').value.trim() || !$('#moZip').value.trim())){ toast('Faltan los datos de envío (o elige Recogida)'); return; }
+  var body = {date:$('#moDate').value, status:$('#moStatus').value, pickup:mo.pickup, noStock:$('#moNoStock').checked, shipping:mo.pickup ? 0 : numOrNull($('#moShip').value), notes:$('#moNotes').value.trim(), items:mo.items,
+    customer:{name:name, phone:phone, email:$('#moEmail').value.trim(), addr:mo.pickup ? '' : $('#moStreet').value.trim(), city:mo.pickup ? '' : $('#moCity').value.trim(), zip:mo.pickup ? '' : $('#moZip').value.trim(), notes:''}};
+  call('order_create', body).then(function(j){
+    return loadAll().then(function(){ closePanel(); view = 'orders'; filt.ordersView = 'pipeline'; render(); toast('Pedido ' + j.order.code + ' creado'); if(j.low && j.low.length) setTimeout(function(){ toast('⚠️ Stock bajo: ' + j.low.map(function(p){ return p.name; }).join(', ')); }, 2600); });
+  }).catch(function(){ toast('No se pudo crear el pedido'); });
+}
+
+/* ---------- Solicitud manual ---------- */
+function nlSessions(){
+  var cid = $('#nlCourse').value, t = $('#nlType').value;
+  $('#nlSesWrap').hidden = t !== 'reserva';
+  var list = upcoming().filter(function(x){ return x.courseId === cid; });
+  $('#nlSession').innerHTML = '<option value="">Sin fecha asignada</option>' + list.map(function(x){ return '<option value="' + esc(x.id) + '">' + sesRange(x) + ' · ' + ((+x.seats || 0) - (+x.booked || 0)) + ' libres</option>'; }).join('');
+}
+function editNewLead(){
+  $('#pHead').innerHTML = '<h3>Nueva solicitud</h3><p class="t-sub">Para alguien que te escribe por WhatsApp, Instagram o en persona.</p>';
+  $('#pBody').innerHTML = '<div class="grid2"><div class="f"><label class="lbl">Tipo</label><select class="sel" id="nlType"><option value="reserva">Pre-reserva de plaza</option><option value="interes">Interesada en próximas fechas</option><option value="privada">Clase privada</option></select></div>' +
+    '<div class="f"><label class="lbl">Formación</label><select class="sel" id="nlCourse">' + db.courses.map(function(c){ return '<option value="' + esc(c.id) + '">' + esc(c.name) + '</option>'; }).join('') + '</select></div></div>' +
+    '<div class="f" id="nlSesWrap"><label class="lbl">Convocatoria</label><select class="sel" id="nlSession"></select></div>' +
+    '<div class="f"><label class="lbl">Nombre y apellidos</label><input class="in" id="nlName"></div>' +
+    '<div class="grid2"><div class="f"><label class="lbl">Teléfono</label><input class="in" id="nlPhone" type="tel"></div><div class="f"><label class="lbl">Email (opcional)</label><input class="in" id="nlEmail" type="email"></div></div>' +
+    '<div class="grid2"><div class="f"><label class="lbl">Disponibilidad</label><input class="in" id="nlAvail" placeholder="Tardes, fines de semana…"></div><div class="f"><label class="lbl">Mes preferido</label><input class="in" id="nlMonth" placeholder="Noviembre"></div></div>' +
+    '<div class="f"><label class="lbl">Lo que te ha contado</label><textarea class="ta" id="nlMsg"></textarea></div>' +
+    '<div class="f"><label class="lbl">Estado</label><select class="sel" id="nlStatus">' + Object.keys(LEAD_S).map(function(k){ return '<option value="' + k + '">' + LEAD_S[k] + '</option>'; }).join('') + '</select><p class="hint">Si la pones como «Pagada» y tiene convocatoria, ocupa una plaza.</p></div>' +
+    '<div class="f"><label class="lbl">Notas internas</label><textarea class="ta" id="nlNotes"></textarea></div>';
+  $('#pFoot').innerHTML = '<button class="btn" data-act="save-lead-new">Guardar solicitud</button>';
+  $('#pBody').onchange = function(e){ if(e.target.id === 'nlCourse' || e.target.id === 'nlType') nlSessions(); };
+  $('#pBody').oninput = null; nlSessions(); openPanel();
+}
+function saveNewLead(){
+  var name = $('#nlName').value.trim(), phone = $('#nlPhone').value.trim();
+  if(!name || !phone){ toast('Pon el nombre y el teléfono'); return; }
+  var type = $('#nlType').value, sid = type === 'reserva' ? $('#nlSession').value : '', ses = sid ? db.sessions.find(function(x){ return x.id === sid; }) : null;
+  var item = {id:uid('L'), date:new Date().toISOString(), type:type, status:$('#nlStatus').value, courseId:$('#nlCourse').value, course:courseName($('#nlCourse').value), sessionId:sid,
+    session:ses ? sesRange(ses) + (ses.time ? ' · ' + ses.time : '') : '', name:name, phone:phone, email:$('#nlEmail').value.trim(), availability:$('#nlAvail').value.trim(), month:$('#nlMonth').value.trim(), msg:$('#nlMsg').value.trim(), notes:$('#nlNotes').value.trim(), manual:true};
+  call('upsert', {col:'leads', item:item}).then(loadAll).then(function(){ closePanel(); view = 'leads'; filt.leads = 'todas'; render(); toast('Solicitud añadida'); }).catch(function(){ toast('No se pudo guardar'); });
+}
+
+/* ---------- Productos ---------- */
+function vProducts(){
+  var cats = []; db.products.forEach(function(p){ if(cats.indexOf(p.cat) < 0) cats.push(p.cat); });
+  var q = filt.q.toLowerCase();
+  var list = db.products.filter(function(p){ return (!filt.cat || p.cat === filt.cat) && (!q || (p.name + ' ' + p.cat).toLowerCase().indexOf(q) >= 0) && (!filt.low || stockState(p) === 'low' || stockState(p) === 'out'); });
+  var active = db.products.filter(function(p){ return p.active !== false; }).length, low = lowProducts().length;
+  return '<div class="head"><div><h2>Productos</h2><p>' + active + ' a la venta de ' + db.products.length + ' · ' + low + ' con stock bajo</p></div><div class="head__act"><button class="btn" data-act="new-product">+ Nuevo producto</button></div></div>' +
+    '<div class="tools"><input class="in" data-act="q" placeholder="Buscar producto" value="' + esc(filt.q) + '">' +
+    '<select class="sel" data-act="fcat"><option value="">Todas las categorías</option>' + cats.map(function(c){ return '<option' + (filt.cat === c ? ' selected' : '') + '>' + esc(c) + '</option>'; }).join('') + '</select>' +
+    '<button class="chip' + (filt.low ? ' is-on' : '') + '" data-act="flow">Solo stock bajo<b>' + low + '</b></button></div>' +
+    '<table class="tbl"><thead><tr><th>Producto</th><th>Precio</th><th>Stock</th><th>Mínimo</th><th>Estado</th><th>Agotado</th><th>A la venta</th><th></th></tr></thead><tbody>' +
+    list.map(function(p){ var st = stockState(p);
+      return '<tr class="' + (p.active === false ? 'off' : '') + '" data-pid="' + esc(p.id) + '"><td data-l=""><span class="t-name">' + (p.color ? '<span class="dot" style="background:' + esc(p.color) + '"></span>' : '') + esc(p.name) + '</span><div class="t-sub">' + esc(p.cat) + '</div></td>' +
+        '<td data-l="Precio (€)"><input class="in in--s" type="number" step="0.01" min="0" data-pf="price" value="' + (p.price == null ? '' : p.price) + '" placeholder="Consultar"></td>' +
+        '<td data-l="Stock"><input class="in in--s" type="number" step="1" data-pf="stock" value="' + (p.stock == null ? '' : p.stock) + '" placeholder="Sin control"></td>' +
+        '<td data-l="Avisar con"><input class="in in--s" type="number" step="1" min="0" data-pf="minStock" value="' + (p.minStock == null ? 2 : p.minStock) + '"></td>' +
+        '<td data-l="Estado">' + {none:'<span class="pill">Sin control</span>', ok:'<span class="pill p-okst">Disponible</span>', low:'<span class="pill p-low">Stock bajo</span>', out:'<span class="pill p-out">Agotado</span>'}[st] + '</td>' +
+        '<td data-l="Marcar agotado"><label class="sw sw--out"><input type="checkbox" data-pf="soldOut"' + (p.soldOut ? ' checked' : '') + '><span></span></label>' + (awaitingCount(p.id) ? '<div class="t-sub">' + awaitingCount(p.id) + ' esperando</div>' : '') + '</td>' +
+        '<td data-l="A la venta"><label class="sw"><input type="checkbox" data-pf="active"' + (p.active !== false ? ' checked' : '') + '><span></span></label></td>' +
+        '<td data-l=""><button class="btn btn--line btn--s" data-act="edit-product" data-id="' + esc(p.id) + '">Editar</button></td></tr>'; }).join('') +
+    '</tbody></table><p class="hint"><b>Agotado</b>: el producto sigue en la web marcado como agotado y las clientas pueden pedir que les avises. <b>A la venta</b> desactivado: desaparece de la web. Deja el stock vacío si no quieres controlarlo. Los precios vacíos aparecen como «A consultar» en la web. El stock se descuenta automáticamente al marcar un pedido como pagado.</p>';
+}
+var pTimers = {};
+function onProductInput(el){
+  var tr = el.closest('[data-pid]'); if(!tr) return;
+  var p = db.products.find(function(x){ return x.id === tr.getAttribute('data-pid'); }); if(!p) return;
+  var f = el.getAttribute('data-pf');
+  if(!el.dataset.ok && ((f === 'active' && !el.checked) || (f === 'soldOut' && el.checked))){
+    askConfirm(f === 'active' ? {title:'¿Quitar de la venta?', ok:'Sí, ocultar', text:'<b>' + esc(p.name) + '</b> dejará de verse en la web. Podrás volver a activarlo cuando quieras.'}
+                              : {title:'¿Marcar como agotado?', ok:'Sí, agotado', text:'<b>' + esc(p.name) + '</b> seguirá visible en la web con la etiqueta «Agotado» y la opción «Avísame cuando vuelva».'})
+      .then(function(y){ if(!y){ el.checked = !el.checked; return; } el.dataset.ok = '1'; onProductInput(el); delete el.dataset.ok; });
+    return;
+  }
+  if(f === 'active') p.active = el.checked;
+  else if(f === 'soldOut') p.soldOut = el.checked;
+  else if(f === 'price') p.price = numOrNull(el.value);
+  else p[f] = intOrNull(el.value);
+  clearTimeout(pTimers[p.id]);
+  pTimers[p.id] = setTimeout(function(){
+    call('upsert', {col:'products', item:p}).then(function(){ badges(); var cell = tr.children[4]; if(cell) cell.innerHTML = {none:'<span class="pill">Sin control</span>', ok:'<span class="pill p-okst">Disponible</span>', low:'<span class="pill p-low">Stock bajo</span>', out:'<span class="pill p-out">Agotado</span>'}[stockState(p)]; tr.classList.toggle('off', p.active === false); toast('Guardado'); })
+      .catch(function(){ toast('No se pudo guardar'); });
+  }, (f === 'active' || f === 'soldOut') ? 0 : 600);
+}
+function editProduct(id){
+  var p = id ? db.products.find(function(x){ return x.id === id; }) : {id:'', cat:'', name:'', desc:'', price:null, stock:null, minStock:2, active:true, img:''};
+  var cats = []; db.products.forEach(function(x){ if(cats.indexOf(x.cat) < 0) cats.push(x.cat); });
+  $('#pHead').innerHTML = '<h3>' + (id ? 'Editar producto' : 'Nuevo producto') + '</h3>';
+  $('#pBody').innerHTML = '<div class="f"><label class="lbl">Nombre</label><input class="in" id="epName" value="' + esc(p.name) + '"></div>' +
+    '<div class="f"><label class="lbl">Categoría</label><input class="in" id="epCat" list="catList" value="' + esc(p.cat) + '"><datalist id="catList">' + cats.map(function(c){ return '<option value="' + esc(c) + '">'; }).join('') + '</datalist></div>' +
+    '<div class="f"><label class="lbl">Descripción</label><textarea class="ta" id="epDesc">' + esc(p.desc) + '</textarea></div>' +
+    '<div class="grid2"><div class="f"><label class="lbl">Precio (€)</label><input class="in" id="epPrice" type="number" step="0.01" value="' + (p.price == null ? '' : p.price) + '" placeholder="A consultar"></div>' +
+    '<div class="f"><label class="lbl">Stock</label><input class="in" id="epStock" type="number" value="' + (p.stock == null ? '' : p.stock) + '" placeholder="Sin control"></div>' +
+    '<div class="f"><label class="lbl">Avisar cuando queden</label><input class="in" id="epMin" type="number" value="' + (p.minStock == null ? 2 : p.minStock) + '"></div>' +
+    '<div class="f"><label class="lbl">Foto (ruta)</label><input class="in" id="epImg" value="' + esc(p.img || '') + '" placeholder="img/productos/nombre.jpg"></div></div>' +
+    '<div class="f"><label class="lbl">Color del producto (para la ilustración si no hay foto)</label><input class="in" id="epColor" type="color" value="' + esc(p.color || '#D9B8AE') + '" style="height:42px;padding:4px"></div>' +
+    '<label class="f" style="display:flex;gap:10px;align-items:center"><span class="sw"><input type="checkbox" id="epActive"' + (p.active !== false ? ' checked' : '') + '><span></span></span> A la venta en la web</label>' +
+    '<label class="f" style="display:flex;gap:10px;align-items:center"><span class="sw sw--out"><input type="checkbox" id="epSold"' + (p.soldOut ? ' checked' : '') + '><span></span></span> Agotado (se sigue viendo en la web como «Agotado»)</label>';
+  $('#pFoot').innerHTML = '<button class="btn" data-act="save-product" data-id="' + esc(id || '') + '">Guardar</button>' + (id ? '<button class="btn btn--bad" data-act="del" data-col="products" data-id="' + esc(id) + '">Eliminar</button>' : '');
+  openPanel();
+}
+function saveProduct(id){
+  var name = $('#epName').value.trim(), cat = $('#epCat').value.trim();
+  if(!name || !cat){ toast('Nombre y categoría son obligatorios'); return; }
+  var p = id ? db.products.find(function(x){ return x.id === id; }) : {};
+  var item = Object.assign({}, p, {id:id || slug(name) + (db.products.some(function(x){ return x.id === slug(name); }) ? '-' + Date.now().toString(36).slice(-3) : ''), name:name, cat:cat, desc:$('#epDesc').value.trim(),
+    price:numOrNull($('#epPrice').value), stock:intOrNull($('#epStock').value), minStock:intOrNull($('#epMin').value), img:$('#epImg').value.trim(), active:$('#epActive').checked, soldOut:$('#epSold').checked, color:$('#epColor').value});
+  call('upsert', {col:'products', item:item}).then(loadAll).then(function(){ closePanel(); render(); toast('Producto guardado'); }).catch(function(){ toast('No se pudo guardar'); });
+}
+
+/* ---------- Formación ---------- */
+function vCourses(){
+  var up = upcoming(), past = db.sessions.filter(function(x){ return day(x.date) < today0(); }).sort(function(a, b){ return day(b.date) - day(a.date); }).slice(0, 8);
+  function row(x){ var left = (+x.seats || 0) - (+x.booked || 0), res = db.leads.filter(function(l){ return l.sessionId === x.id && l.type === 'reserva' && l.status !== 'descartada'; }).length;
+    return '<tr class="click" data-act="edit-session" data-id="' + esc(x.id) + '"><td data-l="Fecha"><span class="t-name">' + sesRange(x) + '</span><div class="t-sub">' + esc([x.days, x.time].filter(Boolean).join(' · ')) + '</div></td><td data-l="Formación">' + esc(courseName(x.courseId)) + '</td>' +
+      '<td data-l="Plazas">' + (+x.booked || 0) + ' / ' + (+x.seats || 0) + ' ' + (left <= 0 ? '<span class="pill p-out">Completo</span>' : left <= 2 ? '<span class="pill p-low">' + left + ' libres</span>' : '<span class="pill p-okst">' + left + ' libres</span>') + '</td>' +
+      '<td data-l="Pre-reservas">' + res + (res > Math.max(0, left) ? ' <span class="pill p-low">más que plazas</span>' : '') + '</td><td data-l="Estado"><span class="pill' + (x.status === 'cerrada' ? ' p-cancelado' : '') + '">' + (x.status === 'cerrada' ? 'Cerrada' : 'Abierta') + '</span></td></tr>'; }
+  return '<div class="head"><div><h2>Formación</h2><p>Convocatorias, plazas y programas de cada curso.</p></div><div class="head__act"><button class="btn btn--line" data-act="edit-course" data-id="">+ Nueva formación</button><button class="btn" data-act="new-session">+ Nueva convocatoria</button></div></div>' +
+    '<div class="card" style="margin-bottom:16px"><h3>Próximas convocatorias</h3>' + (up.length ? '<table class="tbl"><thead><tr><th>Fecha</th><th>Formación</th><th>Plazas</th><th>Pre-reservas</th><th>Estado</th></tr></thead><tbody>' + up.map(row).join('') + '</tbody></table>' : '<p class="empty">No hay fechas publicadas. En la web aparece «Próximas fechas en cuanto se complete grupo».</p>') + '</div>' +
+    (past.length ? '<div class="card" style="margin-bottom:16px"><h3>Pasadas</h3><table class="tbl"><tbody>' + past.map(row).join('') + '</tbody></table></div>' : '') +
+    '<div class="card"><h3>Programas</h3><div class="kpis">' + db.courses.map(function(c){ var n = db.leads.filter(function(l){ return l.courseId === c.id && l.type === 'interes' && ['descartada','pagada'].indexOf(l.status) < 0; }).length;
+      return '<button class="kpi" data-act="edit-course" data-id="' + esc(c.id) + '" style="text-align:left"><small>' + (c.hours ? c.hours + ' h' : '') + ' · ' + (c.price == null || c.price === '' ? 'Precio a consultar' : eur(c.price)) + '</small><strong style="font-size:1.5rem">' + esc(c.name) + '</strong><span>' + n + ' interesadas · privada ' + (c.privatePrice == null || c.privatePrice === '' ? 'a consultar' : eur(c.privatePrice)) + '</span></button>'; }).join('') +
+      '</div><button class="btn btn--line btn--s" data-act="edit-course" data-id="">+ Añadir formación</button></div>';
+}
+function editSession(id, courseId){
+  var x = id ? db.sessions.find(function(s){ return s.id === id; }) : {id:'', courseId:courseId || (db.courses[0] && db.courses[0].id), date:'', time:'10:00–14:00', seats:6, booked:0, status:'abierta'};
+  var c = db.courses.find(function(k){ return k.id === x.courseId; });
+  if(!id && c && c.maxSeats) x.seats = c.maxSeats;
+  var res = id ? db.leads.filter(function(l){ return l.sessionId === id && l.type === 'reserva'; }) : [];
+  $('#pHead').innerHTML = '<h3>' + (id ? 'Convocatoria' : 'Nueva convocatoria') + '</h3>';
+  $('#pBody').innerHTML = '<div class="f"><label class="lbl">Formación</label><select class="sel" id="esCourse">' + db.courses.map(function(k){ return '<option value="' + esc(k.id) + '"' + (k.id === x.courseId ? ' selected' : '') + '>' + esc(k.name) + '</option>'; }).join('') + '</select></div>' +
+    '<div class="grid2"><div class="f"><label class="lbl">Primer día</label><input class="in" id="esDate" type="date" value="' + esc(x.date) + '"></div><div class="f"><label class="lbl">Último día (si dura varios)</label><input class="in" id="esEnd" type="date" value="' + esc(x.endDate || '') + '"></div>' +
+    '<div class="f"><label class="lbl">Lugar (si no es el de la formación)</label><input class="in" id="esPlace" value="' + esc(x.place || '') + '" placeholder="Murcia"></div><div class="f"><label class="lbl">Días de la semana</label><input class="in" id="esDays" value="' + esc(x.days || '') + '" placeholder="Sábado y domingo"></div><div class="f"><label class="lbl">Horario</label><input class="in" id="esTime" value="' + esc(x.time || '') + '" placeholder="10:00–14:00"></div>' +
+    '<div class="f"><label class="lbl">Plazas totales</label><input class="in" id="esSeats" type="number" min="1" value="' + (x.seats || 6) + '"></div><div class="f"><label class="lbl">Plazas ocupadas</label><input class="in" id="esBooked" type="number" min="0" value="' + (x.booked || 0) + '"></div></div>' +
+    '<div class="f"><label class="lbl">Estado</label><select class="sel" id="esStatus"><option value="abierta"' + (x.status !== 'cerrada' ? ' selected' : '') + '>Abierta (visible en la web)</option><option value="cerrada"' + (x.status === 'cerrada' ? ' selected' : '') + '>Cerrada (oculta)</option></select></div>' +
+    '<p class="hint">Las plazas ocupadas suben solas cuando marcas una reserva como pagada en Solicitudes.</p>' +
+    (res.length ? '<div class="sec"><p class="lbl">Reservas de esta fecha</p><div class="box">' + res.map(function(l){ return '<div class="row"><span>' + esc(l.name) + '</span><span class="pill">' + LEAD_S[l.status] + '</span></div>'; }).join('') + '</div></div>' : '') +
+    (!id ? '<div class="sec"><p class="lbl">Interesadas en esta formación</p><p class="hint">Al guardar, ve a Solicitudes para escribirles por WhatsApp con la nueva fecha.</p></div>' : '');
+  $('#pFoot').innerHTML = '<button class="btn" data-act="save-session" data-id="' + esc(id || '') + '">Guardar</button>' + (id ? '<button class="btn btn--bad" data-act="del" data-col="sessions" data-id="' + esc(id) + '">Eliminar</button>' : '');
+  openPanel();
+}
+function saveSession(id, ok){
+  if(!$('#esDate').value){ toast('Elige una fecha'); return; }
+  var end = $('#esEnd').value; if(end && end < $('#esDate').value){ toast('El último día es anterior al primero'); return; }
+  var prev = id ? db.sessions.find(function(q){ return q.id === id; }) : null;
+  if(!ok && $('#esStatus').value === 'cerrada' && (!prev || prev.status !== 'cerrada')) return askConfirm({title:'¿Cerrar esta convocatoria?', ok:'Sí, cerrar', text:'Dejará de verse en el calendario de la web y nadie podrá pre-reservar plaza.'}).then(function(y){ if(y) saveSession(id, true); });
+  var item = {id:id || uid('S'), courseId:$('#esCourse').value, date:$('#esDate').value, endDate:end, days:$('#esDays').value.trim(), place:$('#esPlace').value.trim(), time:$('#esTime').value.trim(), seats:intOrNull($('#esSeats').value) || 1, booked:intOrNull($('#esBooked').value) || 0, status:$('#esStatus').value};
+  call('upsert', {col:'sessions', item:item}).then(loadAll).then(function(){ closePanel(); render(); toast(id ? 'Convocatoria guardada' : 'Convocatoria publicada'); }).catch(function(){ toast('No se pudo guardar'); });
+}
+function editCourse(id){
+  var c = id ? db.courses.find(function(k){ return k.id === id; }) : {id:'', name:'', hours:12, price:null, deposit:50, privatePrice:null, maxSeats:6, desc:'', includes:[]};
+  $('#pHead').innerHTML = '<h3>' + (id ? esc(c.name) : 'Nueva formación') + '</h3>';
+  $('#pBody').innerHTML = '<div class="f"><label class="lbl">Nombre</label><input class="in" id="ecName" value="' + esc(c.name) + '"></div>' +
+    '<label class="f" style="display:flex;gap:10px;align-items:center"><span class="sw"><input type="checkbox" id="ecInfo"' + (c.infoOnly ? ' checked' : '') + '><span></span></span> Solo pedir información (sin programa, precio ni fechas)</label>' +
+    '<div class="f"><label class="lbl">Presentación (aparece al abrir la ficha)</label><textarea class="ta" id="ecDesc" rows="3">' + esc(c.desc) + '</textarea></div>' +
+    '<div class="grid2"><div class="f"><label class="lbl">Modalidad</label><input class="in" id="ecModal" value="' + esc(c.modality || '') + '" placeholder="Presencial"></div><div class="f"><label class="lbl">Lugar</label><input class="in" id="ecPlace" value="' + esc(c.place || '') + '" placeholder="Cáceres"></div>' +
+    '<div class="f"><label class="lbl">Horario</label><input class="in" id="ecSched" value="' + esc(c.schedule || '') + '" placeholder="Horario aprox. 9:30 – 20:00"></div><div class="f"><label class="lbl">Duración (texto)</label><input class="in" id="ecDur" value="' + esc(c.duration || '') + '" placeholder="12 horas"></div></div>' +
+    '<div class="grid2"><div class="f"><label class="lbl">Duración (horas)</label><input class="in" id="ecHours" type="number" value="' + (c.hours == null ? '' : c.hours) + '"></div>' +
+    '<div class="f"><label class="lbl">Máx. alumnas por grupo</label><input class="in" id="ecMax" type="number" value="' + (c.maxSeats == null ? '' : c.maxSeats) + '"></div>' +
+    '<div class="f"><label class="lbl">Precio del curso (€, solo para ti: no se muestra en la web)</label><input class="in" id="ecPrice" type="number" step="0.01" value="' + (c.price == null ? '' : c.price) + '" placeholder="Consultar"></div>' +
+    '<div class="f"><label class="lbl">Señal de reserva (€)</label><input class="in" id="ecDep" type="number" step="0.01" value="' + (c.deposit == null ? '' : c.deposit) + '"></div>' +
+    '<div class="f"><label class="lbl">Precio clase privada (€, solo para ti)</label><input class="in" id="ecPriv" type="number" step="0.01" value="' + (c.privatePrice == null ? '' : c.privatePrice) + '" placeholder="Consultar"></div></div>' +
+    '<div class="f"><label class="lbl">Qué incluye (separado por comas)</label><input class="in" id="ecInc" value="' + esc((c.includes || []).join(', ')) + '"></div>' +
+    '<div class="f"><label class="lbl">Puntos destacados (hasta 4, uno por línea; salen grandes en la pestaña Resumen)</label><textarea class="ta" id="ecHigh" rows="4">' + esc((c.highlights || []).join('\n')) + '</textarea></div>' +
+    '<div class="f"><label class="lbl">Qué aprenderás (una línea por punto, «Título: explicación»)</label><textarea class="ta" id="ecLearn" rows="7">' + esc((c.learn || []).join('\n')) + '</textarea></div>' +
+    '<div class="f"><label class="lbl">Prácticas</label><textarea class="ta" id="ecPract" rows="3">' + esc(c.practices || '') + '</textarea></div>' +
+    '<div class="f"><label class="lbl">Qué más aprenderás (una línea por punto)</label><textarea class="ta" id="ecMore" rows="5">' + esc((c.more || []).join('\n')) + '</textarea></div>' +
+    '<div class="f"><label class="lbl">Acompañamiento / club de alumnas</label><textarea class="ta" id="ecExtra" rows="3">' + esc(c.extra || '') + '</textarea></div>' +
+    '<div class="f"><label class="lbl">Frase final</label><input class="in" id="ecClose" value="' + esc(c.closing || '') + '"></div>' +
+    '<div class="f"><label class="lbl">Foto de la tarjeta (ruta, opcional)</label><input class="in" id="ecImg" value="' + esc(c.img || '') + '" placeholder="img/formacion-nombre.jpg"></div>' +
+    '<label class="f" style="display:flex;gap:10px;align-items:center"><span class="sw"><input type="checkbox" id="ecActive"' + (c.active !== false ? ' checked' : '') + '><span></span></span> Visible en la web</label>' +
+    '<p class="hint">Cuando guardes, la formación aparece en la web con su ficha y podrás crearle fechas en «Nueva convocatoria».</p>';
+  $('#pFoot').innerHTML = '<button class="btn" data-act="save-course" data-id="' + esc(id || '') + '">Guardar</button>' + (id ? '<button class="btn btn--bad" data-act="del" data-col="courses" data-id="' + esc(id) + '">Eliminar</button>' : '');
+  openPanel();
+}
+function saveCourse(id){
+  var name = $('#ecName').value.trim(); if(!name){ toast('Pon un nombre'); return; }
+  var item = {id:id || (slug(name) + (db.courses.some(function(k){ return k.id === slug(name); }) ? '-' + Date.now().toString(36).slice(-3) : '')), name:name, desc:$('#ecDesc').value.trim(), hours:intOrNull($('#ecHours').value), maxSeats:intOrNull($('#ecMax').value), price:numOrNull($('#ecPrice').value),
+    deposit:numOrNull($('#ecDep').value), privatePrice:numOrNull($('#ecPriv').value), includes:$('#ecInc').value.split(',').map(function(s){ return s.trim(); }).filter(Boolean), img:$('#ecImg').value.trim(), active:$('#ecActive').checked,
+    infoOnly:$('#ecInfo').checked, modality:$('#ecModal').value.trim(), place:$('#ecPlace').value.trim(), schedule:$('#ecSched').value.trim(), duration:$('#ecDur').value.trim(),
+    learn:$('#ecLearn').value.split('\n').map(function(x){ return x.trim(); }).filter(Boolean), more:$('#ecMore').value.split('\n').map(function(x){ return x.trim(); }).filter(Boolean),
+    highlights:$('#ecHigh').value.split('\n').map(function(x){ return x.trim(); }).filter(Boolean).slice(0, 4), practices:$('#ecPract').value.trim(), extra:$('#ecExtra').value.trim(), closing:$('#ecClose').value.trim()};
+  call('upsert', {col:'courses', item:item}).then(loadAll).then(function(){ closePanel(); render(); toast('Formación guardada'); }).catch(function(){ toast('No se pudo guardar'); });
+}
+
+/* ---------- Solicitudes ---------- */
+function vLeads(){
+  var tabs = {todas:'Todas', reserva:'Pre-reservas', interes:'Interesadas', privada:'Privadas', aviso:'Avisos de stock', nuevo:'Sin contestar'};
+  function inTab(l, k){ return k === 'todas' ? true : k === 'nuevo' ? l.status === 'nuevo' : l.type === k; }
+  var list = db.leads.filter(function(l){ return inTab(l, filt.leads); });
+  return '<div class="head"><div><h2>Solicitudes</h2><p>Reservas de plaza, interesadas en próximas fechas y clases privadas.</p></div><div class="head__act"><button class="btn" data-act="new-lead">+ Añadir solicitud</button></div></div>' +
+    '<div class="tools">' + Object.keys(tabs).map(function(k){ return '<button class="chip' + (filt.leads === k ? ' is-on' : '') + '" data-act="fl" data-f="' + k + '">' + tabs[k] + '<b>' + db.leads.filter(function(l){ return inTab(l, k); }).length + '</b></button>'; }).join('') + '</div>' +
+    (list.length ? '<table class="tbl"><thead><tr><th>Nombre</th><th>Tipo</th><th>Formación / producto</th><th>Preferencias</th><th>Estado</th><th></th></tr></thead><tbody>' +
+      list.map(function(l){ var ses = l.sessionId ? db.sessions.find(function(x){ return x.id === l.sessionId; }) : null;
+        return '<tr data-lid="' + esc(l.id) + '"><td data-l="Alumna"><span class="t-name">' + esc(l.name) + '</span><div class="t-sub">' + esc(l.phone) + ' · ' + fdate(l.date) + '</div></td>' +
+          '<td data-l="Tipo"><span class="pill' + (l.type === 'reserva' ? ' p-datos_enviados' : l.type === 'privada' ? ' p-enviado' : '') + '">' + LEAD_T[l.type] + '</span></td>' +
+          '<td data-l="' + (l.type === 'aviso' ? 'Producto' : 'Formación') + '">' + esc(leadItem(l)) + (l.type === 'reserva' || ses ? '<div class="t-sub">' + (ses ? sesRange(ses) + (ses.time ? ' · ' + esc(ses.time) : '') : 'Sin fecha') + '</div>' : '') + '</td>' +
+          '<td data-l="Preferencias"><span class="t-sub">' + esc([l.availability, l.month].filter(Boolean).join(' · ') || '—') + (l.msg ? '<br>“' + esc(l.msg) + '”' : '') + '</span></td>' +
+          '<td data-l="Estado"><select class="sel" data-lf="status" style="padding:6px 8px;width:auto">' + Object.keys(LEAD_S).map(function(k){ return '<option value="' + k + '"' + (l.status === k ? ' selected' : '') + '>' + LEAD_S[k] + '</option>'; }).join('') + '</select></td>' +
+          '<td data-l=""><button class="btn btn--wa btn--s" data-act="lead-wa" data-id="' + esc(l.id) + '">WhatsApp</button> <button class="btn btn--line btn--s" data-act="lead-edit" data-id="' + esc(l.id) + '">Ver</button></td></tr>'; }).join('') + '</tbody></table>'
+      : '<div class="card"><p class="empty">No hay solicitudes en esta vista.</p></div>');
+}
+function leadMsg(l){
+  if(l.type === 'aviso'){ var pp = db.products.find(function(x){ return x.id === l.courseId; }); return 'Hola ' + l.name.split(' ')[0] + ' 💅 Soy Viky. ¡Ya ha vuelto *' + (l.course || 'el producto') + '*!' + (pp && pp.price != null ? ' (' + eur(pp.price) + ')' : '') + ' ¿Quieres que te reserve uno? Puedes pedirlo en la web o contestarme por aquí.'; }
+  var c = db.courses.find(function(k){ return k.id === l.courseId; }), s = db.settings, first = l.name.split(' ')[0];
+  var ses = l.sessionId ? db.sessions.find(function(x){ return x.id === l.sessionId; }) : upcoming().find(function(x){ return x.courseId === l.courseId; });
+  var dep = (c && c.deposit) || s.deposit;
+  if(l.type === 'reserva' || (l.type === 'interes' && ses)){
+    var L = ['Hola ' + first + ' 💅 Soy Viky. ' + (l.type === 'reserva' ? '¡Gracias por reservar!' : '¡Ya hay fecha!'), '',
+      '*' + (c ? c.name : 'Formación') + '*' + (ses ? ' · ' + sesRange(ses) + (ses.time ? ', ' + ses.time : '') : ''), '',
+      'Para confirmar tu plaza, haz una transferencia de *' + eur(dep) + '* (señal) en las próximas *' + s.payHours + ' h* con el concepto *Reserva ' + first + '*, y envíame el justificante por aquí. La señal se descuenta del precio total.'];
+    if(s.iban) L.push('', '*Datos para la transferencia*', 'Titular: ' + s.holder, 'IBAN: ' + s.iban); else L.push('', 'Te paso los datos bancarios 👇');
+    return L.join('\n');
+  }
+  if(l.type === 'privada') return 'Hola ' + first + ' 💅 Soy Viky. He recibido tu solicitud de clase privada de *' + (c ? c.name : 'formación') + '*. ¿Te vendría bien el día ___ a las ___? El precio es ' + (c && c.privatePrice != null && c.privatePrice !== '' ? eur(c.privatePrice) : '___ €') + '.';
+  return 'Hola ' + first + ' 💅 Soy Viky. Gracias por tu interés en *' + (c ? c.name : 'mis formaciones') + '*. Te escribo en cuanto abra el próximo grupo. ¡Muy pronto!';
+}
+function editLead(id){
+  var l = db.leads.find(function(x){ return x.id === id; }); if(!l) return;
+  var ss = db.sessions.filter(function(x){ return x.courseId === l.courseId; });
+  $('#pHead').innerHTML = '<p class="t-sub">' + fdate(l.date, true) + '</p><h3>' + esc(l.name) + '</h3><span class="pill">' + LEAD_T[l.type] + '</span>';
+  $('#pBody').innerHTML = '<div class="box"><a href="tel:' + esc(l.phone) + '">' + esc(l.phone) + '</a> · <a href="mailto:' + esc(l.email) + '">' + esc(l.email) + '</a>' +
+    '<div class="t-sub" style="margin-top:6px">' + esc(leadItem(l)) + (l.availability ? ' · ' + esc(l.availability) : '') + (l.month ? ' · ' + esc(l.month) : '') + '</div>' + (l.msg ? '<p style="margin-top:8px">“' + esc(l.msg) + '”</p>' : '') + '</div>' +
+    '<div class="grid2 sec"><div class="f"><label class="lbl">Tipo</label><select class="sel" id="elType">' + Object.keys(LEAD_T).map(function(k){ return '<option value="' + k + '"' + (l.type === k ? ' selected' : '') + '>' + LEAD_T[k] + '</option>'; }).join('') + '</select></div>' +
+    '<div class="f"><label class="lbl">Estado</label><select class="sel" id="elStatus">' + Object.keys(LEAD_S).map(function(k){ return '<option value="' + k + '"' + (l.status === k ? ' selected' : '') + '>' + LEAD_S[k] + '</option>'; }).join('') + '</select></div></div>' +
+    '<div class="f"><label class="lbl">Convocatoria asignada</label><select class="sel" id="elSession"><option value="">Sin fecha</option>' + ss.map(function(x){ return '<option value="' + esc(x.id) + '"' + (l.sessionId === x.id ? ' selected' : '') + '>' + fdate(x.date) + ' · ' + ((+x.seats || 0) - (+x.booked || 0)) + ' libres</option>'; }).join('') + '</select></div>' +
+    '<p class="hint">Marca «Pagada» cuando recibas la señal: ocupará una plaza en la convocatoria asignada.</p>' +
+    '<div class="f sec"><label class="lbl">Notas</label><textarea class="ta" id="elNotes">' + esc(l.notes || '') + '</textarea></div>';
+  $('#pFoot').innerHTML = '<button class="btn" data-act="save-lead" data-id="' + esc(id) + '">Guardar</button><button class="btn btn--wa" data-act="lead-wa" data-id="' + esc(id) + '">WhatsApp</button><button class="btn btn--bad" data-act="del" data-col="leads" data-id="' + esc(id) + '">Eliminar</button>';
+  openPanel();
+}
+function saveLead(id){
+  var item = {id:id, type:$('#elType').value, status:$('#elStatus').value, sessionId:$('#elSession').value, notes:$('#elNotes').value};
+  var ses = db.sessions.find(function(x){ return x.id === item.sessionId; }); item.session = ses ? fdate(ses.date) + (ses.time ? ' · ' + ses.time : '') : '';
+  call('upsert', {col:'leads', item:item}).then(loadAll).then(function(){ closePanel(); render(); toast('Solicitud guardada'); }).catch(function(){ toast('No se pudo guardar'); });
+}
+
+/* ---------- Opiniones ---------- */
+function stars5(n){ return '<span class="stars">' + '★★★★★'.slice(0, n || 0) + '<span style="opacity:.25">' + '★★★★★'.slice(n || 0) + '</span></span>'; }
+function vReviews(){
+  var list = db.reviews.filter(function(r){ return !filt.rc || r.courseId === filt.rc; });
+  var shown = db.reviews.filter(function(r){ return r.active !== false; }).length;
+  var chips = [['', 'Todas', db.reviews.length]].concat(db.courses.map(function(c){ return [c.id, c.name, db.reviews.filter(function(r){ return r.courseId === c.id; }).length]; }).filter(function(c){ return c[2]; }));
+  var gl = db.settings.googleUrl;
+  return '<div class="head"><div><h2>Opiniones</h2><p>Las que elijas se muestran en la web (' + shown + ' visibles). El resto quedan guardadas.</p></div><div class="head__act">' +
+    (gl ? '<a class="btn btn--line" href="' + esc(gl) + '" target="_blank" rel="noopener">Abrir perfil de Google ↗</a>' : '') + '<button class="btn" data-act="new-review">+ Añadir opinión</button></div></div>' +
+    '<div class="demo-bar" style="background:rgba(232,212,190,.45)">💡 Abre tu perfil de Google, copia el texto de las mejores reseñas (sobre todo las que hablan de los cursos) y pégalas aquí con el nombre y las estrellas.</div>' +
+    '<div class="tools">' + chips.map(function(c){ return '<button class="chip' + (filt.rc === c[0] ? ' is-on' : '') + '" data-act="frc" data-f="' + esc(c[0]) + '">' + esc(c[1]) + '<b>' + c[2] + '</b></button>'; }).join('') + '</div>' +
+    (list.length ? '<table class="tbl"><thead><tr><th>Valoración</th><th>Opinión</th><th>Formación</th><th>En la web</th><th></th></tr></thead><tbody>' +
+      list.map(function(r){ return '<tr data-rid="' + esc(r.id) + '"' + (r.active === false ? ' class="off"' : '') + '><td data-l="Valoración">' + stars5(r.rating) + '</td>' +
+        '<td data-l="Opinión"><span class="t-name">' + esc(r.name) + '</span><div class="t-sub" style="max-width:520px">“' + esc(String(r.text).slice(0, 140)) + (String(r.text).length > 140 ? '…' : '') + '”</div></td>' +
+        '<td data-l="Formación">' + (r.courseId ? esc(courseName(r.courseId)) : '<span class="t-sub">General</span>') + '</td>' +
+        '<td data-l="En la web"><label class="sw"><input type="checkbox" data-rf="active"' + (r.active !== false ? ' checked' : '') + '><span></span></label></td>' +
+        '<td data-l=""><button class="btn btn--line btn--s" data-act="edit-review" data-id="' + esc(r.id) + '">Editar</button></td></tr>'; }).join('') + '</tbody></table>'
+      : '<div class="card"><p class="empty">Aún no hay opiniones. Pulsa «Añadir opinión» para pegar la primera' + ((DEFAULTS.reviews || []).length && mode === 'api' ? ', o <button class="lnk" data-act="import-reviews">carga las ' + DEFAULTS.reviews.length + ' reseñas de Google que ya tenemos</button>' : '') + '.</p></div>') +
+    '<p class="hint">En la web salen hasta 8 opiniones visibles, y en la ficha de cada formación aparecen las 2 primeras de ese curso. Con «Ver todas las opiniones en Google» las clientas llegan a tu perfil.</p>';
+}
+function editReview(id){
+  var r = id ? db.reviews.find(function(x){ return x.id === id; }) : {id:'', name:'', rating:5, text:'', courseId:'', active:true, source:'Google'};
+  $('#pHead').innerHTML = '<h3>' + (id ? 'Editar opinión' : 'Nueva opinión') + '</h3>';
+  $('#pBody').innerHTML = '<div class="f"><label class="lbl">Nombre (como aparece en Google)</label><input class="in" id="rvName" value="' + esc(r.name) + '" placeholder="Laura M."></div>' +
+    '<div class="f"><label class="lbl">Cuándo la escribieron (como sale en Google, opcional)</label><input class="in" id="rvWhen" value="' + esc(r.when || '') + '" placeholder="hace 2 meses"></div>' +
+    '<div class="f"><label class="lbl">Valoración</label><div class="rate" id="rvRate" data-v="' + r.rating + '">' + [1,2,3,4,5].map(function(n){ return '<button type="button" data-r="' + n + '" class="' + (r.rating >= n ? 'on' : '') + '" aria-label="' + n + ' estrellas">★</button>'; }).join('') + '</div></div>' +
+    '<div class="f"><label class="lbl">Opinión (copia el texto de Google)</label><textarea class="ta" id="rvText" rows="6" placeholder="Pega aquí la reseña">' + esc(r.text) + '</textarea><p class="hint">Mejor las breves y concretas. En la web se recortan a unos 320 caracteres.</p></div>' +
+    '<div class="f"><label class="lbl">¿De qué formación habla?</label><select class="sel" id="rvCourse"><option value="">General (no es de un curso concreto)</option>' + db.courses.map(function(c){ return '<option value="' + esc(c.id) + '"' + (r.courseId === c.id ? ' selected' : '') + '>' + esc(c.name) + '</option>'; }).join('') + '</select></div>' +
+    '<label class="f" style="display:flex;gap:10px;align-items:center"><span class="sw"><input type="checkbox" id="rvActive"' + (r.active !== false ? ' checked' : '') + '><span></span></span> Mostrar en la web</label>';
+  $('#pFoot').innerHTML = '<button class="btn" data-act="save-review" data-id="' + esc(id || '') + '">Guardar</button>' + (id ? '<button class="btn btn--bad" data-act="del" data-col="reviews" data-id="' + esc(id) + '">Eliminar</button>' : '');
+  $('#pBody').onclick = function(e){ var b = e.target.closest('#rvRate [data-r]'); if(!b) return; var v = +b.getAttribute('data-r'); $('#rvRate').setAttribute('data-v', v); $$('#rvRate button').forEach(function(x){ x.classList.toggle('on', +x.getAttribute('data-r') <= v); }); };
+  openPanel();
+}
+function saveReview(id){
+  var name = $('#rvName').value.trim(), text = $('#rvText').value.trim();
+  if(!name || !text){ toast('Pon el nombre y el texto de la opinión'); return; }
+  var item = {id:id || uid('R'), name:name, rating:+$('#rvRate').getAttribute('data-v') || 5, text:text, when:$('#rvWhen').value.trim(), courseId:$('#rvCourse').value, active:$('#rvActive').checked, source:'Google'};
+  call('upsert', {col:'reviews', item:item}).then(loadAll).then(function(){ closePanel(); render(); toast('Opinión guardada'); }).catch(function(){ toast('No se pudo guardar'); });
+}
+
+/* ---------- Ajustes ---------- */
+function vSettings(){
+  var s = db.settings;
+  function f(id, label, val, type, ph, hint){ return '<div class="f"><label class="lbl" for="' + id + '">' + label + '</label><input class="in" id="' + id + '" type="' + (type || 'text') + '"' + (type === 'number' ? ' step="0.01"' : '') + ' value="' + esc(val == null ? '' : val) + '" placeholder="' + esc(ph || '') + '">' + (hint ? '<p class="hint">' + hint + '</p>' : '') + '</div>'; }
+  return '<div class="head"><div><h2>Ajustes</h2><p>Envíos, pagos, avisos y seguridad.</p></div></div>' +
+    '<div class="cols"><div class="stack"><div class="card"><h3>Tienda y pagos</h3><div class="grid2">' +
+      f('sShip', 'Coste de envío (€)', s.shippingCost, 'number', 'A confirmar') + f('sFree', 'Envío gratis desde (€)', s.freeShippingFrom, 'number', 'Sin envío gratis') +
+      f('sHours', 'Horas para pagar', s.payHours, 'number') + f('sDep', 'Señal de reserva de cursos (€)', s.deposit, 'number') + '</div>' +
+      f('sTime', 'Plazo de envío', s.shippingTime) + f('sPick', 'Punto de recogida', s.pickup) +
+      f('sZone', 'Zona de envío (texto en la web)', s.shipZone, 'text', 'Península y Baleares') +
+      '<div class="grid2">' + f('sNoZip', 'Sin envío a CP que empiecen por', s.noShipZips, 'text', '35,38', 'Separados por comas. 35 y 38 = Canarias.') + f('sNoTxt', 'Nombre de esa zona', s.noShipTxt, 'text', 'Canarias') + '</div>' +
+      f('sHolder', 'Titular de la cuenta', s.holder) +
+      f('sIban', 'IBAN', s.iban, 'text', 'ES00 0000 0000 0000 0000 0000', 'Se guarda en el servidor y nunca se publica en la web. Si lo rellenas, se añade solo al mensaje de WhatsApp que envías a la clienta.') +
+    '</div><div class="card"><h3>Avisos a Viky</h3><p class="hint" style="margin:0 0 14px">Los pedidos, las solicitudes y el stock bajo llegan a Viky por <b>Telegram</b>, con botones para escribir a la clienta por WhatsApp.</p>' +
+      f('sTgToken', 'Token del bot de Telegram', s.telegramToken, 'text', '123456789:AAF…', 'En Telegram, busca @BotFather, escribe /newbot y copia el token que te da.') +
+      f('sTgChat', 'ID de tu chat', s.telegramChat, 'text', '', 'Abre tu bot en Telegram, pulsa «Iniciar» y después «Detectar mi chat».') +
+      '<div class="head__act" style="margin:-4px 0 16px"><button class="btn btn--line btn--s" data-act="tg-detect">Detectar mi chat</button><button class="btn btn--s" data-act="tg-test">Enviar mensaje de prueba</button></div>' +
+      f('sSite', 'Dirección de la web (opcional)', s.siteUrl, 'url', 'https://tudominio.com', 'Solo si los botones del aviso llevan una dirección rara (localhost). Normalmente se detecta sola.') +
+      f('sWa', 'WhatsApp de Viky (con 34)', s.whatsapp, 'text', '34614404353', 'Se usa en los botones de WhatsApp de la web.') +
+      '<label class="f" style="display:flex;gap:10px;align-items:center"><span class="sw"><input type="checkbox" id="sLow"' + (s.lowStockAlerts ? ' checked' : '') + '><span></span></span> Avisarme cuando un producto baje del stock mínimo</label>' +
+      '</div><div class="card"><h3>Seguimiento tras la venta</h3>' + f('sFollow', 'Días después de la entrega para preguntar qué tal', s.followUpDays, 'number', '3') +
+      f('sGoogle', 'Enlace al perfil de Google (botón «Ver todas las opiniones»)', s.googleUrl, 'url', 'https://…') + '<div class="grid2">' + f('sGRate', 'Valoración media en Google', s.googleRating, 'text', '4,9', 'Opcional. Se muestra arriba del carrusel.') + f('sGCount', 'Número de opiniones', s.googleCount, 'text', '37') + '</div>' + f('sReview', 'Enlace para dejar opinión (opcional)', s.reviewUrl, 'url', 'https://g.page/r/…', 'Por ejemplo, tu enlace de reseñas de Google. Se añade al mensaje de seguimiento.') +
+      '<button class="btn" data-act="save-settings">Guardar ajustes</button></div></div>' +
+    '<div class="stack">' + (mode === 'api' ? '<div class="card"><h3>Acceso al panel</h3><div class="f"><label class="lbl">Usuario</label><input class="in" id="pwUser" autocomplete="username" value="' + esc(db.user || '') + '"></div><div class="f"><label class="lbl">Contraseña actual</label><input class="in" id="pwCur" type="password" autocomplete="current-password"></div><div class="f"><label class="lbl">Nueva contraseña (mín. 8)</label><input class="in" id="pwNew" type="password" autocomplete="new-password"></div><button class="btn btn--line" data-act="password">Guardar acceso</button></div>' : '') +
+    '<div class="card"><h3>Copia de seguridad</h3><p class="hint" style="margin:0 0 12px">El servidor guarda una copia diaria automática. También puedes descargar todos los datos.</p><div class="head__act"><button class="btn btn--line" data-act="backup">Descargar copia</button><label class="btn btn--line">Restaurar copia<input type="file" accept=".json" id="restoreFile" hidden></label></div></div>' +
+    '<div class="card"><h3>Conexión</h3><p class="hint" style="margin:0">' + (mode === 'demo' ? 'Modo demostración: sube <b>api.php</b> a tu hosting para guardar los datos de verdad y conectar la web.' : 'Conectado a api.php. La web lee precios, stock y fechas en vivo.') + '</p></div></div></div>';
+}
+
+/* ================================================================
+   PANEL LATERAL Y EVENTOS
+   ================================================================ */
+function openPanel(){ $('#panel').classList.add('on'); $('#scrim').classList.add('on'); $('#panel').setAttribute('aria-hidden', 'false'); $('#pBody').scrollTop = 0; }
+function closePanel(){ $('#panel').classList.remove('on'); $('#scrim').classList.remove('on'); $('#panel').setAttribute('aria-hidden', 'true'); $('#pBody').oninput = null; $('#pBody').onchange = null; $('#pBody').onclick = null; }
+$('#pClose').addEventListener('click', closePanel); $('#scrim').addEventListener('click', closePanel);
+$('#cfYes').addEventListener('click', function(){ cfClose(true); });
+$('#cfNo').addEventListener('click', function(){ cfClose(false); });
+$('#cf').addEventListener('click', function(e){ if(e.target.id === 'cf') cfClose(false); });
+document.addEventListener('keydown', function(e){ if(e.key !== 'Escape') return; if(!$('#cf').hidden){ cfClose(false); return; } closePanel(); });
+
+function settingsBody(){ return {shippingCost:numOrNull($('#sShip').value), freeShippingFrom:numOrNull($('#sFree').value), payHours:numOrNull($('#sHours').value) || 24, deposit:numOrNull($('#sDep').value),
+      shippingTime:$('#sTime').value.trim(), pickup:$('#sPick').value.trim(), holder:$('#sHolder').value.trim(), iban:$('#sIban').value.trim(), whatsapp:$('#sWa').value.replace(/\D/g, ''), telegramToken:$('#sTgToken').value.trim(), telegramChat:$('#sTgChat').value.trim(), siteUrl:$('#sSite').value.trim(), lowStockAlerts:$('#sLow').checked, shipZone:$('#sZone').value.trim(), noShipZips:$('#sNoZip').value.replace(/\s/g, ''), noShipTxt:$('#sNoTxt').value.trim(), followUpDays:numOrNull($('#sFollow').value) || 3, reviewUrl:$('#sReview').value.trim(), googleUrl:$('#sGoogle').value.trim(), googleRating:$('#sGRate').value.trim(), googleCount:$('#sGCount').value.trim()}; }
+document.addEventListener('click', function(e){
+  var t = e.target.closest('[data-act]'); if(!t) return;
+  var a = t.getAttribute('data-act'), id = t.getAttribute('data-id');
+  if(a === 'q' || a === 'fcat' || a === 'hm') return;
+  if(a === 'go'){ view = t.getAttribute('data-v'); render(); }
+  else if(a === 'go-orders'){ view = 'orders'; filt.orders = t.getAttribute('data-f'); render(); }
+  else if(a === 'task'){ var v = t.getAttribute('data-t').split(':'); if(v[0] === 'order'){ view = 'orders'; render(); openOrder(v.slice(1).join(':')); } else { view = v[1]; render(); } }
+  else if(a === 'won'){ e.stopPropagation(); markWon(t.getAttribute('data-code'), t); }
+  else if(a === 'unwon'){ e.stopPropagation(); unWon(t.getAttribute('data-code')); }
+  else if(a === 'ov'){ filt.ordersView = t.getAttribute('data-f'); render(); }
+  else if(a === 'follow'){ e.stopPropagation(); sendFollow(t.getAttribute('data-code')); }
+  else if(a === 'save-feedback'){ saveFeedback(t.getAttribute('data-code')); }
+  else if(a === 'fo'){ filt.orders = t.getAttribute('data-f'); render(); }
+  else if(a === 'fl'){ filt.leads = t.getAttribute('data-f'); render(); }
+  else if(a === 'flow'){ filt.low = !filt.low; render(); }
+  else if(a === 'order'){ openOrder(t.getAttribute('data-code')); if(t.getAttribute('data-feedback')) setTimeout(function(){ var f = $('#fbSec'); if(f) f.scrollIntoView({behavior:'smooth'}); }, 350); }
+  else if(a === 'st'){ setStatus(t.getAttribute('data-code'), t.getAttribute('data-s')); }
+  else if(a === 'send-summary'){
+    var o = db.orders.find(function(x){ return x.code === t.getAttribute('data-code'); });
+    window.open('https://wa.me/' + waPhone(o.customer.phone) + '?text=' + encodeURIComponent(buyerText(o)), '_blank');
+    setStatus(o.code, 'datos_enviados');
+  }
+  else if(a === 'csv') exportCSV();
+  else if(a === 'new-order') editNewOrder();
+  else if(a === 'save-order') saveNewOrder();
+  else if(a === 'mo-free'){ mo.items.push({id:'', name:'', cat:'', qty:1, price:null}); moLines(); var ni = $$('[data-mi][data-f=name]'); if(ni.length) ni[ni.length - 1].focus(); }
+  else if(a === 'mo-rm'){ mo.items.splice(+t.getAttribute('data-i'), 1); moLines(); }
+  else if(a === 'mo-ship'){ mo.pickup = t.getAttribute('data-v') === 'recogida'; mo.shipTouched = false; $$('[data-act=mo-ship]').forEach(function(b2){ b2.classList.toggle('is-on', b2 === t); }); $('#moAddr').hidden = mo.pickup; moTotals(); }
+  else if(a === 'new-lead') editNewLead();
+  else if(a === 'save-lead-new') saveNewLead();
+  else if(a === 'new-review') editReview('');
+  else if(a === 'edit-review') editReview(id);
+  else if(a === 'save-review') saveReview(id);
+  else if(a === 'frc'){ filt.rc = t.getAttribute('data-f'); render(); }
+  else if(a === 'new-product') editProduct('');
+  else if(a === 'edit-product') editProduct(id);
+  else if(a === 'save-product') saveProduct(id);
+  else if(a === 'new-session'){ if(view !== 'courses'){ view = 'courses'; render(); } editSession('', t.getAttribute('data-c')); }
+  else if(a === 'edit-session') editSession(id);
+  else if(a === 'save-session') saveSession(id);
+  else if(a === 'edit-course') editCourse(id);
+  else if(a === 'save-course') saveCourse(id);
+  else if(a === 'lead-edit') editLead(id);
+  else if(a === 'save-lead') saveLead(id);
+  else if(a === 'lead-wa'){
+    var l = db.leads.find(function(x){ return x.id === id; });
+    window.open('https://wa.me/' + waPhone(l.phone) + '?text=' + encodeURIComponent(leadMsg(l)), '_blank');
+    if(l.status === 'nuevo') call('upsert', {col:'leads', item:{id:l.id, status:l.type === 'reserva' ? 'reservada' : 'contactado'}}).then(loadAll).then(render);
+  }
+  else if(a === 'del'){
+    var col = t.getAttribute('data-col'), inf = deleteInfo(col, id);
+    askConfirm({title:inf.title, text:inf.text, ok:'Sí, eliminar', danger:true}).then(function(y){
+      if(!y) return;
+      call('delete', {col:col, id:id}).then(loadAll).then(function(){ closePanel(); render(); toast('Eliminado'); });
+    });
+  }
+  else if(a === 'save-settings'){
+    call('settings', {settings:settingsBody()})
+      .then(function(j){ db.settings = j.settings; toast('Ajustes guardados'); }).catch(function(){ toast('No se pudo guardar'); });
+  }
+  else if(a === 'tg-detect'){
+    if(mode === 'demo'){ toast('Disponible cuando el panel esté conectado al servidor'); return; }
+    var tk = $('#sTgToken').value.trim(); if(!tk){ toast('Pega primero el token del bot'); return; }
+    call('telegram_detect', {token:tk}).then(function(j){
+      if(!j.chats.length){ toast('Abre tu bot en Telegram, pulsa Iniciar y vuelve a probar'); return; }
+      $('#sTgChat').value = j.chats[0].id; toast('Chat encontrado: ' + j.chats[0].name + '. Ahora pulsa «Enviar mensaje de prueba»');
+    }).catch(function(err){ toast(String(err.message).replace(/^tg:/, 'Telegram: ')); });
+  }
+  else if(a === 'tg-test'){
+    if(mode === 'demo'){ toast('Disponible cuando el panel esté conectado al servidor'); return; }
+    call('settings', {settings:settingsBody()}).then(function(j){ db.settings = j.settings; return call('notify_test', {}); })
+      .then(function(){ toast('Enviado: mira tu Telegram'); }).catch(function(err){ toast(String(err.message).replace(/^tg:/, 'Telegram: ')); });
+  }
+  else if(a === 'password'){
+    call('password', {current:$('#pwCur').value, new:$('#pwNew').value, user:$('#pwUser').value.trim()}).then(function(){ toast('Acceso actualizado'); db.user = $('#pwUser').value.trim(); $('#pwCur').value = $('#pwNew').value = ''; })
+      .catch(function(err){ toast(err.message === 'weak' ? 'La nueva contraseña necesita 8 caracteres' : err.message === 'user' ? 'Usuario de al menos 3 caracteres' : 'Contraseña actual incorrecta'); });
+  }
+  else if(a === 'backup'){
+    var blob = new Blob([JSON.stringify(db, null, 2)], {type:'application/json'}), u = URL.createObjectURL(blob), lk = document.createElement('a');
+    lk.href = u; lk.download = 'viky-coelho-copia-' + new Date().toISOString().slice(0, 10) + '.json'; document.body.appendChild(lk); lk.click(); lk.remove(); setTimeout(function(){ URL.revokeObjectURL(u); }, 1000);
+  }
+  else if(a === 'import'){ call('import', {products:DEFAULTS.products, courses:DEFAULTS.courses, reviews:DEFAULTS.reviews}).then(function(j){ db = j.data; render(); toast('Catálogo importado'); }); }
+  else if(a === 'demo-reset'){ askConfirm({title:'¿Reiniciar los datos de ejemplo?', text:'Se perderán los cambios que hayas hecho en esta demostración.', ok:'Reiniciar', danger:true}).then(function(y){ if(y){ localStorage.removeItem('vc-admin-demo'); loadAll().then(render); } }); }
+});
+document.addEventListener('input', function(e){
+  var t = e.target;
+  if(t.getAttribute('data-act') === 'q'){ filt.q = t.value; var pos = t.selectionStart; render(); var n = $('[data-act="q"]'); if(n){ n.focus(); n.setSelectionRange(pos, pos); } }
+  else if(t.hasAttribute('data-pf') && t.type !== 'checkbox') onProductInput(t);
+});
+document.addEventListener('change', function(e){
+  var t = e.target;
+  if(t.getAttribute('data-act') === 'fcat'){ filt.cat = t.value; render(); }
+  else if(t.getAttribute('data-act') === 'hm'){ filt.hm = t.value; render(); }
+  else if(t.hasAttribute('data-pf') && t.type === 'checkbox') onProductInput(t);
+  else if(t.hasAttribute('data-rf')){
+    var rid = t.closest('[data-rid]').getAttribute('data-rid');
+    call('upsert', {col:'reviews', item:{id:rid, active:t.checked}}).then(loadAll).then(function(){ render(); toast(t.checked ? 'Visible en la web' : 'Oculta en la web'); });
+  }
+  else if(t.getAttribute('data-lf') === 'status'){
+    var id = t.closest('[data-lid]').getAttribute('data-lid');
+    call('upsert', {col:'leads', item:{id:id, status:t.value}}).then(loadAll).then(function(){ render(); toast('Estado actualizado'); });
+  }
+  else if(t.id === 'restoreFile' && t.files[0]){
+    var r = new FileReader();
+    r.onload = function(){ var d; try { d = JSON.parse(r.result); } catch(err){ toast('Archivo no válido'); return; }
+      askConfirm({title:'¿Restaurar esta copia?', text:'Se <b>sustituirán todos los datos actuales</b> (productos, pedidos, formaciones, solicitudes) por los de la copia. Lo posterior a ella se perderá.', ok:'Sí, restaurar', danger:true}).then(function(y){
+        if(y) call('restore', {data:d}).then(function(j){ db = j.data; render(); toast('Copia restaurada'); }).catch(function(){ toast('No se pudo restaurar'); }); }); };
+    r.readAsText(t.files[0]);
+  }
+});
+var dragCode = null;
+document.addEventListener('dragstart', function(e){ var c = e.target.closest && e.target.closest('[data-kc]'); if(!c) return; dragCode = c.getAttribute('data-kc'); c.classList.add('drag'); e.dataTransfer.effectAllowed = 'move'; try { e.dataTransfer.setData('text/plain', dragCode); } catch(err){} });
+document.addEventListener('dragend', function(e){ $$('.kc.drag').forEach(function(c){ c.classList.remove('drag'); }); $$('.col.over').forEach(function(c){ c.classList.remove('over'); }); });
+document.addEventListener('dragover', function(e){ var col = e.target.closest && e.target.closest('[data-col]'); if(!col || !dragCode) return; e.preventDefault(); $$('.col.over').forEach(function(c){ if(c !== col) c.classList.remove('over'); }); col.classList.add('over'); });
+document.addEventListener('drop', function(e){
+  var col = e.target.closest && e.target.closest('[data-col]'); if(!col || !dragCode) return; e.preventDefault(); col.classList.remove('over');
+  var code = dragCode; dragCode = null;
+  var o = db.orders.find(function(x){ return x.code === code; }), k = col.getAttribute('data-col'); if(!o) return;
+  var cur = STAGES.find(function(sg){ return sg.m(o); }); if(cur && cur.k === k) return;
+  if(['nuevo','datos_enviados','pagado','enviado'].indexOf(k) >= 0) setStatus(code, k);
+  else if(k === 'seguimiento'){ if(o.status !== 'entregado') setStatus(code, 'entregado'); else call('upsert', {col:'orders', item:{code:code, followUp:'pendiente'}}).then(loadAll).then(render); }
+  else if(k === 'completado'){ if(o.status !== 'entregado'){ toast('Primero tiene que estar entregado'); return; } openOrder(code); setTimeout(function(){ var f = $('#fbSec'); if(f) f.scrollIntoView({behavior:'smooth'}); }, 350); toast('Anota su opinión para completar'); }
+});
+function exportCSV(){
+  var rows = [['Código','Fecha','Estado','Clienta','Teléfono','Email','Entrega','Artículos','Subtotal','Envío','Total','Pagado el']];
+  db.orders.forEach(function(o){ rows.push([o.code, o.date.slice(0, 10), ST[o.status], o.customer.name, o.customer.phone, o.customer.email, o.pickup ? 'Recogida' : (o.customer.addr + ', ' + o.customer.zip + ' ' + o.customer.city),
+    o.items.map(function(i){ return i.qty + 'x ' + i.name; }).join(' | '), o.subtotal, o.shipping, o.total, o.paidAt ? o.paidAt.slice(0, 10) : '']); });
+  var csv = '\ufeff' + rows.map(function(r){ return r.map(function(v){ v = v == null ? '' : typeof v === 'number' ? String(v).replace('.', ',') : String(v); return /[;"\n]/.test(v) ? '"' + v.replace(/"/g, '""') + '"' : v; }).join(';'); }).join('\n');
+  var u = URL.createObjectURL(new Blob([csv], {type:'text/csv'})), lk = document.createElement('a');
+  lk.href = u; lk.download = 'pedidos-' + new Date().toISOString().slice(0, 10) + '.csv'; document.body.appendChild(lk); lk.click(); lk.remove();
+}
+/* Refresco suave: cada minuto (y al volver a la pestaña) trae los cambios nuevos, sin interrumpir si estás editando */
+function softRefresh(){
+  if(!db || $('#panel').classList.contains('on')) return;
+  var a = document.activeElement; if(a && /INPUT|TEXTAREA|SELECT/.test(a.tagName)) return;
+  loadAll().then(function(){ var y = window.scrollY; render(); window.scrollTo(0, y); }).catch(function(){});
+}
+setInterval(softRefresh, 60000);
+document.addEventListener('visibilitychange', function(){ if(!document.hidden) softRefresh(); });
+boot();
+</script>
+</body>
+</html>
