@@ -195,6 +195,8 @@ button.kpi:hover{border-color:var(--gold);}
 .seg{display:inline-flex; border:1px solid var(--line); border-radius:30px; padding:3px; background:var(--card);}
 .seg button{border:0; background:none; border-radius:30px; padding:6px 14px; font-size:12.5px; color:var(--soft);}
 .seg button.is-on{background:var(--espresso); color:var(--ivory);}
+.kc__nav{display:flex; justify-content:space-between; gap:6px; margin-top:8px;}
+.kc__nav .btn{flex:1 1 0; min-width:0; width:auto; margin:0; padding:6px 2px; font-size:11px; letter-spacing:0; overflow:hidden; text-overflow:ellipsis; gap:2px;}
 .kb-foot{font-size:12px; color:var(--soft); margin-top:4px;}
 @media (max-width:820px){ .kb{grid-auto-columns:82vw; margin:0 -14px; padding:0 14px 12px;} }
 
@@ -349,7 +351,7 @@ function demoSeed(){
   function ord(code, ago, status, items, cust, pickup, extra){
     var sub = items.reduce(function(s, x){ return s + x.price * x.qty; }, 0), ship = pickup || sub >= 50 ? 0 : 5;
     var o = {code:code, date:new Date(now - ago).toISOString(), status:status, customer:cust, pickup:!!pickup, items:items, subtotal:+sub.toFixed(2), shipping:ship, total:+(sub + ship).toFixed(2),
-      sentAt:null, paidAt:null, stockApplied:PAID.indexOf(status) >= 0, notes:'', history:[{t:new Date(now - ago).toISOString(), e:'Pedido recibido desde la web'}]};
+      sentAt:null, paidAt:null, stockApplied:status !== 'cancelado', notes:'', history:[{t:new Date(now - ago).toISOString(), e:'Pedido recibido desde la web'}]};
     for(var k in extra) o[k] = extra[k]; return o;
   }
   var c1 = {name:'Laura Martín Pérez', phone:'600111222', email:'laura@email.com', addr:'C/ Pintores 12, 2ºB', city:'Cáceres', zip:'10003', notes:''};
@@ -409,8 +411,8 @@ function demo(a, b){
     do { code2 = 'VC-' + dIso.slice(2, 4) + dIso.slice(5, 7) + dIso.slice(8, 10) + '-' + [0, 1, 2, 3].map(function(){ return abc[Math.floor(Math.random() * abc.length)]; }).join(''); } while(s.orders.some(function(o){ return o.code === code2; }));
     var ord2 = {code:code2, date:dIso, status:'nuevo', customer:b.customer, pickup:!!b.pickup, items:its, subtotal:unk ? null : +sub2.toFixed(2), shipping:ship2, total:(unk || ship2 == null) ? null : +(sub2 + ship2).toFixed(2),
       sentAt:null, paidAt:null, stockApplied:false, noStock:!!b.noStock, manual:true, notes:b.notes || '', rk:Math.random().toString(16).slice(2, 14), history:[{t:dIso, e:'Pedido creado a mano desde el panel'}]};
-    s.orders.unshift(ord2); res.low = [];
-    if(b.status && b.status !== 'nuevo'){ res.low = applyStatus(s, 0, b.status); if(back) ['sentAt','paidAt','shippedAt','deliveredAt'].forEach(function(k){ if(s.orders[0][k]) s.orders[0][k] = dIso; }); }
+    s.orders.unshift(ord2); res.low = syncStock(s, s.orders[0]);
+    if(b.status && b.status !== 'nuevo'){ res.low = res.low.concat(applyStatus(s, 0, b.status)); if(back) ['sentAt','paidAt','shippedAt','deliveredAt'].forEach(function(k){ if(s.orders[0][k]) s.orders[0][k] = dIso; }); }
     res.order = s.orders[0];
   }
   else if(a === 'order_status'){ var j = s.orders.findIndex(function(o){ return o.code === b.code; }); res.low = applyStatus(s, j, b.status); res.order = s.orders[j]; }
@@ -420,21 +422,30 @@ function demo(a, b){
   demoSave(s);
   return JSON.parse(JSON.stringify(res));
 }
-function applyStatus(s, i, status){
-  var o = s.orders[i], low = [], now = new Date().toISOString();
+function syncStock(s, o){
+  var low = [];
+  if(o.noStock) return low;
+  var hold = o.status !== 'cancelado';
   function prod(id){ return s.products.find(function(p){ return p.id === id; }); }
-  if(PAID.indexOf(status) >= 0 && !o.stockApplied){
-    o.items.forEach(function(it){ var p = o.noStock ? null : prod(it.id); if(p && p.stock != null){ var b4 = +p.stock; p.stock = b4 - it.qty; if(p.stock <= (+p.minStock || 2)) low.push(p); } });
-    o.stockApplied = true; if(!o.paidAt) o.paidAt = now;
+  if(hold && !o.stockApplied){
+    o.items.forEach(function(it){ var p = prod(it.id); if(p && p.stock != null){ var b4 = +p.stock; p.stock = b4 - it.qty; var mn = +p.minStock || 2; if((p.stock <= mn && b4 > mn) || (p.stock <= 0 && b4 > 0)) low.push(p); } });
+    o.stockApplied = true;
+  } else if(!hold && o.stockApplied){
+    o.items.forEach(function(it){ var p = prod(it.id); if(p && p.stock != null) p.stock = +p.stock + it.qty; });
+    o.stockApplied = false;
   }
-  if(PAID.indexOf(status) < 0 && o.stockApplied){
-    o.items.forEach(function(it){ var p = o.noStock ? null : prod(it.id); if(p && p.stock != null) p.stock = +p.stock + it.qty; });
-    o.stockApplied = false; if(status !== 'cancelado') o.paidAt = null;
-  }
+  return low;
+}
+function applyStatus(s, i, status){
+  var o = s.orders[i], now = new Date().toISOString();
+  o.status = status; var low = syncStock(s, o);
+  if(PAID.indexOf(status) >= 0){ if(!o.paidAt) o.paidAt = now; } else if(status !== 'cancelado') o.paidAt = null;
+  if(status === 'nuevo') o.sentAt = null;
   if(status === 'datos_enviados') o.sentAt = now;
   if(status === 'enviado') o.shippedAt = now;
   if(status === 'entregado'){ o.deliveredAt = now; if(!o.followUp) o.followUp = 'pendiente'; }
-  o.status = status; o.history = o.history || []; o.history.push({t:now, e:{nuevo:'Nuevo', datos_enviados:'Resumen enviado a la clienta', pagado:'Pago recibido', enviado:'Pedido enviado', entregado:'Venta finalizada', cancelado:'Pedido cancelado'}[status]});
+  else if(['nuevo','datos_enviados','pagado','enviado'].indexOf(status) >= 0){ o.deliveredAt = null; o.followUp = null; o.archived = false; }
+  o.history = o.history || []; o.history.push({t:now, e:{nuevo:'Nuevo', datos_enviados:'Resumen enviado a la clienta', pagado:'Pago recibido', enviado:'Pedido enviado', entregado:'Venta finalizada', cancelado:'Pedido cancelado'}[status]});
   return low;
 }
 function leadSeats(s, old, nw){
@@ -624,7 +635,7 @@ function vDash(){
 /* ---------- Pedidos ---------- */
 var STAGES = [
   {k:'nuevo', t:'Nuevo pedido', hint:'Pon precio si hace falta y envía el resumen.', m:function(o){ return o.status === 'nuevo'; }},
-  {k:'datos_enviados', t:'Esperando pago', hint:'Resumen enviado. Tiene el plazo para transferir.', m:function(o){ return o.status === 'datos_enviados'; }},
+  {k:'datos_enviados', t:'Esperando pago', hint:'Resumen enviado. Si el plazo de pago vence, se cancela solo y el stock se libera.', m:function(o){ return o.status === 'datos_enviados'; }},
   {k:'pagado', t:'Pagado · preparar', hint:'Pago recibido. Prepara el pedido.', m:function(o){ return o.status === 'pagado'; }},
   {k:'enviado', t:'Enviado', hint:'En camino. Márcalo cuando le llegue.', m:function(o){ return o.status === 'enviado'; }},
   {k:'seguimiento', t:'¿Qué tal todo?', hint:'Pregúntale cómo le ha ido unos días después.', m:function(o){ return o.status === 'entregado' && o.followUp !== 'respondido' && !o.archived; }},
@@ -669,7 +680,32 @@ function kCard(o, st){
   return '<div class="kc" draggable="true" data-kc="' + esc(o.code) + '" data-act="order" data-code="' + esc(o.code) + '">' +
     '<div class="kc__top"><span class="kc__name">' + esc(o.customer.name) + '</span><span class="kc__tot">' + (t == null ? '—' : eur(t)) + '</span></div>' +
     '<div class="kc__sub">' + esc(o.code) + ' · ' + n + ' uds</div>' +
-    (info ? '<div class="kc__info ' + cls + '">' + (st !== 'completado' ? '<i></i>' : '') + info + '</div>' : '') + btn + '</div>';
+    (info ? '<div class="kc__info ' + cls + '">' + (st !== 'completado' ? '<i></i>' : '') + info + '</div>' : '') + btn + cardNav(o, st) + '</div>';
+}
+function cardNav(o, st){
+  var idx = STAGES.findIndex(function(sg){ return sg.k === st; });
+  var back = idx > 0 ? '<button class="btn btn--line btn--s" data-act="prev" data-code="' + esc(o.code) + '" title="Volver a la etapa anterior">← Atrás</button>' : '<span></span>';
+  var next = st !== 'completado' ? '<button class="btn btn--line btn--s" data-act="next" data-code="' + esc(o.code) + '" title="Pasar a la siguiente etapa sin hacer nada más">Siguiente →</button>' : '<span></span>';
+  return '<div class="kc__nav">' + back + next + '</div>';
+}
+function moveStage(code, dir){
+  var o = db.orders.find(function(x){ return x.code === code; }); if(!o) return;
+  var cur = STAGES.find(function(sg){ return sg.m(o); }); if(!cur) return;
+  var k = cur.k;
+  function followTo(val, msg, ev){ return call('upsert', {col:'orders', item:{code:code, followUp:val, logEvent:ev}}).then(loadAll).then(function(){ render(); toast(msg); }); }
+  if(dir > 0){
+    if(k === 'nuevo') return setStatus(code, 'datos_enviados');
+    if(k === 'datos_enviados') return setStatus(code, 'pagado');
+    if(k === 'pagado') return setStatus(code, o.pickup ? 'entregado' : 'enviado');
+    if(k === 'enviado') return setStatus(code, 'entregado');
+    if(k === 'seguimiento') return followTo('respondido', 'Pasado a Completado', 'Seguimiento completado sin anotar respuesta');
+  } else {
+    if(k === 'datos_enviados') return setStatus(code, 'nuevo');
+    if(k === 'pagado') return setStatus(code, 'datos_enviados');
+    if(k === 'enviado') return setStatus(code, 'pagado');
+    if(k === 'seguimiento') return setStatus(code, o.pickup ? 'pagado' : 'enviado');
+    if(k === 'completado') return followTo('pendiente', 'Devuelto a seguimiento', 'Devuelto a seguimiento');
+  }
 }
 function vPipeline(){
   var html = STAGES.map(function(sg){
@@ -686,7 +722,7 @@ function vOrders(){
   var seg = '<div class="seg"><button class="' + (filt.ordersView === 'pipeline' ? 'is-on' : '') + '" data-act="ov" data-f="pipeline">Pipeline</button><button class="' + (filt.ordersView === 'lista' ? 'is-on' : '') + '" data-act="ov" data-f="lista">Lista</button><button class="' + (filt.ordersView === 'historico' ? 'is-on' : '') + '" data-act="ov" data-f="historico">Histórico' + (nWon ? ' · ' + nWon : '') + '</button></div>';
   if(filt.ordersView === 'historico') return vHistory(seg);
   if(filt.ordersView === 'pipeline')
-    return '<div class="head"><div><h2>Pedidos</h2><p>Del pedido a la venta, el envío y su opinión.</p></div><div class="head__act">' + seg + '<button class="btn" data-act="new-order">+ Pedido manual</button><button class="btn btn--line" data-act="csv">Exportar CSV</button></div></div>' + vPipeline();
+    return '<div class="head"><div><h2>Pedidos</h2><p>Del pedido a la venta, el envío y su opinión.</p></div><div class="head__act">' + seg + '<button class="btn btn--line" data-act="refresh" title="Traer los pedidos nuevos">↻ Actualizar</button><button class="btn" data-act="new-order">+ Pedido manual</button><button class="btn btn--line" data-act="csv">Exportar CSV</button></div></div>' + vPipeline();
   return vOrdersList(seg);
 }
 function vHistory(seg){
@@ -695,7 +731,7 @@ function vHistory(seg){
   var list = all.filter(function(o){ if(!filt.hm) return true; var d = new Date(o.archivedAt || o.date); return d.getFullYear() + '-' + d.getMonth() === filt.hm; });
   var q = filt.q.toLowerCase(); if(q) list = list.filter(function(o){ return (o.code + ' ' + o.customer.name).toLowerCase().indexOf(q) >= 0; });
   var tot = sum(list), rated = list.filter(function(o){ return o.rating; });
-  return '<div class="head"><div><h2>Pedidos</h2><p>Histórico de ventas ganadas.</p></div><div class="head__act">' + seg + '<button class="btn" data-act="new-order">+ Pedido manual</button><button class="btn btn--line" data-act="csv">Exportar CSV</button></div></div>' +
+  return '<div class="head"><div><h2>Pedidos</h2><p>Histórico de ventas ganadas.</p></div><div class="head__act">' + seg + '<button class="btn btn--line" data-act="refresh" title="Traer los pedidos nuevos">↻ Actualizar</button><button class="btn" data-act="new-order">+ Pedido manual</button><button class="btn btn--line" data-act="csv">Exportar CSV</button></div></div>' +
     '<div class="kpis"><div class="kpi"><small>Ventas ganadas</small><strong>' + list.length + '</strong><span>' + (filt.hm ? 'en el mes elegido' : 'en total') + '</span></div>' +
     '<div class="kpi"><small>Facturado</small><strong>' + eur(tot) + '</strong><span>pedidos cerrados</span></div>' +
     '<div class="kpi"><small>Ticket medio</small><strong>' + eur(list.length ? tot / list.length : 0) + '</strong><span>por pedido</span></div>' +
@@ -755,7 +791,7 @@ function vOrdersList(seg){
   var names = {activos:'En curso', nuevo:'Nuevos', datos_enviados:'Esperando pago', pagado:'Pagados', enviado:'Enviados', entregado:'Finalizados', cancelado:'Cancelados', todos:'Todos'};
   var q = filt.q.toLowerCase();
   var list = db.orders.filter(groups[filt.orders]).filter(function(o){ return !q || (o.code + ' ' + o.customer.name + ' ' + o.customer.phone + ' ' + o.customer.email).toLowerCase().indexOf(q) >= 0; });
-  return '<div class="head"><div><h2>Pedidos</h2><p>Presupuestos, cobros y ventas finalizadas.</p></div><div class="head__act">' + seg + '<button class="btn" data-act="new-order">+ Pedido manual</button><button class="btn btn--line" data-act="csv">Exportar CSV</button></div></div>' +
+  return '<div class="head"><div><h2>Pedidos</h2><p>Presupuestos, cobros y ventas finalizadas.</p></div><div class="head__act">' + seg + '<button class="btn btn--line" data-act="refresh" title="Traer los pedidos nuevos">↻ Actualizar</button><button class="btn" data-act="new-order">+ Pedido manual</button><button class="btn btn--line" data-act="csv">Exportar CSV</button></div></div>' +
     '<div class="tools">' + Object.keys(groups).map(function(k){ return '<button class="chip' + (filt.orders === k ? ' is-on' : '') + '" data-act="fo" data-f="' + k + '">' + names[k] + '<b>' + db.orders.filter(groups[k]).length + '</b></button>'; }).join('') +
     '<input class="in" data-act="q" placeholder="Buscar código o clienta" value="' + esc(filt.q) + '"></div>' +
     (list.length ? '<table class="tbl"><thead><tr><th>Pedido</th><th>Clienta</th><th>Artículos</th><th class="num">Total</th><th>Estado</th></tr></thead><tbody>' +
@@ -847,8 +883,8 @@ function setStatus(code, s, ok){
   var ord = db.orders.find(function(x){ return x.code === code; });
   if(!ok && ord && s === 'cancelado') return askConfirm({title:'¿Cancelar este pedido?', danger:true, ok:'Sí, cancelar',
     text:'Se cancelará el pedido <b>' + esc(code) + '</b> de ' + esc(ord.customer.name) + '.' + (ord.stockApplied ? ' Se repondrá el stock de sus productos.' : '')}).then(function(y){ if(y) setStatus(code, s, true); });
-  if(!ok && ord && s === 'pagado' && ord.status !== 'pagado') return askConfirm({title:'¿Has recibido el pago?', ok:'Sí, pago recibido',
-    text:'Se marcará <b>' + esc(code) + '</b> como pagado (' + eur(ord.total) + ') y se descontará el stock de sus productos.'}).then(function(y){ if(y) setStatus(code, s, true); });
+  if(!ok && ord && s === 'pagado' && (ord.status === 'nuevo' || ord.status === 'datos_enviados')) return askConfirm({title:'¿Has recibido el pago?', ok:'Sí, pago recibido',
+    text:'Se marcará <b>' + esc(code) + '</b> como pagado (' + eur(ord.total) + ').'}).then(function(y){ if(y) setStatus(code, s, true); });
   call('order_status', {code:code, status:s}).then(function(j){
     var i = db.orders.findIndex(function(o){ return o.code === code; }); db.orders[i] = j.order;
     return loadAll().then(function(){
@@ -976,7 +1012,7 @@ function vProducts(){
         '<td data-l="Marcar agotado"><label class="sw sw--out"><input type="checkbox" data-pf="soldOut"' + (p.soldOut ? ' checked' : '') + '><span></span></label>' + (awaitingCount(p.id) ? '<div class="t-sub">' + awaitingCount(p.id) + ' esperando</div>' : '') + '</td>' +
         '<td data-l="A la venta"><label class="sw"><input type="checkbox" data-pf="active"' + (p.active !== false ? ' checked' : '') + '><span></span></label></td>' +
         '<td data-l=""><button class="btn btn--line btn--s" data-act="edit-product" data-id="' + esc(p.id) + '">Editar</button></td></tr>'; }).join('') +
-    '</tbody></table><p class="hint"><b>Agotado</b>: el producto sigue en la web marcado como agotado y las clientas pueden pedir que les avises. <b>A la venta</b> desactivado: desaparece de la web. Deja el stock vacío si no quieres controlarlo. Los precios vacíos aparecen como «A consultar» en la web. El stock se descuenta automáticamente al marcar un pedido como pagado.</p>';
+    '</tbody></table><p class="hint"><b>Agotado</b>: el producto sigue en la web marcado como agotado y las clientas pueden pedir que les avises. <b>A la venta</b> desactivado: desaparece de la web. Deja el stock vacío si no quieres controlarlo. Los precios vacíos aparecen como «A consultar» en la web. El stock se reserva en cuanto se hace el pedido y se libera si se cancela o si vence el plazo de pago.</p>';
 }
 var pTimers = {};
 function onProductInput(el){
@@ -1256,6 +1292,9 @@ document.addEventListener('click', function(e){
     setStatus(o.code, 'datos_enviados');
   }
   else if(a === 'csv') exportCSV();
+  else if(a === 'next'){ e.stopPropagation(); moveStage(t.getAttribute('data-code'), 1); }
+  else if(a === 'prev'){ e.stopPropagation(); moveStage(t.getAttribute('data-code'), -1); }
+  else if(a === 'refresh'){ loadAll().then(function(){ render(); toast('Actualizado'); }).catch(function(){ toast('No se pudo actualizar'); }); }
   else if(a === 'new-order') editNewOrder();
   else if(a === 'save-order') saveNewOrder();
   else if(a === 'mo-free'){ mo.items.push({id:'', name:'', cat:'', qty:1, price:null}); moLines(); var ni = $$('[data-mi][data-f=name]'); if(ni.length) ni[ni.length - 1].focus(); }

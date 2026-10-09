@@ -190,6 +190,7 @@ if ($A === 'setup') {
 }
 
 if ($A === 'public') {
+  expireOrders();
   $s = readStore();
   $today = date('Y-m-d');
   $prods = array_values(array_map(fn($p) => [
@@ -206,6 +207,7 @@ if ($A === 'public') {
 }
 
 if ($A === 'order') {
+  expireOrders();
   rateLimit('order', 6, 600);
   if (!empty($IN['web'])) out(['ok' => true]);                       // bot
   $c = $IN['customer'] ?? [];
@@ -249,10 +251,16 @@ if ($A === 'order') {
               'sentAt' => null, 'paidAt' => null, 'stockApplied' => false, 'notes' => '', 'rk' => bin2hex(random_bytes(6)),
               'history' => [['t' => date('c'), 'e' => 'Pedido recibido desde la web']]];
     array_unshift($s['orders'], $order);
-    return ['order' => $order, 'settings' => $st];
+    $low = syncStock($s, 0);
+    return ['order' => $s['orders'][0], 'low' => $low, 'settings' => $st];
   });
   if (!empty($result['err'])) fail($result['err']);
   $o = $result['order']; $st = $result['settings'];
+  if (!empty($result['low']) && !empty($st['lowStockAlerts'])) {
+    $TL = ['*⚠️ Aviso de stock*', ''];
+    foreach ($result['low'] as $pp) $TL[] = '• ' . $pp['name'] . ': ' . ((int)$pp['stock'] <= 0 ? '*AGOTADO*' : 'quedan ' . (int)$pp['stock']);
+    notify($st, implode("\n", $TL), [['⚙️ Ver productos', baseUrl() . 'admin.html']]);
+  }
 
   // Aviso a Viky con enlace para enviar el resumen a la clienta
   $L = ['*🛍️ Nuevo pedido · The Professional Edit*', 'Código: *' . $o['code'] . '*', ''];
@@ -396,7 +404,7 @@ if ($A === 'login') {
    ================================================================= */
 requireAdmin();
 
-if ($A === 'all') { $st = readStore(); $d = publicStore($st); $d['user'] = $st['_auth']['user'] ?: $CFG['admin_user']; out(['ok' => true, 'data' => $d]); }
+if ($A === 'all') { expireOrders(); $st = readStore(); $d = publicStore($st); $d['user'] = $st['_auth']['user'] ?: $CFG['admin_user']; out(['ok' => true, 'data' => $d]); }
 
 if ($A === 'logout') {
   $h = hash('sha256', bearer());
@@ -531,9 +539,9 @@ if ($A === 'order_create') {                                           // pedido
               'stockApplied' => false, 'noStock' => $noStock, 'manual' => true, 'notes' => str($IN['notes'] ?? '', 800), 'rk' => bin2hex(random_bytes(6)),
               'history' => [['t' => $dateIso, 'e' => 'Pedido creado a mano desde el panel']]];
     array_unshift($s['orders'], $order);
-    $low = [];
+    $low = syncStock($s, 0);
     if ($status !== 'nuevo') {
-      $low = applyOrderStatus($s, 0, $status);
+      $low = uniqLow(array_merge($low, applyOrderStatus($s, 0, $status)));
       if ($back) foreach (['sentAt', 'paidAt', 'shippedAt', 'deliveredAt'] as $k) if (!empty($s['orders'][0][$k])) $s['orders'][0][$k] = $dateIso;
     }
     return ['order' => $s['orders'][0], 'low' => $low, 'settings' => $s['settings']];
@@ -571,43 +579,65 @@ fail('action', 404);
    ================================================================= */
 /* Cambia el estado de un pedido y ajusta el stock:
    al pasar a pagado/enviado/entregado se descuenta; al cancelar o volver atrás se repone. */
-function applyOrderStatus(&$s, $i, $status) {
-  $o = &$s['orders'][$i];
-  $paidStates = ['pagado', 'enviado', 'entregado'];
-  $low = [];
-  $labels = ['nuevo' => 'Nuevo', 'datos_enviados' => 'Resumen enviado a la clienta', 'pagado' => 'Pago recibido', 'enviado' => 'Pedido enviado', 'entregado' => 'Venta finalizada', 'cancelado' => 'Pedido cancelado'];
-  if (in_array($status, $paidStates, true) && empty($o['stockApplied'])) {
+/* El stock se RESERVA en cuanto se hace el pedido y se libera solo si el pedido se cancela. Devuelve los productos que quedan con poco stock. */
+function syncStock(&$s, $i) {
+  $o = &$s['orders'][$i]; $low = [];
+  if (!empty($o['noStock'])) return $low;
+  $hold = ($o['status'] ?? 'nuevo') !== 'cancelado';
+  if ($hold && empty($o['stockApplied'])) {
     foreach ($o['items'] as $it) {
-      if (!empty($o['noStock'])) continue;
       $pi = findIdx($s['products'], 'id', $it['id']);
       if ($pi >= 0 && ($s['products'][$pi]['stock'] ?? null) !== null) {
         $before = (int)$s['products'][$pi]['stock'];
         $s['products'][$pi]['stock'] = $before - (int)$it['qty'];
         $min = (int)($s['products'][$pi]['minStock'] ?? 2);
-        if ($s['products'][$pi]['stock'] <= $min && $before > $min - 0) $low[] = $s['products'][$pi];
-        elseif ($s['products'][$pi]['stock'] <= 0) $low[] = $s['products'][$pi];
+        if (($s['products'][$pi]['stock'] <= $min && $before > $min) || ($s['products'][$pi]['stock'] <= 0 && $before > 0)) $low[] = $s['products'][$pi];
       }
     }
     $o['stockApplied'] = true;
-    if (empty($o['paidAt'])) $o['paidAt'] = date('c');
-  }
-  if (!in_array($status, $paidStates, true) && !empty($o['stockApplied'])) {
+  } elseif (!$hold && !empty($o['stockApplied'])) {
     foreach ($o['items'] as $it) {
-      if (!empty($o['noStock'])) continue;
       $pi = findIdx($s['products'], 'id', $it['id']);
       if ($pi >= 0 && ($s['products'][$pi]['stock'] ?? null) !== null) $s['products'][$pi]['stock'] = (int)$s['products'][$pi]['stock'] + (int)$it['qty'];
     }
     $o['stockApplied'] = false;
-    if ($status !== 'cancelado') $o['paidAt'] = null;
   }
-  if ($status === 'datos_enviados') $o['sentAt'] = date('c');
-  if ($status === 'enviado') $o['shippedAt'] = date('c');
-  if ($status === 'entregado') { $o['deliveredAt'] = date('c'); if (empty($o['followUp'])) $o['followUp'] = 'pendiente'; }
+  return uniqLow($low);
+}
+function uniqLow($low) { $seen = []; return array_values(array_filter($low, function ($p) use (&$seen) { if (isset($seen[$p['id']])) return false; $seen[$p['id']] = 1; return true; })); }
+/* Cambia el estado de un pedido (hacia delante o hacia atrás) y ajusta fechas y stock. */
+function applyOrderStatus(&$s, $i, $status) {
+  $o = &$s['orders'][$i]; $now = date('c');
+  $labels = ['nuevo' => 'Nuevo', 'datos_enviados' => 'Resumen enviado a la clienta', 'pagado' => 'Pago recibido', 'enviado' => 'Pedido enviado', 'entregado' => 'Venta finalizada', 'cancelado' => 'Pedido cancelado'];
   $o['status'] = $status;
-  $o['history'][] = ['t' => date('c'), 'e' => $labels[$status]];
-  // eliminar duplicados en la lista de stock bajo
-  $seen = []; $low = array_values(array_filter($low, function ($p) use (&$seen) { if (isset($seen[$p['id']])) return false; $seen[$p['id']] = 1; return true; }));
+  $low = syncStock($s, $i);
+  if (in_array($status, ['pagado', 'enviado', 'entregado'], true)) { if (empty($o['paidAt'])) $o['paidAt'] = $now; }
+  elseif ($status !== 'cancelado') $o['paidAt'] = null;
+  if ($status === 'nuevo') $o['sentAt'] = null;
+  if ($status === 'datos_enviados') $o['sentAt'] = $now;
+  if ($status === 'enviado') $o['shippedAt'] = $now;
+  if ($status === 'entregado') { $o['deliveredAt'] = $now; if (empty($o['followUp'])) $o['followUp'] = 'pendiente'; }
+  elseif (in_array($status, ['nuevo', 'datos_enviados', 'pagado', 'enviado'], true)) { $o['deliveredAt'] = null; $o['followUp'] = null; $o['archived'] = false; }
+  $o['history'][] = ['t' => $now, 'e' => $labels[$status]];
   return $low;
+}
+/* Si el plazo de pago vence, el pedido se cancela solo y el stock vuelve a estar disponible. */
+function expireOrders() {
+  $st = readStore(); $limit = max(1, (int)($st['settings']['payHours'] ?? 24)) * 3600; $now = time(); $due = false;
+  foreach ($st['orders'] as $o) if (($o['status'] ?? '') === 'datos_enviados' && !empty($o['sentAt']) && strtotime($o['sentAt']) + $limit < $now) { $due = true; break; }
+  if (!$due) return;
+  $res = tx(function (&$s) use ($limit, $now) {
+    $done = [];
+    foreach ($s['orders'] as $i => $o) {
+      if (($o['status'] ?? '') === 'datos_enviados' && !empty($o['sentAt']) && strtotime($o['sentAt']) + $limit < $now) {
+        applyOrderStatus($s, $i, 'cancelado');
+        $n = count($s['orders'][$i]['history']); $s['orders'][$i]['history'][$n - 1]['e'] = 'Plazo de pago vencido: pedido cancelado y stock liberado';
+        $done[] = $s['orders'][$i]['code'];
+      }
+    }
+    return ['done' => $done, 'settings' => $s['settings']];
+  });
+  if ($res['done']) notify($res['settings'], "⏰ *Plazo de pago vencido*\n" . implode(', ', $res['done']) . ": cancelado y stock liberado.", [['⚙️ Abrir el panel', baseUrl() . 'admin.html']]);
 }
 /* Una reserva marcada como pagada ocupa plaza en su convocatoria */
 function leadSeats(&$s, $old, $new) {
